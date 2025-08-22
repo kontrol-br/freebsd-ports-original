@@ -1,15 +1,15 @@
---- src/3rdparty/chromium/v8/src/api/api.cc.orig	2023-07-07 17:40:32 UTC
+--- src/3rdparty/chromium/v8/src/api/api.cc.orig	2024-10-22 08:31:56 UTC
 +++ src/3rdparty/chromium/v8/src/api/api.cc
-@@ -140,7 +140,7 @@
+@@ -149,7 +149,7 @@
  #include "src/wasm/wasm-serialization.h"
  #endif  // V8_ENABLE_WEBASSEMBLY
  
 -#if V8_OS_LINUX || V8_OS_DARWIN || V8_OS_FREEBSD
 +#if V8_OS_LINUX || V8_OS_DARWIN || V8_OS_FREEBSD || V8_OS_OPENBSD
  #include <signal.h>
+ #include <unistd.h>
  
- #if V8_ENABLE_WEBASSEMBLY
-@@ -6217,7 +6217,7 @@ bool v8::V8::Initialize(const int build_config) {
+@@ -6525,7 +6525,7 @@ bool v8::V8::Initialize(const int build_config) {
    return true;
  }
  

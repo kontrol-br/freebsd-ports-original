@@ -1,7 +1,7 @@
---- third_party/blink/renderer/platform/wtf/stack_util.cc.orig	2023-03-09 06:31:50 UTC
+--- third_party/blink/renderer/platform/wtf/stack_util.cc.orig	2025-07-02 06:08:04 UTC
 +++ third_party/blink/renderer/platform/wtf/stack_util.cc
-@@ -18,6 +18,11 @@
- extern "C" void* __libc_stack_end;  // NOLINT
+@@ -27,6 +27,11 @@ extern "C" void* __libc_stack_end;  // NOLINT
+ #include <sanitizer/asan_interface.h>
  #endif
  
 +#if BUILDFLAG(IS_BSD)
@@ -12,7 +12,7 @@
  namespace WTF {
  
  size_t GetUnderestimatedStackSize() {
-@@ -62,6 +67,8 @@ size_t GetUnderestimatedStackSize() {
+@@ -71,6 +76,8 @@ size_t GetUnderestimatedStackSize() {
    //    low as 512k.
    //
    return 512 * 1024;
@@ -21,7 +21,7 @@
  #elif BUILDFLAG(IS_APPLE)
    // pthread_get_stacksize_np() returns too low a value for the main thread on
    // OSX 10.9,
-@@ -148,6 +155,13 @@ void* GetStackStart() {
+@@ -161,6 +168,13 @@ void* GetStackStartImpl() {
    ::GetCurrentThreadStackLimits(&lowLimit, &highLimit);
    return reinterpret_cast<void*>(highLimit);
  #endif

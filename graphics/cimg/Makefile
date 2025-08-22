@@ -1,6 +1,7 @@
 PORTNAME=	cimg
 DISTVERSIONPREFIX=	v.
-DISTVERSION=	3.2.6
+DISTVERSION=	3.5.5
+PORTREVISION=	1
 PORTEPOCH=	3
 CATEGORIES=	graphics devel
 
@@ -18,7 +19,7 @@ LICENSE_PERMS_CeCILL_C=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 LICENSE_PERMS_CeCILL=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	dtschump
+GH_ACCOUNT=	GreycLab
 GH_PROJECT=	CImg
 
 BUILD_WRKSRC=	${WRKSRC}/examples
@@ -42,7 +43,6 @@ USES+=		blaslapack
 .endif
 
 REINPLACE_ARGS=	-i ""
-#LIB_DEPENDS+=	libboard.so:graphics/libboard
 
 . if !defined(WITH_DEBUG)
 LIB_DEPENDS+=	libcurl.so:ftp/curl			\
@@ -51,12 +51,13 @@ LIB_DEPENDS+=	libcurl.so:ftp/curl			\
 		libImath.so:math/Imath			\
 		libheif.so:graphics/libheif		\
 		libOpenEXR.so:graphics/openexr		\
-		libgimp-2.0.so:graphics/gimp-app	\
 		libfftw3.so:math/fftw3			\
+		libwebp.so:graphics/webp		\
+		libboard.so:graphics/libboard		\
 		libopencv_core.so:graphics/opencv	\
 		libGraphicsMagick.so:graphics/GraphicsMagick
 RUN_DEPENDS+=	dcraw:graphics/dcraw
-USES+=		jpeg
+USES+=		jpeg magick:7
 ALL_TARGET=	Mlinux
 . else
 ALL_TARGET=	dlinux
@@ -85,6 +86,9 @@ USE_XORG+=	xext
 DOCBASE=	README.txt
 CFLAGS+=	-I${LOCALBASE}/include/Imath -I${LOCALBASE}/include/OpenEXR
 MAKE_ARGS+=	CPPFLAGS="${CFLAGS}" FREEBSD_LDFLAGS="${LDFLAGS}"
+. if !exists(/usr/include/omp.h)
+MAKE_ARGS+=	OPENMP_CFLAGS=
+. endif
 PROGS=		CImg_demo captcha curve_editor2d dtmri_view3d			\
 	edge_explorer2d fade_images gaussian_fit1d generate_loop_macros		\
 	hough_transform2d image2ascii image_registration2d image_surface3d	\

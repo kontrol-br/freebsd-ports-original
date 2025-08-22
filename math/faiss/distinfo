@@ -1,3 +1,5 @@
-TIMESTAMP = 1682122179
-SHA256 (facebookresearch-faiss-v1.7.4_GH0.tar.gz) = d9a7b31bf7fd6eb32c10b7ea7ff918160eed5be04fe63bb7b4b4b5f2bbde01ad
-SIZE (facebookresearch-faiss-v1.7.4_GH0.tar.gz) = 909408
+TIMESTAMP = 1745711436
+SHA256 (facebookresearch-faiss-v1.11.0_GH0.tar.gz) = c5d517da6deb6a6d74290d7145331fc7474426025e2d826fa4a6d40670f4493c
+SIZE (facebookresearch-faiss-v1.11.0_GH0.tar.gz) = 1138777
+SHA256 (01c7e647388f9e23fc828059a3fd9c61b43c0740.patch) = 6248c0d69b2309c5b977d6cd0ff75788a6e668b6c6c87c3113bb2e5603273ea4
+SIZE (01c7e647388f9e23fc828059a3fd9c61b43c0740.patch) = 795

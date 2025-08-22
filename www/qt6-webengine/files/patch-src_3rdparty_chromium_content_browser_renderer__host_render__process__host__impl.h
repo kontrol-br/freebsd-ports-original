@@ -1,15 +1,15 @@
---- src/3rdparty/chromium/content/browser/renderer_host/render_process_host_impl.h.orig	2023-03-28 19:45:02 UTC
+--- src/3rdparty/chromium/content/browser/renderer_host/render_process_host_impl.h.orig	2025-02-21 12:29:33 UTC
 +++ src/3rdparty/chromium/content/browser/renderer_host/render_process_host_impl.h
-@@ -83,7 +83,7 @@
- #include "content/public/browser/android/child_process_importance.h"
+@@ -102,7 +102,7 @@
+ #include "media/fuchsia_media_codec_provider_impl.h"
  #endif
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
- #include "media/mojo/mojom/stable/stable_video_decoder.mojom.h"
- #endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
- 
-@@ -485,7 +485,7 @@ class CONTENT_EXPORT RenderProcessHostImpl
+ #include "content/browser/child_thread_type_switcher_linux.h"
+ #include "media/mojo/mojom/video_encode_accelerator.mojom.h"
+ #endif
+@@ -617,7 +617,7 @@ class CONTENT_EXPORT RenderProcessHostImpl
    // Sets this RenderProcessHost to be guest only. For Testing only.
    void SetForGuestsOnlyForTesting();
  
@@ -18,21 +18,12 @@
    // Launch the zygote early in the browser startup.
    static void EarlyZygoteLaunch();
  #endif  // BUILDFLAG(IS_POSIX) && !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_MAC)
-@@ -684,7 +684,7 @@ class CONTENT_EXPORT RenderProcessHostImpl
-       mojo::PendingReceiver<blink::mojom::WebSocketConnector> receiver)
-       override;
+@@ -982,7 +982,7 @@ class CONTENT_EXPORT RenderProcessHostImpl
+     std::unique_ptr<service_manager::BinderRegistry> binders_;
+     mojo::Receiver<mojom::ChildProcessHost> receiver_{this};
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
-   void CreateStableVideoDecoder(
-       mojo::PendingReceiver<media::stable::mojom::StableVideoDecoder> receiver)
-       override;
-@@ -1144,7 +1144,7 @@ class CONTENT_EXPORT RenderProcessHostImpl
-   // RenderProcessHost. This is destroyed early in ResetIPC() method.
-   std::unique_ptr<PermissionServiceContext> permission_service_context_;
- 
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
-   // Connection to the StableVideoDecoderFactory that lives in a utility
-   // process. This is only used for out-of-process video decoding.
-   mojo::Remote<media::stable::mojom::StableVideoDecoderFactory>
+     mojo::Remote<media::mojom::VideoEncodeAcceleratorProviderFactory>
+         video_encode_accelerator_factory_remote_;
+     ChildThreadTypeSwitcher child_thread_type_switcher_;

@@ -10,6 +10,8 @@ WWW=		https://github.com/awslabs/amazon-qldb-shell
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN=		unknown feature `stdsimd`, ahash requires the removed feature, see https://github.com/awslabs/amazon-qldb-shell/issues/587
+
 BUILD_DEPENDS=	cmake:devel/cmake-core \
 		rust-nightly>0:lang/rust-nightly # #![feature(rustc_attrs)] => #![feature]` may not be used on the stable release channel
 
@@ -289,8 +291,5 @@ CARGO_CRATES=	ahash-0.7.6 \
 		amazon-qldb-driver,amazon-qldb-driver-core@git+https://github.com/awslabs/amazon-qldb-driver-rust?branch=main\#632d2bdc843c0cd7b5f57b902fbd073c27fc3364
 
 PLIST_FILES=	bin/qldb
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/qldb
 
 .include <bsd.port.mk>

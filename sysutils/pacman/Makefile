@@ -1,11 +1,12 @@
 PORTNAME=	pacman
-DISTVERSION=	6.0.2
+DISTVERSION=	7.0.0
+PORTREVISION=	1
 CATEGORIES=	sysutils
-MASTER_SITES=	https://sources.archlinux.org/other/${PORTNAME}/
+MASTER_SITES=	https://gitlab.archlinux.org/${PORTNAME}/${PORTNAME}/-/releases/v${DISTVERSION}/downloads/
 
-MAINTAINER=	vishwin@vishwin.info
+MAINTAINER=	vishwin@FreeBSD.org
 COMMENT=	Package manager from Arch Linux
-WWW=		https://archlinux.org/pacman/
+WWW=		https://pacman.archlinux.page/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -28,20 +29,20 @@ SHEBANG_FILES=	${WRKSRC}/scripts/makepkg-template.pl.in \
 		${WRKSRC}/scripts/libmakepkg/lint_config.sh.in
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 MESON_ARGS=	-Droot-dir=${PACMAN_ROOT} \
-		-Dlocalstatedir=${PACMAN_ROOT}/var \
+		--localstatedir=${PACMAN_ROOT}/var \
 		-Dsysconfdir=${PREFIX}/etc \
 		-Dcrypto=openssl
 USE_LDCONFIG=	yes
 
 SUB_FILES=	pkg-message pkg-deinstall
 SUB_LIST=	PACMAN_ROOT="${PACMAN_ROOT}" PREFIX="${PREFIX}"
-PLIST_SUB=	PACMAN_ROOT="${PACMAN_ROOT:C/^${PREFIX}//}"
+PLIST_SUB=	PACMAN_ROOT="${PACMAN_ROOT:C,^${PREFIX}/,,}"
 
 PORTEXAMPLES=	*
 PKGMESSAGE=	${PKGDIR}/pkg-message-${FLAVOR:U}
 
-OPTIONS_DEFINE=	CURL DOCS GPGME EXAMPLES NLS
-OPTIONS_DEFAULT=CURL DOCS GPGME
+OPTIONS_DEFINE=	CURL EXAMPLES GPGME MANPAGES NLS
+OPTIONS_DEFAULT=CURL GPGME MANPAGES
 OPTIONS_EXCLUDE=NLS # XXX: meson cannot find ngettext(3) despite gettext-runtime
 OPTIONS_SUB=	yes
 
@@ -49,8 +50,8 @@ CURL_DESC=	Use libcurl fetcher instead of external curl/wget
 CURL_MESON_ENABLED=	curl
 CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
 
-DOCS_MESON_ENABLED=	doc
-DOCS_BUILD_DEPENDS=	a2x:textproc/asciidoc
+MANPAGES_MESON_ENABLED=	doc
+MANPAGES_BUILD_DEPENDS=	a2x:textproc/asciidoc
 
 GPGME_DESC=	Use GPGME for PGP signature verification
 GPGME_MESON_ENABLED=	gpgme
@@ -70,7 +71,7 @@ PLIST_DIRS+=	%%PACMAN_ROOT%%/var/cache \
 		/compat
 .endif
 
-.include <bsd.port.options.mk>
+.include <bsd.port.pre.mk>
 
 post-patch:
 .if ${ARCH} == "i386"
@@ -87,4 +88,4 @@ post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/doc/PKGBUILD-example.txt ${STAGEDIR}${EXAMPLESDIR}/
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

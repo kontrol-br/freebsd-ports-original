@@ -1,8 +1,8 @@
 PORTNAME=	icestorm
-PORTVERSION=	g20220915
+PORTVERSION=	g20250207
 CATEGORIES=	devel
 
-MAINTAINER=	manu@FreeBSD.org
+MAINTAINER=	jbo@FreeBSD.org
 COMMENT=	IceStorm tools for Lattice iCE40 FPGAs
 WWW=		https://www.clifford.at/icestorm
 
@@ -20,7 +20,7 @@ SHEBANG_FILES=	${WRKSRC}/icebox/*.py \
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	yosyshq
-GH_TAGNAME=	a545498d6f
+GH_TAGNAME=	7fbf8c0
 
 BINARY_ALIAS=	python3=${PYTHON_CMD} sed=gsed
 

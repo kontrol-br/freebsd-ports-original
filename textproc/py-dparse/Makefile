@@ -1,5 +1,5 @@
 PORTNAME=	dparse
-DISTVERSION=	0.5.1
+DISTVERSION=	0.6.4
 CATEGORIES=	textproc python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,24 +11,28 @@ WWW=		https://github.com/pyupio/dparse
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}hatch>0:devel/py-hatch@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}packaging>0:devel/py-packaging@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}toml>0:textproc/py-toml@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR}
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR}
+		${PY_TOMLI}
 
-USES=		python
-USE_PYTHON=	distutils autoplist
+USES=		cpe python
+CPE_VENDOR=	pyup
+CPE_PRODUCT=	dependency_parser
+USE_PYTHON=	autoplist pep517 pytest
+
+TEST_ENV=	PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 
 NO_ARCH=	yes
 
-OPTIONS_DEFINE=		PIPENV
-OPTIONS_DEFAULT=	PIPENV
+OPTIONS_DEFINE=		CONDA PIPENV POETRY
+OPTIONS_DEFAULT=	CONDA PIPENV POETRY
 
+CONDA_DESC=	Enable support for Conda YML parsing
 PIPENV_DESC=	Enable support to update Python Pipfiles
+POETRY_DESC=	Enable support for parsing "poetry.lock" files
 
-PIPENV_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pipenv>0:devel/py-pipenv@${PY_FLAVOR}
-
-do-test:
-	@cd ${WRKSRC} && ${PYTHON_CMD} -m pytest -rs -v
+CONDA_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyyaml>=0:devel/py-pyyaml@${PY_FLAVOR}
+PIPENV_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pipenv>=0:devel/py-pipenv@${PY_FLAVOR}
+POETRY_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}poetry>=0:devel/py-poetry@${PY_FLAVOR}
 
 .include <bsd.port.mk>

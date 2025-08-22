@@ -1,6 +1,6 @@
---- chrome/browser/ui/views/frame/browser_non_client_frame_view_factory_views.cc.orig	2023-05-05 12:12:41 UTC
+--- chrome/browser/ui/views/frame/browser_non_client_frame_view_factory_views.cc.orig	2025-05-31 17:16:41 UTC
 +++ chrome/browser/ui/views/frame/browser_non_client_frame_view_factory_views.cc
-@@ -16,7 +16,7 @@
+@@ -15,7 +15,7 @@
  #include "chrome/browser/ui/views/frame/browser_frame_view_win.h"
  #endif
  
@@ -18,12 +18,12 @@
    auto* profile = browser_view->browser()->profile();
    auto* linux_ui_theme = ui::LinuxUiTheme::GetForProfile(profile);
    auto* theme_service_factory = ThemeServiceFactory::GetForProfile(profile);
-@@ -81,7 +81,7 @@ std::unique_ptr<BrowserNonClientFrameView> CreateBrows
+@@ -83,7 +83,7 @@ std::unique_ptr<BrowserNonClientFrameView> CreateBrows
+     BrowserFrame* frame,
+     BrowserView* browser_view) {
    if (browser_view->browser()->is_type_picture_in_picture()) {
-     auto view =
-         std::make_unique<PictureInPictureBrowserFrameView>(frame, browser_view);
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
-     auto* profile = browser_view->browser()->profile();
-     auto* linux_ui_theme = ui::LinuxUiTheme::GetForProfile(profile);
-     auto* theme_service_factory = ThemeServiceFactory::GetForProfile(profile);
+     return std::make_unique<PictureInPictureBrowserFrameViewLinux>(
+         frame, browser_view);
+ #else

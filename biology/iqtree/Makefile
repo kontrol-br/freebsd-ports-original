@@ -1,7 +1,7 @@
 PORTNAME=	iqtree
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.0.6
-PORTREVISION=	5
+DISTVERSION=	2.4.0
+PORTREVISION=	2
 CATEGORIES=	biology
 
 MAINTAINER=	jrm@FreeBSD.org
@@ -12,20 +12,21 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_aarch64=	fails to compile: unrecognized command line option '-msse3'
-BROKEN_armv6=	fails to compile: unrecognized command line options '-m32' and '-msse3'
-BROKEN_armv7=	fails to compile: unrecognized command line options '-m32' and '-msse3'
-BROKEN_i386=	ld: error: unable to find library -latomic (see bug 230888)
 BROKEN_powerpc64=	fails to build: GCC version must be at least 4.8!
+NOT_FOR_ARCHS=	armv6 armv7 i386 powerpc
+NOT_FOR_ARCHS_REASON=	32-bit compilation is not supported
 
 LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs
 
-USES=		cmake compiler:c++11-lang eigen:3
+USES=		cmake eigen:3
 USE_GITHUB=	yes
-GH_ACCOUNT=	Cibiv
-GH_PROJECT=	IQ-TREE
+GH_PROJECT=	iqtree2
+GH_TUPLE=	tothuhien:lsd2:c61110f3a4fa05325b45c97b2134792ff9d55d4c:tothuhien/lsd2 \
+		iqtree:cmaple:3946f47731699573ed2268e00aa7996a3458d4eb:iqtree/cmaple
 
 PLIST_FILES=	bin/iqtree
-PORTEXAMPLES=	example.cf example.nex example.phy models.nex
+PORTEXAMPLES=	custom_distributions.txt example.cf example.nex example.phy \
+		models.nex tree.nwk
 
 OPTIONS_DEFINE=	EXAMPLES
 

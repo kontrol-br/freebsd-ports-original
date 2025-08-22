@@ -1,10 +1,9 @@
 PORTNAME=	covr
-DISTVERSION=	3.6.2
-PORTREVISION=	1
+DISTVERSION=	3.6.4
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	ygy@FreeBSD.org
+MAINTAINER=	uzsolt@FreeBSD.org
 COMMENT=	Test Coverage for Packages
 WWW=		https://covr.r-lib.org
 

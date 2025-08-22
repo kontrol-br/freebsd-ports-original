@@ -1,11 +1,11 @@
 PORTNAME=	gtk-vnc
 PORTVERSION=	1.3.1
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	net gnome
 MASTER_SITES=	GNOME
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	VNC viewer widget for GTK+
+COMMENT=	VNC viewer widget for GTK
 WWW=		http://live.gnome.org/gtk-vnc
 
 LICENSE=	LGPL21
@@ -18,7 +18,7 @@ LIB_DEPENDS=	libgnutls.so:security/gnutls \
 
 USES=		gettext gnome localbase meson perl5 pkgconfig python \
 		tar:xz vala:build xorg
-USE_GNOME=	cairo gdkpixbuf2 gtk30 introspection:build
+USE_GNOME=	cairo gdkpixbuf gtk30 introspection:build
 USE_XORG=	x11
 USE_LDCONFIG=	yes
 

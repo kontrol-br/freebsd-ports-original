@@ -1,9 +1,9 @@
 PORTNAME=	lebiniou
 DISTVERSION=	3.66.0
-PORTREVISION=	5
+PORTREVISION=	8
 CATEGORIES=	multimedia graphics
 
-MAINTAINER=	olivier@biniou.info
+MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	User-friendly, powerful music visualization / VJing tool
 WWW=		https://biniou.net/
 
@@ -39,5 +39,6 @@ GL_ACCOUNT=	lebiniou
 GL_TAGNAME=	2049ce3d9ee5f860fb6a5d516c4af797f4669b58
 
 GNU_CONFIGURE=	YES
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 .include <bsd.port.mk>

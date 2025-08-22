@@ -1,7 +1,7 @@
---- chrome/browser/ui/views/frame/browser_frame.cc.orig	2023-07-16 15:47:57 UTC
+--- chrome/browser/ui/views/frame/browser_frame.cc.orig	2025-08-07 06:57:29 UTC
 +++ chrome/browser/ui/views/frame/browser_frame.cc
-@@ -51,7 +51,7 @@
- #include "components/user_manager/user_manager.h"
+@@ -53,7 +53,7 @@
+ #include "ui/aura/window.h"
  #endif
  
 -#if BUILDFLAG(IS_LINUX)
@@ -9,8 +9,17 @@
  #include "ui/display/screen.h"
  #include "ui/linux/linux_ui.h"
  #endif
-@@ -63,7 +63,7 @@
- namespace {
+@@ -68,7 +68,7 @@ namespace {
+ constexpr double kTitlePaddingWidthFraction = 0.1;
+ #endif
+ 
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ // These values are used for Linux/GTK.
+ constexpr int kIconTitleSpacing = 4;
+ constexpr int kCaptionSpacing = 5;
+@@ -98,7 +98,7 @@ class ThemeChangedObserver : public views::WidgetObser
+ };
  
  bool IsUsingLinuxSystemTheme(Profile* profile) {
 -#if BUILDFLAG(IS_LINUX)
@@ -18,7 +27,16 @@
    return ThemeServiceFactory::GetForProfile(profile)->UsingSystemTheme();
  #else
    return false;
-@@ -303,7 +303,7 @@ void BrowserFrame::OnNativeWidgetWorkspaceChanged() {
+@@ -196,7 +196,7 @@ void BrowserFrame::InitBrowserFrame() {
+ 
+   Init(std::move(params));
+ 
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+   SelectNativeTheme();
+ #else
+   SetNativeTheme(ui::NativeTheme::GetInstanceForNativeUi());
+@@ -434,7 +434,7 @@ void BrowserFrame::OnNativeWidgetWorkspaceChanged() {
    chrome::SaveWindowWorkspace(browser_view_->browser(), GetWorkspace());
    chrome::SaveWindowVisibleOnAllWorkspaces(browser_view_->browser(),
                                             IsVisibleOnAllWorkspaces());
@@ -27,16 +45,16 @@
    // If the window was sent to a different workspace, prioritize it if
    // it was sent to the current workspace and deprioritize it
    // otherwise.  This is done by MoveBrowsersInWorkspaceToFront()
-@@ -490,7 +490,7 @@ void BrowserFrame::SelectNativeTheme() {
-     return;
-   }
+@@ -633,7 +633,7 @@ void BrowserFrame::OnMenuClosed() {
+ }
  
+ void BrowserFrame::SelectNativeTheme() {
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
-   const auto* linux_ui_theme =
-       ui::LinuxUiTheme::GetForWindow(GetNativeWindow());
-   // Ignore the system theme for web apps with window-controls-overlay as the
-@@ -507,7 +507,7 @@ void BrowserFrame::SelectNativeTheme() {
+   // Use the regular NativeTheme instance if running incognito mode, regardless
+   // of system theme (gtk, qt etc).
+   ui::NativeTheme* native_theme = ui::NativeTheme::GetInstanceForNativeUi();
+@@ -674,7 +674,7 @@ void BrowserFrame::OnTouchUiChanged() {
  bool BrowserFrame::RegenerateFrameOnThemeChange(
      BrowserThemeChangeType theme_change_type) {
    bool need_regenerate = false;

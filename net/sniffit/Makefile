@@ -1,5 +1,5 @@
 PORTNAME=	sniffit
-PORTVERSION=	0.5
+PORTVERSION=	0.6
 DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	net security
 
@@ -20,17 +20,15 @@ OPTIONS_DEFINE=	DOCS EXAMPLES
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=int-conversion
-.if ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 )
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
-.endif
 .endif
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/sniffit ${STAGEDIR}${PREFIX}/sbin
-	${INSTALL_MAN} ${WRKSRC}/man/sniffit.5 ${STAGEDIR}${MANPREFIX}/share/man/man5
-	${INSTALL_MAN} ${WRKSRC}/man/sniffit.8 ${STAGEDIR}${MANPREFIX}/share/man/man8
+	${INSTALL_MAN} ${WRKSRC}/man/sniffit.5 ${STAGEDIR}${PREFIX}/share/man/man5
+	${INSTALL_MAN} ${WRKSRC}/man/sniffit.8 ${STAGEDIR}${PREFIX}/share/man/man8
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

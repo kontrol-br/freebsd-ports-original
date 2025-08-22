@@ -1,6 +1,6 @@
 PORTNAME=	libftdi1
 PORTVERSION=	1.5
-PORTREVISION=	4
+PORTREVISION=	8
 CATEGORIES=	devel
 MASTER_SITES=	https://www.intra2net.com/en/developer/libftdi/download/
 
@@ -12,8 +12,6 @@ LICENSE=		GPLv2 LGPL21
 LICENSE_COMB=		multi
 LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING.GPL
 LICENSE_FILE_LGPL21=	${WRKSRC}/COPYING.LIB
-
-BROKEN_sparc64=	Does not build: fails to link
 
 LIB_DEPENDS=	libconfuse.so:devel/libconfuse
 

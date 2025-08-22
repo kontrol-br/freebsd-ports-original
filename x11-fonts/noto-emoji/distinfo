@@ -1,3 +1,5 @@
-TIMESTAMP = 1681052924
-SHA256 (Noto/NotoColorEmoji.ttf) = 5a953e4c2c3c650c37d9e996eae6fef08414854871e1f9a916daf4c59527f008
-SIZE (Noto/NotoColorEmoji.ttf) = 10352796
+TIMESTAMP = 1750954146
+SHA256 (Noto/Emoji/2.048/Noto-COLRv1.ttf) = 94c6c870925aaafd3fdda338fc4b2e4dfb74260c9aefa87d4aa8a145a993a5a2
+SIZE (Noto/Emoji/2.048/Noto-COLRv1.ttf) = 4812896
+SHA256 (Noto/Emoji/2.048/NotoColorEmoji.ttf) = 3ed77810c203e1a67735dc19d395f32c23f2d7c0c3696690f4f78e15e57ab816
+SIZE (Noto/Emoji/2.048/NotoColorEmoji.ttf) = 10195752

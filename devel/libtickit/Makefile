@@ -1,20 +1,22 @@
 PORTNAME=	libtickit
-PORTVERSION=	0.4.3
+PORTVERSION=	0.4.5
 CATEGORIES=	devel
-MASTER_SITES=	http://www.leonerd.org.uk/code/libtickit/
+MASTER_SITES=	https://launchpad.net/libtickit/trunk/v${PORTVERSION:R}/+download/
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Terminal Interface Construction Kit
-WWW=		https://www.leonerd.org.uk/code/libtickit/
+WWW=		https://www.leonerd.org.uk/code/libtickit/ \
+		https://launchpad.net/libtickit \
+		https://github.com/leonerd/libtickit
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libtermkey.so:devel/libtermkey
+LIB_DEPENDS=	libtermkey.so:devel/libtermkey \
+		libunibilium.so:devel/unibilium
 
 USES=		compiler:c11 gmake libtool:build ncurses pathfix pkgconfig
 
-MAKE_ARGS=	MANDIR=${PREFIX}/share/man
 PATHFIX_MAKEFILEIN=	Makefile
 USE_LDCONFIG=	yes
 

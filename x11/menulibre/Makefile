@@ -1,5 +1,6 @@
 PORTNAME=	menulibre
-PORTVERSION=	2.3.1
+PORTVERSION=	2.4.0
+PORTREVISION=	2
 DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	x11
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,7 +18,7 @@ RUN_DEPENDS=	xdg-open:devel/xdg-utils \
 		pkexec:sysutils/polkit \
 		${PYTHON_PKGNAMEPREFIX}psutil>=2.0:sysutils/py-psutil@${PY_FLAVOR}
 
-USES=		desktop-file-utils gettext gnome python
+USES=		gettext gnome python
 USE_GNOME=	intltool pygobject3
 USE_PYTHON=	distutils
 
@@ -28,8 +29,4 @@ NO_ARCH=	yes
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.pre.mk>
-
-PYDISTUTILS_INSTALLARGS:=	${PYDISTUTILS_INSTALLARGS:N--single-version-externally-managed}
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

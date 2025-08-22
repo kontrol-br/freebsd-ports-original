@@ -1,6 +1,6 @@
 PORTNAME=	fvwm3
-DISTVERSION=	1.0.7
-PORTREVISION=	3
+DISTVERSION=	1.1.0
+PORTREVISION=	8
 CATEGORIES=	x11-wm
 MASTER_SITES=	https://github.com/fvwmorg/fvwm3/releases/download/${DISTVERSION}/ \
 		http://fvwm.sourceforge.net/generated/icon_download/:icons
@@ -22,10 +22,10 @@ CPE_PRODUCT=	fvwm
 USE_XORG=	ice sm x11 xext xft xrandr xrender xt
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	ac_cv_path_PYTHON=${PYTHON_CMD}
 
 CONFLICTS_INSTALL=	fvwm
-SUB_FILES=		fvwm3.desktop
 PLIST_SUB=		DISTVERSION=${DISTVERSION}
 
 OPTIONS_DEFINE=		FRIBIDI GO ICONS ICONV MANPAGES NLS PERL PNG SVG \
@@ -37,7 +37,10 @@ GO_DESC=		Build and install modules written in Go
 FRIBIDI_LIB_DEPENDS=		libfribidi.so:converters/fribidi
 FRIBIDI_CONFIGURE_ENABLE=	bidi
 
-GO_USES=		go:no_targets
+_GO_MAXVERSION=		1.23
+_GO_VERSIONARG=		${${GO_DEFAULT:S/-devel//:S/.//} > \
+			${_GO_MAXVERSION:S/.//}:?${_GO_MAXVERSION},:}
+GO_USES=		go:${_GO_VERSIONARG}no_targets
 GO_CONFIGURE_ENABLE=	golang
 
 FVWM_ICONS=		fvwm_icons-20070101
@@ -62,7 +65,7 @@ PNG_LIB_DEPENDS=	libpng.so:graphics/png
 PNG_CONFIGURE_ENABLE=	png
 
 SVG_USES=		gnome
-SVG_USE=		gnome=cairo,glib20,gdkpixbuf2,librsvg2
+SVG_USE=		gnome=cairo,glib20,gdkpixbuf,librsvg2
 SVG_CONFIGURE_ENABLE=	rsvg
 
 XCURSOR_USE=			xorg=xcursor
@@ -74,11 +77,6 @@ XPM_CONFIGURE_OFF=	--with-xpm-library=no
 post-patch:
 	@${REINPLACE_CMD} -e 's,/etc/,${LOCALBASE}/etc/,g' \
 		${WRKSRC}/bin/fvwm-menu-desktop.in
-
-post-install:
-	${MKDIR} ${STAGEDIR}${PREFIX}/share/xsessions
-	${INSTALL_DATA} ${WRKDIR}/fvwm3.desktop \
-		${STAGEDIR}${PREFIX}/share/xsessions
 
 post-install-ICONS-on:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/fvwm3/pixmaps

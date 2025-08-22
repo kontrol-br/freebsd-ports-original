@@ -17,6 +17,12 @@ PORTDOCS=	README
 
 OPTIONS_DEFINE=	DOCS
 
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD
+USES+=	llvm:max=14
+.endif
+
 post-patch:
 	@${REINPLACE_CMD} -e 's,/usr/X11R6,${LOCALBASE},g' \
 		${WRKSRC}/config/Project.tmpl \

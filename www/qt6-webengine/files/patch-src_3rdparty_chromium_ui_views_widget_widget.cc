@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/ui/views/widget/widget.cc.orig	2023-03-28 19:45:02 UTC
+--- src/3rdparty/chromium/ui/views/widget/widget.cc.orig	2024-10-22 08:31:56 UTC
 +++ src/3rdparty/chromium/ui/views/widget/widget.cc
-@@ -50,7 +50,7 @@
+@@ -58,7 +58,7 @@
  #include "ui/views/window/custom_frame_view.h"
  #include "ui/views/window/dialog_delegate.h"
  
@@ -9,7 +9,7 @@
  #include "ui/linux/linux_ui.h"
  #endif
  
-@@ -1871,7 +1871,7 @@ const ui::NativeTheme* Widget::GetNativeTheme() const 
+@@ -2203,7 +2203,7 @@ const ui::NativeTheme* Widget::GetNativeTheme() const 
    if (parent_)
      return parent_->GetNativeTheme();
  

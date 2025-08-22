@@ -1,6 +1,6 @@
 PORTNAME=	consul
-PORTVERSION=	1.16.1
 DISTVERSIONPREFIX=	v
+DISTVERSION=	1.21.4
 CATEGORIES=	sysutils
 MASTER_SITES=	https://raw.githubusercontent.com/hashicorp/consul/${DISTVERSIONFULL}/
 DISTFILES=	go.mod \
@@ -43,7 +43,7 @@ CONSUL_USER?=	consul
 CONSUL_GROUP?=	consul
 CONSUL_DBDIR?=	/var/db/${PORTNAME}
 
-GITID=		192df66
+GITID=		59b8b90
 
 # Bring DISTINFO_FILE into scope so we can get the timestamp.
 .include <bsd.port.pre.mk>

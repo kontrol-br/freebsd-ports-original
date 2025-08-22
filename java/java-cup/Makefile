@@ -5,7 +5,7 @@ MASTER_SITES=	http://www2.cs.tum.edu/projects/cup/releases/
 PKGNAMEPREFIX=	java-
 DISTNAME=	${PKGNAMEPREFIX}${PORTNAME}-bin-${PORTVERSION:S|.|-|}
 
-MAINTAINER=	eg@fbsd.lt
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	LALR parser generator in Java
 WWW=		http://www2.cs.tum.edu/projects/cup/
 
@@ -15,7 +15,8 @@ LICENSE_TEXT=	The text of the license can be obtained from the following URL:\
 		http://www2.cs.tum.edu/projects/cup/licence.php
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USE_JAVA=	yes
+USES=		java
+
 NO_BUILD=	yes
 
 SUB_FILES=	java-cup.sh

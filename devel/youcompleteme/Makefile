@@ -1,5 +1,6 @@
 PORTNAME=	YouCompleteMe
-DISTVERSION=	g20220614
+DISTVERSION=	g20240320
+PORTREVISION=	2
 CATEGORIES=	devel
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -23,8 +24,8 @@ USES=		cmake compiler:c++11-lang python
 USE_PYTHON=	flavors
 USE_GITHUB=	yes
 GH_ACCOUNT=	ycm-core
-GH_TAGNAME=	c99f408
-GH_TUPLE=	ycm-core:ycmd:d1707c1:ycm/third_party/ycmd
+GH_TAGNAME=	4556062
+GH_TUPLE=	ycm-core:ycmd:b63d2e8:ycm/third_party/ycmd
 
 CMAKE_SOURCE_PATH=	${WRKSRC}/third_party/ycmd/cpp
 

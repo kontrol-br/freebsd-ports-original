@@ -1,6 +1,5 @@
 PORTNAME=	garage
-DISTVERSION=	0.8.2
-PORTREVISION=	1
+DISTVERSION=	1.2.0
 CATEGORIES=	www
 MASTER_SITES=	https://git.deuxfleurs.fr/Deuxfleurs/${PORTNAME}/archive/v${PORTVERSION}.tar.gz?dummy=/
 DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
@@ -20,7 +19,19 @@ USES=		cargo pkgconfig
 CARGO_ENV+=	SODIUM_USE_PKG_CONFIG=1
 CARGO_INSTALL_PATH=	src/garage
 SUB_FILES=	pkg-message
-WRKSRC=		${WRKDIR}/${PORTNAME}
+USE_RC_SUBR=	garage
+CARGO_VENDOR_DIR=	${WRKDIR}/cargo-crates
+CARGO_FEATURES=	syslog
+
+.include <bsd.port.pre.mk>
+
+.if ${MACHINE_ARCH:Marmv?} || ${MACHINE_ARCH} == i386
+LTO_UNSAFE=	yes
+CARGO_ENV+=	CARGO_PROFILE_RELEASE_LTO=false
+.endif
+
+post-extract:
+	${MV} -v ${WRKDIR}/${PORTNAME} ${WRKSRC}
 
 post-patch:
 	${GREP} -F -Rl /etc/garage ${WRKSRC} | ${XARGS} ${REINPLACE_CMD} \
@@ -30,4 +41,4 @@ post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC}/doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR} "! -name *\.bak"
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

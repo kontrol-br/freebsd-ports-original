@@ -1,15 +1,14 @@
 PORTREVISION=	0
-PKGNAMESUFFIX=	Qt
+PKGNAMESUFFIX=	Qt6
 
 COMMENT?=	Qt bindings to AppStream
 
 LIB_DEPENDS=	libappstream.so:devel/appstream
 
-USES=		qt:5
+USES=		qt:6
+USE_QT=		base
 
-USE_QT=		core buildtools:build qmake:build testlib:build
-
-MESON_ARGS=	-Dqt=true
+MESON_ARGS=		-Dqt=true -Dqt-versions='6'
 
 MASTERDIR=	${.CURDIR}/../appstream
 PLIST=		${.CURDIR}/pkg-plist
@@ -18,6 +17,6 @@ post-install:
 	# remove files belonging to the master port
 	${XARGS} -L 1 -I % ${RM} -rf ${STAGEDIR}${PREFIX}/% < ${MASTERDIR}/pkg-plist
 	${FIND} ${STAGEDIR}${PREFIX} -empty -delete
-	${RM} -rf ${STAGEDIR}${PREFIX}/etc ${STAGEDIR}${PREFIX}/man
+	${RM} -rf ${STAGEDIR}${PREFIX}/etc ${STAGEDIR}${PREFIX}/share/man
 
 .include	"${MASTERDIR}/Makefile"

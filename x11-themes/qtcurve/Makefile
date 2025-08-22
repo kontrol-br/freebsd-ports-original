@@ -6,7 +6,7 @@ MASTER_SITES=	KDE/stable/${PORTNAME}
 DISTNAME=	${PORTNAME}-${PORTVERSION:R}
 
 MAINTAINER=	jhale@FreeBSD.org
-COMMENT?=	Widget styles for Qt and GTK+ toolkits
+COMMENT?=	Widget styles for Qt and GTK toolkits
 WWW=		https://invent.kde.org/system/qtcurve
 
 .if !defined(QTCURVE_SLAVE)
@@ -68,7 +68,7 @@ PKGNAMESUFFIX=	-theme
 USES+=		gettext-runtime gnome kde:5 qt:5
 USE_KDE=	i18n:build
 USE_QT+=	buildtools:build qmake:build
-USE_GNOME=	cairo gdkpixbuf2 gtk20 pango
+USE_GNOME=	cairo gdkpixbuf gtk20 pango
 USE_LDCONFIG=	yes
 
 post-install:

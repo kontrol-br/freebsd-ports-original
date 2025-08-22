@@ -1,15 +1,15 @@
---- chrome/browser/ui/views/frame/opaque_browser_frame_view.h.orig	2023-04-05 11:05:06 UTC
+--- chrome/browser/ui/views/frame/opaque_browser_frame_view.h.orig	2025-08-07 06:57:29 UTC
 +++ chrome/browser/ui/views/frame/opaque_browser_frame_view.h
-@@ -117,7 +117,7 @@ class OpaqueBrowserFrameView : public BrowserNonClient
-       const gfx::Rect& bounding_rect) const override;
-   bool IsTranslucentWindowOpacitySupported() const override;
+@@ -108,7 +108,7 @@ class OpaqueBrowserFrameView : public BrowserNonClient
+   FrameButtonStyle GetFrameButtonStyle() const override;
+   void UpdateWindowControlsOverlay(const gfx::Rect& bounding_rect) override;
    bool ShouldDrawRestoredFrameShadow() const override;
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
-   ui::WindowTiledEdges GetTiledEdges() const override;
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+   bool IsTiled() const override;
  #endif
    int WebAppButtonHeight() const override;
-@@ -234,7 +234,7 @@ class OpaqueBrowserFrameView : public BrowserNonClient
+@@ -225,7 +225,7 @@ class OpaqueBrowserFrameView : public BrowserNonClient
    // Background painter for the window frame.
    std::unique_ptr<views::FrameBackground> frame_background_;
  

@@ -1,6 +1,6 @@
---- chrome/utility/services.cc.orig	2023-07-21 09:49:17 UTC
+--- chrome/utility/services.cc.orig	2025-05-06 12:23:00 UTC
 +++ chrome/utility/services.cc
-@@ -56,7 +56,7 @@
+@@ -48,7 +48,7 @@
  #include "chrome/services/system_signals/mac/mac_system_signals_service.h"
  #endif  // BUILDFLAG(IS_MAC)
  
@@ -9,16 +9,7 @@
  #include "chrome/services/system_signals/linux/linux_system_signals_service.h"
  #endif  // BUILDFLAG(IS_LINUX)
  
-@@ -84,7 +84,7 @@
- #include "chrome/services/file_util/file_util_service.h"  // nogncheck
- #endif
- 
--#if BUILDFLAG(FULL_SAFE_BROWSING) && (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN))
-+#if BUILDFLAG(FULL_SAFE_BROWSING) && (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD))
- #include "chrome/services/file_util/document_analysis_service.h"  // nogncheck
- #endif
- 
-@@ -218,7 +218,7 @@ auto RunMacNotificationService(
+@@ -203,7 +203,7 @@ auto RunMacNotificationService(
  }
  #endif  // BUILDFLAG(IS_MAC)
  
@@ -27,16 +18,7 @@
  auto RunSystemSignalsService(
      mojo::PendingReceiver<device_signals::mojom::SystemSignalsService>
          receiver) {
-@@ -285,7 +285,7 @@ auto RunCupsIppParser(
- }
- #endif
- 
--#if BUILDFLAG(FULL_SAFE_BROWSING) && (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN))
-+#if BUILDFLAG(FULL_SAFE_BROWSING) && (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD))
- auto RunDocumentAnalysis(
-     mojo::PendingReceiver<chrome::mojom::DocumentAnalysisService> receiver) {
-   return std::make_unique<DocumentAnalysisService>(std::move(receiver));
-@@ -462,7 +462,7 @@ void RegisterMainThreadServices(mojo::ServiceFactory& 
+@@ -470,7 +470,7 @@ void RegisterMainThreadServices(mojo::ServiceFactory& 
    services.Add(RunWindowsIconReader);
  #endif  // BUILDFLAG(IS_WIN)
  
@@ -44,13 +26,4 @@
 +#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
    services.Add(RunSystemSignalsService);
  #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
- 
-@@ -478,7 +478,7 @@ void RegisterMainThreadServices(mojo::ServiceFactory& 
-   services.Add(RunFileUtil);
- #endif
- 
--#if BUILDFLAG(FULL_SAFE_BROWSING) && (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN))
-+#if BUILDFLAG(FULL_SAFE_BROWSING) && (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD))
-   services.Add(RunDocumentAnalysis);
- #endif
  

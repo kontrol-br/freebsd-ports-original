@@ -1,9 +1,9 @@
 PORTNAME=	gphoto2
-PORTVERSION=	2.3.4
+PORTVERSION=	2.5.1
+PORTREVISION=	1
 CATEGORIES=	graphics python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-DIST_SUBDIR=	python-gphoto2
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Python bindings for libgphoto2
@@ -18,12 +18,8 @@ USES=		pkgconfig python shebangfix
 USE_PYTHON=	autoplist concurrent distutils
 SHEBANG_FILES=	examples/*.py
 
-OPTIONS_DEFINE=	DOCS EXAMPLES
+OPTIONS_DEFINE=	EXAMPLES
 
-post-patch:
-	@${REINPLACE_CMD} -e '/-O3/d' \
-		-e 's|share/python-gphoto2/examples|${EXAMPLESDIR_REL}|' \
-		-e 's|share/python-gphoto2|${DOCSDIR_REL}|' \
-		${WRKSRC}/setup.py
+EXAMPLES_MAKE_ENV=	WITH_EXAMPLES=yes
 
 .include <bsd.port.mk>

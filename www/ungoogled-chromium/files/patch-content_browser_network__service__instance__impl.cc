@@ -1,6 +1,6 @@
---- content/browser/network_service_instance_impl.cc.orig	2023-07-21 09:49:17 UTC
+--- content/browser/network_service_instance_impl.cc.orig	2025-05-31 17:16:41 UTC
 +++ content/browser/network_service_instance_impl.cc
-@@ -78,7 +78,7 @@
+@@ -85,7 +85,7 @@
  #include "content/browser/network/network_service_process_tracker_win.h"
  #endif
  
@@ -9,12 +9,21 @@
  #include "content/browser/system_dns_resolution/system_dns_resolver.h"
  #include "services/network/public/mojom/system_dns_resolution.mojom-forward.h"
  #endif
-@@ -458,7 +458,7 @@ network::mojom::NetworkServiceParamsPtr CreateNetworkS
+@@ -343,7 +343,7 @@ void CreateInProcessNetworkService(
+                                 std::move(receiver)));
+ }
+ 
+-#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ // Runs a self-owned SystemDnsResolverMojoImpl. This is meant to run on a
+ // high-priority thread pool.
+ void RunSystemDnsResolverOnThreadPool(
+@@ -411,7 +411,7 @@ network::mojom::NetworkServiceParamsPtr CreateNetworkS
    }
  #endif  // BUILDFLAG(IS_POSIX)
  
--#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
-+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
    if (GetContentClient()
            ->browser()
            ->ShouldRunOutOfProcessSystemDnsResolution() &&

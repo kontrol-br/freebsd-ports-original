@@ -1,4 +1,4 @@
-%%QT_PLUGINDIR%%/kf5/thumbcreator/pothumbnail.so
+%%QT_PLUGINDIR%%/kf6/thumbcreator/pothumbnail.so
 share/config.kcfg/pocreatorsettings.kcfg
 share/locale/ar/LC_MESSAGES/pothumbnail.mo
 share/locale/bg/LC_MESSAGES/pothumbnail.mo
@@ -10,6 +10,7 @@ share/locale/da/LC_MESSAGES/pothumbnail.mo
 share/locale/de/LC_MESSAGES/pothumbnail.mo
 share/locale/el/LC_MESSAGES/pothumbnail.mo
 share/locale/en_GB/LC_MESSAGES/pothumbnail.mo
+share/locale/eo/LC_MESSAGES/pothumbnail.mo
 share/locale/es/LC_MESSAGES/pothumbnail.mo
 share/locale/et/LC_MESSAGES/pothumbnail.mo
 share/locale/eu/LC_MESSAGES/pothumbnail.mo
@@ -17,6 +18,7 @@ share/locale/fi/LC_MESSAGES/pothumbnail.mo
 share/locale/fr/LC_MESSAGES/pothumbnail.mo
 share/locale/ga/LC_MESSAGES/pothumbnail.mo
 share/locale/gl/LC_MESSAGES/pothumbnail.mo
+share/locale/he/LC_MESSAGES/pothumbnail.mo
 share/locale/hi/LC_MESSAGES/pothumbnail.mo
 share/locale/hu/LC_MESSAGES/pothumbnail.mo
 share/locale/id/LC_MESSAGES/pothumbnail.mo
@@ -27,6 +29,7 @@ share/locale/ka/LC_MESSAGES/pothumbnail.mo
 share/locale/kk/LC_MESSAGES/pothumbnail.mo
 share/locale/ko/LC_MESSAGES/pothumbnail.mo
 share/locale/lt/LC_MESSAGES/pothumbnail.mo
+share/locale/lv/LC_MESSAGES/pothumbnail.mo
 share/locale/mr/LC_MESSAGES/pothumbnail.mo
 share/locale/nb/LC_MESSAGES/pothumbnail.mo
 share/locale/nds/LC_MESSAGES/pothumbnail.mo

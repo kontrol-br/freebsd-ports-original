@@ -1,6 +1,6 @@
 PORTNAME=	pinot
-PORTVERSION=	1.21
-PORTREVISION=	8
+PORTVERSION=	1.22
+PORTREVISION=	4
 CATEGORIES=	deskutils
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -16,7 +16,7 @@ LIB_DEPENDS=	libxapian.so:databases/xapian-core		\
 		libfreetype.so:print/freetype2			\
 		libexttextcat-2.0.so:textproc/libexttextcat	\
 		libdbus-1.so:devel/dbus				\
-		libxml++-2.6.so:textproc/libxml++26		\
+		libxml++-3.0.so:textproc/libxml++30		\
 		libboost_thread.so:devel/boost-libs		\
 		libharfbuzz.so:print/harfbuzz			\
 		libnotify.so:devel/libnotify			\
@@ -41,7 +41,7 @@ USES=		compiler:c++11-lang autoreconf gettext gnome libarchive	\
 		libtool pkgconfig python shebangfix sqlite:3 ssl xorg
 USE_CXXSTD=	c++11
 USE_XORG=	pixman
-USE_GNOME=	atkmm cairo cairomm gdkpixbuf2 glibmm gtk30 gtkmm30	\
+USE_GNOME=	atkmm cairo cairomm gdkpixbuf glibmm gtk30 gtkmm30	\
 		libsigc++20 libxml2 pangomm
 USE_LDCONFIG=	${PREFIX}/lib/pinot/backends ${PREFIX}/lib/pinot/filters
 SHEBANG_FILES=	scripts/bash/*.sh

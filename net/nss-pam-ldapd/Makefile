@@ -1,20 +1,21 @@
 PORTNAME=		nss-pam-ldapd
-PORTVERSION=		0.9.12
-PORTREVISION=		1
+DISTVERSION=		0.9.13
 CATEGORIES=		net
 MASTER_SITES=		http://arthurdejong.org/nss-pam-ldapd/ \
 			ZI
 
 MAINTAINER?=		zi@FreeBSD.org
 COMMENT?=		Advanced fork of nss_ldap
-WWW=		https://arthurdejong.org/nss-pam-ldapd/
+WWW=			https://arthurdejong.org/nss-pam-ldapd/
 
 LICENSE=		LGPL21 LGPL3
 LICENSE_COMB=		dual
 
 USES=			cpe ldap
+
 CPE_VENDOR=		arthurdejong
 GNU_CONFIGURE=		yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 USE_RC_SUBR=		nslcd
 PAM_LDAP_SHMAJOR=	1
 NSS_LDAP_SHMAJOR=	1
@@ -24,8 +25,11 @@ NSLCD_PIDFILE?=		/var/run/nslcd.pid
 NSLCD_VARDIR?=		/var/run/nslcd
 NSLCD_SOCKET?=		${NSLCD_VARDIR}/nslcd.ctl
 
-OPTIONS_DEFINE=		KERBEROS
+OPTIONS_DEFINE=		KERBEROS LCLASS
 OPTIONS_DEFAULT=	KERBEROS
+
+LCLASS_EXTRA_PATCHES=	${PATCHDIR}/lclass-patches
+LCLASS_DESC=		Build with loginClass support
 
 .if defined(SLAVE_PORT)
 OPTIONS_DEFINE+=	SASL

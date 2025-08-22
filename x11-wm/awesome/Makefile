@@ -1,11 +1,11 @@
 PORTNAME=	awesome
 PORTVERSION=	4.3
 DISTVERSIONPREFIX=	v
-PORTREVISION=	4
+PORTREVISION=	6
 PORTEPOCH=	1
 CATEGORIES=	x11-wm
 
-MAINTAINER=	rigoletto@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Highly configurable, next generation framework window manager
 WWW=		https://awesomewm.org/
 
@@ -29,7 +29,7 @@ CONFLICTS_INSTALL=	awesome3
 
 USES=		cmake compiler:c11 gettext gnome iconv magick:build pkgconfig lua:-53 \
 		shebangfix xorg
-USE_GNOME=	glib20 pango gdkpixbuf2 librsvg2
+USE_GNOME=	glib20 pango gdkpixbuf librsvg2
 USE_XORG=	pixman x11 xau xcb xdmcp xext xft xinerama xrandr xrender \
 		xorgproto
 
@@ -38,7 +38,7 @@ GH_ACCOUNT=	awesomewm
 
 SHEBANG_FILES=	utils/awesome-client
 CMAKE_ARGS=	-DSYSCONFDIR=${PREFIX}/etc \
-		-DAWESOME_MAN_PATH=${MANPREFIX}/man \
+		-DAWESOME_MAN_PATH=${PREFIX}/share/man \
 		-DGENERATE_DOC=OFF \
 		-DLUA_INCLUDE_DIR=${LUA_INCDIR}
 

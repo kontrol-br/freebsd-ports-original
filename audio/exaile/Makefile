@@ -1,11 +1,10 @@
 PORTNAME=	exaile
-DISTVERSION=	4.1.1
-PORTREVISION=	1
+DISTVERSION=	4.1.4
 CATEGORIES=	audio
 
 MAINTAINER=	rm@FreeBSD.org
-COMMENT=	Full featured python-based music player for GTK+
-WWW=		https://www.exaile.org/
+COMMENT=	Full featured python-based music player for GTK
+WWW=		https://exaile.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -21,7 +20,6 @@ USE_GNOME=	gtk30 librsvg2 pygobject3
 USE_GSTREAMER=	faad good
 
 MAKE_ENV=	EPREFIX=${PREFIX} \
-		MANPREFIX=${PREFIX} \
 		PYTHON3_CMD=${PYTHON_CMD} \
 		XDGCONFDIR=${PREFIX}/etc/xdg
 

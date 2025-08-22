@@ -5,7 +5,7 @@ CATEGORIES=	korean
 PKGNAMESUFFIX=	-gtk2
 
 MAINTAINER=	jkim@FreeBSD.org
-COMMENT=	Hangul input module for GTK+ 2.0
+COMMENT=	Hangul input module for GTK 2.0
 WWW=		http://code.google.com/p/imhangul/
 
 LICENSE=	LGPL21+
@@ -23,7 +23,7 @@ USE_GITHUB=	yes
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USE_GNOME=	cairo gdkpixbuf2 gtk20
+USE_GNOME=	cairo gdkpixbuf gtk20
 USES=		autoreconf gmake gnome libtool pkgconfig
 
 OPTIONS_DEFINE=	NLS

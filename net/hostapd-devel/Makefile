@@ -10,19 +10,20 @@ WWW=		https://w1.fi/hostapd/
 USE_GITHUB=	yes
 GH_ACCOUNT=	cschuber
 GH_PROJECT=	hostap
-GH_TAGNAME=	faee8b99e
-COMMIT_DATE=	2023.08.23
+GH_TAGNAME=	0b60826a6
+COMMIT_DATE=	2025.06.25
 
 LICENSE=	BSD3CLAUSE
 
 USES=		cpe gmake ssl
 CPE_VENDOR=	w1.fi
 BUILD_WRKSRC=	${WRKSRC}/hostapd
+CFLAGS+=	-Wno-incompatible-function-pointer-types
 CFLAGS+=	-I${OPENSSLINC}
 LDFLAGS+=	-L${OPENSSLLIB}
 
-PLIST_FILES=	sbin/hostapd sbin/hostapd_cli man/man1/hostapd_cli.1.gz \
-		man/man8/hostapd.8.gz
+PLIST_FILES=	sbin/hostapd sbin/hostapd_cli share/man/man1/hostapd_cli.1.gz \
+		share/man/man8/hostapd.8.gz
 .if !exists(/etc/rc.d/hostapd)
 USE_RC_SUBR=	hostapd
 .endif
@@ -38,8 +39,8 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/hostapd/hostapd_cli \
 		${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_MAN} ${WRKSRC}/hostapd/hostapd_cli.1 \
-		${STAGEDIR}${MANPREFIX}/man/man1
+		${STAGEDIR}${PREFIX}/share/man/man1
 	${INSTALL_MAN} ${WRKSRC}/hostapd/hostapd.8 \
-		${STAGEDIR}${MANPREFIX}/man/man8
+		${STAGEDIR}${PREFIX}/share/man/man8
 
 .include <bsd.port.mk>

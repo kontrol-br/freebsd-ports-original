@@ -1,18 +1,20 @@
 PORTNAME=	libdap
-PORTVERSION=	3.20.11
+PORTVERSION=	3.21.1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	https://www.opendap.org/pub/source/ \
 		LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	SDK which contains an implementation of DAP 2.0 and 4.0
-WWW=		https://www.opendap.org/software/libdap
+WWW=		https://www.opendap.org/software/libdap \
+		https://github.com/OPENDAP/libdap4
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 
 USES=		bison:wrapper charsetfix gmake gnome libtool localbase pathfix ssl
 USE_GNOME=	libxml2

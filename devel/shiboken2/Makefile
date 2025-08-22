@@ -1,6 +1,6 @@
 PORTNAME=	shiboken2
-DISTVERSION=	5.15.2
-PORTREVISION=	5
+DISTVERSION=	${QT5_VERSION}
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	QT/official_releases/QtForPython/shiboken2/PySide2-${DISTVERSION}-src
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,18 +15,17 @@ LICENSE_COMB=	multi
 
 BROKEN_riscv64=		fails to compile: __threading_support:135:3: Unsupported architecture
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools_scm>0:devel/py-setuptools_scm@${PY_FLAVOR} \
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools-scm>0:devel/py-setuptools-scm@${PY_FLAVOR} \
 		git>0:devel/git
 LIB_DEPENDS=	libxslt.so:textproc/libxslt
 
-USES=		cmake compiler:c++11-lang gnome llvm:lib python:3.8-3.9 qt:5 shebangfix tar:xz
+USES=		cmake compiler:c++11-lang gnome llvm:lib,noexport \
+		python:3.9-3.11 qt:5 shebangfix tar:xz
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 USE_PYTHON=	flavors
-USE_QT=		buildtools:build core gui network qmake:build testlib \
+USE_QT=		buildtools:build core gui network qmake:build testlib:build \
 		xml xmlpatterns
-
-#SHEBANG_FILES=	shiboken_tool.py
 
 CMAKE_ARGS+=	"-DCMAKE_CXX_FLAGS=-lexecinfo" \
 		"-DCMAKE_STANDARD_LIBRARIES=-lexecinfo" \

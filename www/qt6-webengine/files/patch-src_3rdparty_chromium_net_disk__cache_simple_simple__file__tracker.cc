@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/net/disk_cache/simple/simple_file_tracker.cc.orig	2023-03-28 19:45:02 UTC
+--- src/3rdparty/chromium/net/disk_cache/simple/simple_file_tracker.cc.orig	2024-08-26 12:06:38 UTC
 +++ src/3rdparty/chromium/net/disk_cache/simple/simple_file_tracker.cc
-@@ -29,7 +29,17 @@ SimpleFileTracker::SimpleFileTracker(int file_limit)
+@@ -35,7 +35,17 @@ void RecordFileDescripterLimiterOp(FileDescriptorLimit
  }  // namespace
  
  SimpleFileTracker::SimpleFileTracker(int file_limit)

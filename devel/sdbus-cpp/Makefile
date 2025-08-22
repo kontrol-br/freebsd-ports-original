@@ -1,6 +1,6 @@
 PORTNAME=	sdbus-cpp
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.2.0
+DISTVERSION=	2.1.0
 CATEGORIES=	devel
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -18,16 +18,9 @@ USES=		cmake:testing compiler:c++17-lang pkgconfig
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 GH_ACCOUNT=	Kistler-Group
-CMAKE_ON=	BUILD_CODE_GEN
-CMAKE_OFF=	BUILD_DOC
-CMAKE_TESTING_ON=	BUILD_TESTS
-
-.include <bsd.port.options.mk>
-
-.if ${OPSYS} != FreeBSD || ${OSVERSION} < 1300134
-LIB_DEPENDS+=	libepoll-shim.so:devel/libepoll-shim
-CFLAGS+=	`pkg-config --cflags epoll-shim`
-LDFLAGS+=	`pkg-config --libs epoll-shim`
-.endif
+CMAKE_ON=	SDBUSCPP_BUILD_CODEGEN
+CMAKE_OFF=	SDBUSCPP_BUILD_DOCS
+CMAKE_TESTING_ON=	SDBUSCPP_BUILD_TESTS
+PLIST_SUB=	VERSION=${PORTVERSION}
 
 .include <bsd.port.mk>

@@ -1,6 +1,6 @@
 PORTNAME=	surelog
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.71
+DISTVERSION=	1.84
 CATEGORIES=	cad
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -16,31 +16,30 @@ BROKEN_i386=	compilation fails: conversion function cannot be redeclared, see ht
 
 BUILD_DEPENDS=	utf8cpp>0:devel/utf8cpp \
 		${PYTHON_PKGNAMEPREFIX}orderedmultidict>0:devel/py-orderedmultidict@${PY_FLAVOR}
+BUILD_DEPENDS+=	googletest>0:devel/googletest # workaround for https://github.com/chipsalliance/Surelog/issues/3826
 LIB_DEPENDS=	libcapnp.so:devel/capnproto \
 		libuhdm.so:cad/uhdm
+TEST_DEPENDS=	googletest>0:devel/googletest
 
-USES=		cmake:testing compiler:c++17-lang localbase:ldflags tcl:86,build
-USE_JAVA=	17 # Java selection fails in cmake when Java 11 is also installed, see https://gitlab.kitware.com/cmake/cmake/-/issues/24674
+USES=		cmake:testing compiler:c++17-lang java:build localbase:ldflags tcl:86,build
 USE_LDCONFIG=	${PREFIX}/lib ${PREFIX}/lib/surelog
-
-JAVA_BUILD=	yes
-JAVA_RUN=	no
+JAVA_VERSION=	17 # Java selection fails in cmake when Java 11 is also installed, see https://gitlab.kitware.com/cmake/cmake/-/issues/24674
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	chipsalliance
 GH_PROJECT=	Surelog
-GH_TUPLE=	alainmarcel:antlr4:ce7f5e7:antlr4/third_party/antlr4 \
-		google:googletest:01e1837:googletest/third_party/googletest \
-		google:flatbuffers:48da238:flatbuffers/third_party/flatbuffers
+GH_TUPLE=	alainmarcel:antlr4:a27cf84:antlr4/third_party/antlr4 \
+		nlohmann:json:788e546:json/third_party/json
 
-CMAKE_ON=	BUILD_SHARED_LIBS SURELOG_USE_HOST_UHDM
+CMAKE_ON=	BUILD_SHARED_LIBS \
+		SURELOG_USE_HOST_UHDM \
+		SURELOG_USE_HOST_CAPNP \
+		SURELOG_USE_HOST_GTEST
 CMAKE_OFF=	SURELOG_BUILD_TESTS
-CMAKE_ARGS=	-DFREEBSD_JAVA_VERSION=${USE_JAVA} \
+CMAKE_ARGS=	-DFREEBSD_JAVA_VERSION=${JAVA_VERSION} \
 		-DPython3_EXECUTABLE=${PYTHON_CMD}
 CMAKE_TESTING_ON=	SURELOG_BUILD_TESTS # 2 tests fail, see https://github.com/chipsalliance/Surelog/issues/3545
 CMAKE_TESTING_TARGET=	UnitTests
-
-CONFLICTS_INSTALL=	capnproto capnproto080
 
 BINARY_ALIAS=	python3=${PYTHON_CMD} tclsh=${TCLSH}
 
@@ -61,13 +60,14 @@ TCMALLOC_LIB_DEPENDS=	libtcmalloc.so:devel/google-perftools
 
 PORTSCOUT=	limit:^.*[0-9]\.[0-9] # prevent tags like 'show'
 
-post-install: # workaound for https://github.com/chipsalliance/Surelog/issues/3596
-	@${RMDIR} \
-		${STAGEDIR}${DATADIR}/pkg/work \
-		${STAGEDIR}${DATADIR}/pkg \
+post-install:
+	# workaround for https://github.com/chipsalliance/Surelog/issues/3965
+	# - surelog fails to create package files on some systems, and succeeds on others
+	# - so we remove this directory altogether for now
+	@${RM} -r \
 		${STAGEDIR}${DATADIR}
 
-post-test:
-	cd ${BUILD_WRKSRC} && ctest
+post-test: # 9 tests fail, see https://github.com/chipsalliance/Surelog/issues/3971
+	@cd ${BUILD_WRKSRC} && ctest
 
 .include <bsd.port.mk>

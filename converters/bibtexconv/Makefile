@@ -1,22 +1,24 @@
 PORTNAME=	bibtexconv
-PORTVERSION=	1.2.0
+DISTVERSION=	2.0.3
 CATEGORIES=	converters
-MASTER_SITES=	https://www.uni-due.de/~be0001/bibtexconv/download/
+MASTER_SITES=	https://www.nntb.no/~dreibh/bibtexconv/download/
 
-MAINTAINER=	dreibh@iem.uni-due.de
+MAINTAINER=	thomas.dreibholz@gmail.com
 COMMENT=	BibTeX Converter
-WWW=		https://www.uni-due.de/~be0001/bibtexconv/
+WWW=		https://www.nntb.no/~dreibh/bibtexconv/download/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libcurl.so:ftp/curl
+RUN_DEPENDS=	pdfinfo:graphics/poppler-utils \
+		zip:archivers/zip
 
-USES=		bison cmake ssl python shebangfix tar:xz
+USES=		bison cmake python:3.9+ shebangfix ssl tar:xz
 
-SHEBANG_FILES=	src/ietf2bibtex
+SHEBANG_FILES=	src/get-author-url src/ietf2bibtex
 
-CMAKE_ARGS=	-DCMAKE_INSTALL_DOCDIR=${EXAMPLESDIR} -DCMAKE_INSTALL_MANDIR=${MANPREFIX}/man
+CMAKE_ARGS=	-DCMAKE_INSTALL_DOCDIR=${EXAMPLESDIR}
 
 OPTIONS_DEFINE=	EXAMPLES
 

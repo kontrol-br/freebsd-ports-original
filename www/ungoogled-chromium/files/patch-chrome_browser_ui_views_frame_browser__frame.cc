@@ -1,7 +1,7 @@
---- chrome/browser/ui/views/frame/browser_frame.cc.orig	2023-07-21 09:49:17 UTC
+--- chrome/browser/ui/views/frame/browser_frame.cc.orig	2025-05-31 17:16:41 UTC
 +++ chrome/browser/ui/views/frame/browser_frame.cc
-@@ -51,7 +51,7 @@
- #include "components/user_manager/user_manager.h"
+@@ -52,7 +52,7 @@
+ #include "ui/aura/window.h"
  #endif
  
 -#if BUILDFLAG(IS_LINUX)
@@ -9,8 +9,8 @@
  #include "ui/display/screen.h"
  #include "ui/linux/linux_ui.h"
  #endif
-@@ -63,7 +63,7 @@
- namespace {
+@@ -87,7 +87,7 @@ class ThemeChangedObserver : public views::WidgetObser
+ };
  
  bool IsUsingLinuxSystemTheme(Profile* profile) {
 -#if BUILDFLAG(IS_LINUX)
@@ -18,7 +18,16 @@
    return ThemeServiceFactory::GetForProfile(profile)->UsingSystemTheme();
  #else
    return false;
-@@ -303,7 +303,7 @@ void BrowserFrame::OnNativeWidgetWorkspaceChanged() {
+@@ -185,7 +185,7 @@ void BrowserFrame::InitBrowserFrame() {
+ 
+   Init(std::move(params));
+ 
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+   SelectNativeTheme();
+ #else
+   SetNativeTheme(ui::NativeTheme::GetInstanceForNativeUi());
+@@ -371,7 +371,7 @@ void BrowserFrame::OnNativeWidgetWorkspaceChanged() {
    chrome::SaveWindowWorkspace(browser_view_->browser(), GetWorkspace());
    chrome::SaveWindowVisibleOnAllWorkspaces(browser_view_->browser(),
                                             IsVisibleOnAllWorkspaces());
@@ -27,16 +36,16 @@
    // If the window was sent to a different workspace, prioritize it if
    // it was sent to the current workspace and deprioritize it
    // otherwise.  This is done by MoveBrowsersInWorkspaceToFront()
-@@ -490,7 +490,7 @@ void BrowserFrame::SelectNativeTheme() {
-     return;
-   }
+@@ -569,7 +569,7 @@ void BrowserFrame::OnMenuClosed() {
+ }
  
+ void BrowserFrame::SelectNativeTheme() {
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
-   const auto* linux_ui_theme =
-       ui::LinuxUiTheme::GetForWindow(GetNativeWindow());
-   // Ignore the system theme for web apps with window-controls-overlay as the
-@@ -507,7 +507,7 @@ void BrowserFrame::SelectNativeTheme() {
+   // Use the regular NativeTheme instance if running incognito mode, regardless
+   // of system theme (gtk, qt etc).
+   ui::NativeTheme* native_theme = ui::NativeTheme::GetInstanceForNativeUi();
+@@ -610,7 +610,7 @@ void BrowserFrame::OnTouchUiChanged() {
  bool BrowserFrame::RegenerateFrameOnThemeChange(
      BrowserThemeChangeType theme_change_type) {
    bool need_regenerate = false;

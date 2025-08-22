@@ -1,7 +1,8 @@
 PORTNAME=	hplip-plugin
-PORTVERSION=	3.23.5
+PORTVERSION=	3.24.4
 CATEGORIES=	print
-MASTER_SITES=	https://developers.hp.com/sites/default/files/
+MASTER_SITES=	https://developers.hp.com/sites/default/files/ \
+		https://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/
 DISTNAME=	hplip-${DISTVERSION}-plugin
 EXTRACT_SUFX=	.run
 
@@ -17,7 +18,7 @@ LICENSE_PERMS=	none
 
 ONLY_FOR_ARCHS=	aarch64 amd64 i386
 
-RUN_DEPENDS=	hp-plugin:print/hplip
+RUN_DEPENDS=	hplip>=${PORTVERSION}<${PORTVERSION:R}.$$((${PORTVERSION:E}+1)):print/hplip
 
 PORTSCOUT=	ignore:1
 

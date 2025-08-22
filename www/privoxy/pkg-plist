@@ -3,7 +3,7 @@
 %%PRIVOXY_TOOLS%%bin/uagen.pl
 %%PRIVOXY_TOOLS%%bin/url-pattern-translator.pl
 sbin/privoxy
-man/man8/privoxy.8.gz
+share/man/man8/privoxy.8.gz
 etc/privoxy/default.action
 etc/privoxy/default.filter
 etc/privoxy/regression-tests.action
@@ -54,6 +54,7 @@ etc/privoxy/templates/wpad.dat
 %%PORTDOCS%%%%DOCSDIR%%/user-manual/copyright.html
 %%PORTDOCS%%%%DOCSDIR%%/user-manual/files-in-use.jpg
 %%PORTDOCS%%%%DOCSDIR%%/user-manual/filter-file.html
+%%PORTDOCS%%%%DOCSDIR%%/user-manual/howto.html
 %%PORTDOCS%%%%DOCSDIR%%/user-manual/index.html
 %%PORTDOCS%%%%DOCSDIR%%/user-manual/installation.html
 %%PORTDOCS%%%%DOCSDIR%%/user-manual/introduction.html

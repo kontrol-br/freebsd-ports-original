@@ -1,15 +1,16 @@
 PORTNAME=	agrum
-DISTVERSION=	1.9.0
+DISTVERSION=	2.2.0
 CATEGORIES=	science math
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Graphical modeler for Bayesian networks, influence diagrams, etc
-WWW=		https://agrum.gitlab.io/
+WWW=		https://agrum.gitlab.io \
+		https://gitlab.com/agrumery/aGrUM
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_FreeBSD_12=	requires modern C++ compiler: error: invalid value 'c++2b'
+TEST_DEPENDS=	swig:devel/swig
 
 USES=		cmake compiler:c++20-lang shebangfix # the 'act' executable uses 'python' and is broken, when act is broken CMakeLists.txt builds with default configuration which is fine
 USE_LDCONFIG=	yes
@@ -19,7 +20,7 @@ LLD_UNSAFE=	yes
 USE_GITLAB=	yes
 GL_ACCOUNT=	agrumery
 GL_PROJECT=	aGrUM
-GL_TAGNAME=	7c2adb9092fd8e3f85bc16ffc748c39ea0c056f4
+GL_TAGNAME=	cf1283f783aa6803bafbd9a3fb4991316c1b52d9
 
 SHEBANG_FILES=	act
 
@@ -60,5 +61,7 @@ BINARY_ALIAS=	gcc=${CC} g++=${CXX} # only for tests, see https://gitlab.com/agru
 do-test:
 	@cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} ./act test release agrum -t all
+
+# tests as of 2.2.0: Failed 0 of 1483 tests
 
 .include <bsd.port.mk>

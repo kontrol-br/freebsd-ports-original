@@ -1,5 +1,5 @@
 PORTNAME=	fet
-DISTVERSION=	6.9.5
+DISTVERSION=	7.4.5
 CATEGORIES=	deskutils education
 MASTER_SITES=	https://lalescu.ro/liviu/fet/download/ \
 		https://lalescu.ro/liviu/fet/download/old/ \
@@ -7,7 +7,7 @@ MASTER_SITES=	https://lalescu.ro/liviu/fet/download/ \
 		https://timetabling.de/download/old/
 PKGNAMESUFFIX=	-${FLAVOR}
 
-MAINTAINER=	uzsolt@uzsolt.hu
+MAINTAINER=	uzsolt@FreeBSD.org
 COMMENT=	Free timetabling software
 WWW=		https://lalescu.ro/liviu/fet/
 
@@ -17,7 +17,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 FLAVORS=	qt6 qt5
 FLAVOR?=	qt6
 
-USES=		compiler:c++14-lang gl qmake qt:${FLAVOR:S/qt//} tar:bzip2
+USES=		compiler:c++17-lang gl qmake qt:${FLAVOR:S/qt//} tar:bzip2
 USE_GL=		gl
 _USE_QT5=	core gui network printsupport widgets buildtools:build
 _USE_QT6=	base
@@ -44,7 +44,7 @@ post-patch:
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/fet ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_PROGRAM} ${WRKSRC}/fet-cl ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/man/fet*.gz ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/man/fet*.gz ${STAGEDIR}${PREFIX}/share/man/man1
 
 do-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
@@ -53,5 +53,10 @@ do-install-EXAMPLES-on:
 do-install-NLS-on:
 	@${MKDIR} ${STAGEDIR}${DATADIR}/translations
 	cd ${WRKSRC}/translations && ${INSTALL_DATA} *.qm ${STAGEDIR}${DATADIR}/translations
+
+do-test:
+	cd ${WRKSRC} && ${PREFIX}/bin/fet-cl --inputfile=${WRKSRC}/examples/official/by-Volker-Dirr/German_subact_constr.fet \
+		--randomseeds10=1 --randomseeds11=1 --randomseeds12=1 \
+		--randomseeds20=1 --randomseeds21=1 --randomseeds22=1
 
 .include <bsd.port.mk>

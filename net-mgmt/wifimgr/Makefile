@@ -1,6 +1,5 @@
 PORTNAME=	wifimgr
-PORTVERSION=	1.23
-PORTREVISION=	1
+DISTVERSION=	1.25
 CATEGORIES=	net-mgmt sysutils
 MASTER_SITES=	https://opal.com/src/wifimgr/
 
@@ -16,7 +15,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libharfbuzz.so:print/harfbuzz
 
 USES=		desktop-file-utils gnome pkgconfig tar:xz xorg
-USE_GNOME=	cairo gdkpixbuf2
+USE_GNOME=	cairo gdkpixbuf
 USE_XORG=	x11
 
 OPTIONS_DEFINE=	GTK2 NLS

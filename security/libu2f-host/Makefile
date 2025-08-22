@@ -1,7 +1,7 @@
 PORTNAME=	libu2f-host
 PORTVERSION=	1.1.10
 DISTVERSIONPREFIX=	${PORTNAME}-
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security devel
 
 MAINTAINER=	ports@FreeBSD.org
@@ -10,6 +10,9 @@ WWW=		https://developers.yubico.com/libu2f-host/
 
 LICENSE=	LGPL21+ GPLv3+
 LICENSE_COMB=	multi
+
+DEPRECATED=	This project is deprecated and is no longer being maintained. libfido2 is a new project with support for U2F and FIDO2. Use security/libfido2 instead
+EXPIRATION_DATE=2025-05-31
 
 BUILD_DEPENDS=	gengetopt:devel/gengetopt \
 		gtk-doc>0:textproc/gtk-doc \
@@ -21,6 +24,7 @@ RUN_DEPENDS=	${LOCALBASE}/etc/devd/u2f.conf:security/u2f-devd
 USES=	autoreconf pkgconfig gmake libtool
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	-enable-gtk-doc
 INSTALL_TARGET=	install-strip
 

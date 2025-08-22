@@ -1,8 +1,8 @@
     COMMENT = Astronomical ports
 
-    SUBDIR += R-cran-maptools
     SUBDIR += accrete
     SUBDIR += astrometry
+    SUBDIR += astroterm
     SUBDIR += calcmysky
     SUBDIR += celestia
     SUBDIR += celestia-gtk
@@ -13,6 +13,7 @@
     SUBDIR += geographiclib
     SUBDIR += gkrellmoon2
     SUBDIR += gnuastro
+    SUBDIR += google-earth-pro
     SUBDIR += gpsbabel
     SUBDIR += gpsbabel14
     SUBDIR += gpscorrelate
@@ -78,15 +79,17 @@
     SUBDIR += pal
     SUBDIR += phd2
     SUBDIR += phoon
+    SUBDIR += pngphoon
     SUBDIR += pp3
-    SUBDIR += ptiger
     SUBDIR += py-astlib
     SUBDIR += py-astral
     SUBDIR += py-astroML
     SUBDIR += py-astropy
     SUBDIR += py-astropy-helpers
+    SUBDIR += py-astropy-iers-data
     SUBDIR += py-ephem
     SUBDIR += py-extension-helpers
+    SUBDIR += py-fitsio
     SUBDIR += py-horoscopegenerator
     SUBDIR += py-indiweb
     SUBDIR += py-jplephem
@@ -126,8 +129,6 @@
     SUBDIR += sunclock
     SUBDIR += sunwait
     SUBDIR += swe
-    SUBDIR += tclgeomap
-    SUBDIR += tkgeomap
     SUBDIR += viking
     SUBDIR += wcslib
     SUBDIR += weather
@@ -138,7 +139,6 @@
     SUBDIR += wmspaceweather
     SUBDIR += wmsun
     SUBDIR += xearth
-    SUBDIR += xeartk
     SUBDIR += xephem
     SUBDIR += xmoontool
     SUBDIR += xphoon

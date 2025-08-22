@@ -1,5 +1,41 @@
---- wsjtx/CMakeLists.txt.orig	2021-11-03 19:53:01.000000000 -0400
-+++ wsjtx/CMakeLists.txt	2021-12-31 07:53:05.900792000 -0500
+--- wsjtx/wsjtx_config.h.in.orig	2021-12-28 04:31:58.000000000 -0500
++++ wsjtx/wsjtx_config.h.in	2024-12-27 18:49:18.680477000 -0500
+@@ -57,17 +57,22 @@
+ #	endif
+ #endif
+ 
+-  /* typedef for consistent gfortran ABI for charlen type hidden arguments */
+-#if __GNUC__ > 7
+-#ifdef __cplusplus
+-#include <cstddef>
+-#else
+-#include <stddef.h>
+-#endif
+-  typedef size_t fortran_charlen_t;
+-#else
+-  typedef int fortran_charlen_t;
+-#endif
++#if (__GNUC__ > 7)
++  #ifdef __cplusplus
++    #include <cstddef>
++  #else
++    #include <stddef.h>
++  #endif
++   typedef size_t fortran_charlen_t;
++ #else
++/* typedef for consistent gfortran ABI for charlen type hidden arguments */
++  #if defined(__clang__)
++    #include <stddef.h>
++    typedef size_t fortran_charlen_t;
++  #else
++    typedef int fortran_charlen_t;
++  #endif
++ #endif
+ 
+ #ifdef __cplusplus
+ }
+--- wsjtx/CMakeLists.txt.orig	2021-12-28 04:31:58.000000000 -0500
++++ wsjtx/CMakeLists.txt	2024-12-27 18:52:10.335420000 -0500
 @@ -41,7 +41,7 @@
  endif ()
  
@@ -9,7 +45,7 @@
  endif ()
  
  project (wsjtx
-@@ -867,7 +867,7 @@
+@@ -868,7 +868,7 @@
  # OpenMP
  #
  find_package (OpenMP)
@@ -18,7 +54,7 @@
  #
  # fftw3 single precision library
  #
-@@ -884,7 +884,7 @@
+@@ -885,7 +885,7 @@
  check_type_size (CACHE_ALL HAMLIB_OLD_CACHING)
  check_symbol_exists (rig_set_cache_timeout_ms "hamlib/rig.h" HAVE_HAMLIB_CACHING)
  
@@ -27,7 +63,7 @@
  
  #
  # Qt5 setup
-@@ -914,7 +914,7 @@
+@@ -915,7 +915,7 @@
  #
  set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
  
@@ -36,7 +72,7 @@
  
  if (NOT APPLE)
    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-pragmas")
-@@ -1160,7 +1160,7 @@
+@@ -1161,7 +1161,7 @@
  target_link_libraries (encode77 wsjt_fort wsjt_cxx)
  
  add_executable (wsprsim ${wsprsim_CSRCS})
@@ -45,8 +81,20 @@
  
  add_executable (jt4code lib/jt4code.f90)
  target_link_libraries (jt4code wsjt_fort wsjt_cxx)
---- wsjtx/Radio.cpp.orig	2021-11-03 19:53:01.000000000 -0400
-+++ wsjtx/Radio.cpp	2021-12-31 07:48:03.411318000 -0500
+@@ -1402,6 +1402,11 @@
+ else (${OPENMP_FOUND} OR APPLE)
+   target_link_libraries (jt9 wsjt_fort wsjt_cxx fort_qt)
+ endif (${OPENMP_FOUND} OR APPLE)
++if (CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
++  set_target_properties (jt9 PROPERTIES
++    LINK_FLAGS -Wl,-zexecstack
++    )
++endif ()
+ 
+ if (WIN32)
+   # build map65
+--- wsjtx/Radio.cpp.orig	2021-12-28 04:31:58.000000000 -0500
++++ wsjtx/Radio.cpp	2024-12-27 18:49:18.681599000 -0500
 @@ -54,7 +54,8 @@
      value *= std::pow (10., scale);
      if (ok)
@@ -66,8 +114,8 @@
            {
              value = 0.;
              *ok = false;
---- wsjtx/widgets/FrequencyLineEdit.cpp.orig	2021-11-03 19:53:01.000000000 -0400
-+++ wsjtx/widgets/FrequencyLineEdit.cpp	2021-12-31 07:48:03.411740000 -0500
+--- wsjtx/widgets/FrequencyLineEdit.cpp.orig	2021-12-28 04:31:58.000000000 -0500
++++ wsjtx/widgets/FrequencyLineEdit.cpp	2024-12-27 18:49:18.681849000 -0500
 @@ -39,7 +39,8 @@
  FrequencyLineEdit::FrequencyLineEdit (QWidget * parent)
    : QLineEdit (parent)
@@ -78,8 +126,8 @@
  }
  
  auto FrequencyLineEdit::frequency () const -> Frequency
---- wsjtx/widgets/FrequencyDeltaLineEdit.cpp.orig	2021-11-03 19:53:01.000000000 -0400
-+++ wsjtx/widgets/FrequencyDeltaLineEdit.cpp	2021-12-31 07:48:03.412129000 -0500
+--- wsjtx/widgets/FrequencyDeltaLineEdit.cpp.orig	2021-12-28 04:31:58.000000000 -0500
++++ wsjtx/widgets/FrequencyDeltaLineEdit.cpp	2024-12-27 18:49:18.682097000 -0500
 @@ -39,8 +39,8 @@
  FrequencyDeltaLineEdit::FrequencyDeltaLineEdit (QWidget * parent)
    : QLineEdit (parent)
@@ -91,8 +139,8 @@
  }
  
  auto FrequencyDeltaLineEdit::frequency_delta () const -> FrequencyDelta
---- wsjtx/CMake/Modules/FindUsb.cmake.orig	2021-11-03 19:53:01.000000000 -0400
-+++ wsjtx/CMake/Modules/FindUsb.cmake	2021-12-31 07:48:03.412537000 -0500
+--- wsjtx/CMake/Modules/FindUsb.cmake.orig	2021-12-28 04:31:58.000000000 -0500
++++ wsjtx/CMake/Modules/FindUsb.cmake	2024-12-27 18:49:18.682329000 -0500
 @@ -13,25 +13,35 @@
  #  Usb::Usb	- The libusb library
  #
@@ -158,8 +206,8 @@
    Usb_LIBRARIES
    )
 +endif()
---- wsjtx/CMake/Modules/FindHamlib.cmake.orig	2021-11-03 19:53:01.000000000 -0400
-+++ wsjtx/CMake/Modules/FindHamlib.cmake	2021-12-31 07:48:03.412916000 -0500
+--- wsjtx/CMake/Modules/FindHamlib.cmake.orig	2021-12-28 04:31:58.000000000 -0500
++++ wsjtx/CMake/Modules/FindHamlib.cmake	2024-12-27 18:49:18.682526000 -0500
 @@ -18,7 +18,9 @@
    FIND_LIBRARY hamlib
    )

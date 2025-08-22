@@ -1,12 +1,12 @@
 PORTNAME=	sylpheed
 PORTVERSION=	3.7.0
-PORTREVISION=	6
+PORTREVISION=	9
 CATEGORIES=	mail
 MASTER_SITES=	http://sylpheed.sraoss.jp/sylpheed/v${PORTVERSION:C/\.[^\.]*$//}/ \
 		LOCAL/ehaupt
 
 MAINTAINER=	ehaupt@FreeBSD.org
-COMMENT=	Lightweight, featureful, and fast GTK+ based e-mail client
+COMMENT=	Lightweight, featureful, and fast GTK based e-mail client
 WWW=		https://sylpheed.sraoss.jp/en/
 
 LICENSE=	GPLv2 LGPL21
@@ -19,7 +19,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 
 USES=		cpe desktop-file-utils gettext gmake gnome iconv libtool pkgconfig \
 		tar:bzip2
-USE_GNOME=	gtk20 cairo gdkpixbuf2
+USE_GNOME=	gtk20 cairo gdkpixbuf
 USE_LDCONFIG=	yes
 CPE_VENDOR=	sylpheed_project
 

@@ -1,21 +1,24 @@
---- base/system/sys_info_posix.cc.orig	2023-03-10 11:01:21 UTC
+--- base/system/sys_info_posix.cc.orig	2025-05-06 12:23:00 UTC
 +++ base/system/sys_info_posix.cc
-@@ -165,12 +165,12 @@ int NumberOfProcessors() {
+@@ -143,7 +143,7 @@ void GetKernelVersionNumbers(int32_t* major_version,
  
- }  // namespace internal
+ namespace base {
  
 -#if !BUILDFLAG(IS_OPENBSD)
 +#if !BUILDFLAG(IS_BSD)
+ // static
  int SysInfo::NumberOfProcessors() {
-   static int number_of_processors = internal::NumberOfProcessors();
-   return number_of_processors;
+ #if BUILDFLAG(IS_MAC)
+@@ -199,7 +199,7 @@ int SysInfo::NumberOfProcessors() {
+ 
+   return cached_num_cpus;
  }
 -#endif  // !BUILDFLAG(IS_OPENBSD)
 +#endif  // !BUILDFLAG(IS_BSD)
  
  // static
  uint64_t SysInfo::AmountOfVirtualMemory() {
-@@ -260,6 +260,8 @@ std::string SysInfo::OperatingSystemArchitecture() {
+@@ -285,6 +285,8 @@ std::string SysInfo::OperatingSystemArchitecture() {
      arch = "x86";
    } else if (arch == "amd64") {
      arch = "x86_64";

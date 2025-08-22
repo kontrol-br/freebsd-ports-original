@@ -1,7 +1,7 @@
 PORTNAME=	gitaly
-DISTVERSION=	16.1.3
-PORTREVISION=	1
 DISTVERSIONPREFIX=	v
+DISTVERSION=	${GITLAB_VERSION}
+PORTREVISION=	${GITLAB_PORTREVISION} # modify it in www/gitlab/Makefile.common
 CATEGORIES=	devel
 
 MAINTAINER=	mfechner@FreeBSD.org
@@ -11,47 +11,29 @@ WWW=		https://gitlab.com/gitlab-org/gitaly
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-# Make sure the following patch is included:
-# https://gitlab.com/gitlab-org/gitaly/-/merge_requests/4108
-# it fixes segfaults reported here: https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=259848
-
-# define dependencies that are required for build and run under MY_DEPENDS
-MY_DEPENDS=	git>=2.40.1:devel/git
 BUILD_DEPENDS=	bash>0:shells/bash \
-		${MY_DEPENDS}
-RUN_DEPENDS=	${MY_DEPENDS} \
-		gitlab-shell>=14.17.0:devel/gitlab-shell
-LIB_DEPENDS=	libgit2.so:devel/libgit2
+		${LOCALBASE}/bin/cmake:devel/cmake-core \
+		pcre2>0:devel/pcre2 \
+		http-parser>0:www/http-parser
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libiconv.so:converters/libiconv \
+		libpcre2-8.so:devel/pcre2
 
-USES=		cpe gmake go:modules,no_targets pkgconfig
+USES=		cpe gmake go:modules,no_targets,1.23 iconv pkgconfig
 
 CPE_VENDOR=	gitlab
+
+USE_GITLAB=	yes
+GL_ACCOUNT=	gitlab-org
+GL_TUPLE=	gitlab-org:git:v${GITLAB_GIT_VERSION}:_build/_build/deps/git-v${GITLAB_GIT_VERSION_SHORT}
+GO_MOD_DIST=	gitlab
+GO_MODULE=	gitlab.com/gitlab-org/gitaly/v18
 
 MAKE_ENV=	GOFLAGS="${GO_BUILDFLAGS}"
 # make sure to pass go build options into make process
 MAKE_ENV+=	${GO_ENV}
-
-USE_GITLAB=	yes
-GL_ACCOUNT=	gitlab-org
-
-# for go dependencies
-# Gitlab hosts there dependencies on their own platform and not on go-proxy
-# so we download the required go.mod file from gitlab
-# lines are taken from go.mk
-# ---------------------------
-FETCH_DEPENDS=	${GO_CMD}:${GO_PORT} \
-		ca_root_nss>0:security/ca_root_nss
-MASTER_SITES+=	https://gitlab.com/gitlab-org/gitaly/-/raw/v${DISTVERSION}/
-DISTFILES+=	go.mod
-DIST_SUBDIR=	go/${PKGORIGIN:S,/,_,g}/${DISTNAME}
-EXTRACT_ONLY+=	${DISTFILES:N*.mod\:*:N*.mod:C/:.*//}
-_USES_fetch+=	800:go-post-fetch
-go-post-fetch:
-	@${ECHO_MSG} "===> Fetching ${GO_MODNAME} dependencies";
-	@(cd ${DISTDIR}/${DIST_SUBDIR}; \
-		[ -e go.mod ] || ${RLN} ${GO_MODFILE} go.mod; \
-		${SETENV} ${GO_ENV} GOPROXY=${GO_GOPROXY} ${GO_CMD} mod download -x all)
-# ---------------------------
+# parallel build failed in my tests, so disable it here
+MAKE_JOBS_UNSAFE=yes
 
 post-patch:
 	${REINPLACE_CMD} -e "s|%%PREFIX%%|${PREFIX}|" ${WRKSRC}/config.toml.example
@@ -61,7 +43,7 @@ do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${MKDIR} ${STAGEDIR}${DATADIR}/bin
 	${FIND} ${WRKSRC} -name '*.orig' -delete
-	(cd ${WRKSRC}/_build/bin/ && ${COPYTREE_SHARE} .  ${STAGEDIR}${DATADIR}/bin && \
+	(cd ${WRKSRC}/_build/bin/ && ${COPYTREE_BIN} .  ${STAGEDIR}${DATADIR}/bin && \
 	cd ${WRKSRC} && ${COPYTREE_SHARE} config.toml.sample  ${STAGEDIR}${DATADIR})
 
 post-install:
@@ -71,4 +53,5 @@ post-install:
 		/gitlab-shell-hook$$/ s#^#@(,,755) #; \
 		s#${DATADIR_REL}/bin#@(,,555) ${DATADIR_REL}/bin#; ' >> ${TMPPLIST}
 
+.include "${.CURDIR}/../../www/gitlab/Makefile.common"
 .include <bsd.port.mk>

@@ -11,10 +11,13 @@ DISTFILES=	${PORTNAME}_src_${PORTVERSION}.txz \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Action flight simulation computer program using OSG
-WWW=		http://www.palomino3d.org/
+WWW=		https://www.palomino3d.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE_GNU_GPL_2.txt
+
+DEPRECATED=	Obsolete and abandoneed, last release in 2013, not playable
+EXPIRATION_DATE=2025-09-10
 
 LIB_DEPENDS=	libosg.so:graphics/osg34
 
@@ -22,28 +25,29 @@ USES=		alias compiler:c++11-lang cmake:insource,noninja gl lua:51 tar:xz
 USE_CXXSTD=	gnu++98
 USE_GL=		gl glu
 
-MISC_VER=	20091027
-MODELS_VER=	20090615
-SOUNDS_VER=	20080704
-TERRAIN_VER=	20080206
+DESKTOP_ENTRIES=	"Palomino" "" "${PORTNAME}" \
+			"${PORTNAME}" "Game;ArcadeGame;" ""
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 PORTDOCS=	*
 
-DESKTOP_ENTRIES=	"Palomino" "" "${PORTNAME}" \
-			"${PORTNAME}" "Game;ArcadeGame;" ""
-
 OPTIONS_DEFINE=	DOCS GUI PLIB SDL
 OPTIONS_DEFAULT=GUI SDL
 OPTIONS_SUB=	yes
 
-PLIB_DESC=		Enable sound support through plib
-PLIB_BUILD_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:x11-toolkits/plib
 GUI_DESC=		Enable FLTK GUI
+PLIB_DESC=		Enable sound support through plib
+
 GUI_LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk
+PLIB_BUILD_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:x11-toolkits/plib
 SDL_USES=		sdl
 SDL_USE=		SDL=sdl,mixer
+
+MISC_VER=	20091027
+MODELS_VER=	20090615
+SOUNDS_VER=	20080704
+TERRAIN_VER=	20080206
 
 post-patch:
 	@${FIND} ${WRKSRC}/CMakeModules -type f -print0 | ${XARGS} -0 \
@@ -60,7 +64,7 @@ post-patch:
 
 	@${REINPLACE_CMD} -e 's|string sDataDir|&="${DATADIR}/data/"|'\
 		${WRKSRC}/src/base/conf.cc
-	@${REINPLACE_CMD} -e '/LUABIND_SCRIPTS_DIR/ s|"scripts"|"${DATADIR}/scripts"|' \
+	@${REINPLACE_CMD} -e '/LUABIND_SCRIPTS_DIR/ s|scripts|${DATADIR}/&|' \
 		${WRKSRC}/src/lua_bind/defs.hh
 	@${REINPLACE_CMD} -e 's|doc/html/|${DOCSDIR}/|' ${WRKSRC}/src/gui/gui.cc
 
@@ -72,6 +76,19 @@ post-patch:
 		${WRKSRC}/src/hud/hud.cc \
 		${WRKSRC}/src/hud/hud.hh \
 		${WRKSRC}/src/hud/hud_text.cc
+
+	@${REINPLACE_CMD} -e '/std::make_pair/ s,<.*>,,' \
+		${WRKSRC}/src/collision/collision.cc \
+		${WRKSRC}/src/fx/image_cache.cc \
+		${WRKSRC}/src/graph/model_cache.cc \
+		${WRKSRC}/src/hud/font.cc \
+		${WRKSRC}/src/lua_bind/lua.cc \
+		${WRKSRC}/src/object/dyna.cc \
+		${WRKSRC}/src/sky/sky.cc \
+		${WRKSRC}/src/sky/sky_dome.cc \
+		${WRKSRC}/src/sky/sky_dome.hh \
+		${WRKSRC}/src/sky/sun.hh \
+		${WRKSRC}/src/sound/sound_base.cc
 
 post-patch-SDL-off:
 	@${REINPLACE_CMD} -e '/COMPILE_WITH_SDL/ d' ${WRKSRC}/CMakeLists.txt

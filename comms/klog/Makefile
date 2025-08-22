@@ -1,5 +1,6 @@
 PORTNAME=	klog
-PORTVERSION=	2.2.1
+PORTVERSION=	2.4.1
+#PORTREVISION=	1
 CATEGORIES=	comms hamradio
 
 MAINTAINER=	hamradio@FreeBSD.org
@@ -10,12 +11,10 @@ LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libhamlib.so:comms/hamlib
-USES=		compiler:c++11-lang gl qmake qt:5 xorg
+USES=		compiler:c++11-lang gl qmake qt:6 xorg
 USE_GITHUB=	yes
 USE_GL=		gl
-USE_QT=		buildtools:build charts core declarative gui \
-		linguisttools:build location multimedia network \
-		printsupport sql sql-sqlite3:run serialport testlib:build widgets
+USE_QT=		base declarative charts location positioning serialport sqldriver-sqlite tools
 GH_ACCOUNT=	ea4k
 GH_PROJECT=	klog
 
@@ -33,9 +32,13 @@ PLIST_FILES=	bin/klog \
 		${DATADIR}/translations/klog_fr.qm \
 		${DATADIR}/translations/klog_hr.qm \
 		${DATADIR}/translations/klog_it.qm \
+		${DATADIR}/translations/klog_lv.qm \
 		${DATADIR}/translations/klog_ja.qm \
+		${DATADIR}/translations/klog_nl.qm \
 		${DATADIR}/translations/klog_pl.qm \
-		man/man1/klog.1.gz
+		${DATADIR}/translations/klog_ru.qm \
+		${DATADIR}/translations/klog_uk.qm \
+		share/man/man1/klog.1.gz
 
 post-patch:
 	@${REINPLACE_CMD} \
@@ -47,6 +50,6 @@ do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/translations
 	${INSTALL_DATA} ${WRKSRC}/src/build/target/translations/klog_*.qm \
 		${STAGEDIR}${DATADIR}/translations
-	${INSTALL_MAN} ${WRKSRC}/src/klog.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/src/klog.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

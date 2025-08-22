@@ -1,8 +1,9 @@
 PORTNAME=	neomutt
-PORTVERSION=	20230517
+PORTVERSION=	20250510
+PORTREVISION=	1
 CATEGORIES=	mail
 
-MAINTAINER=	bapt@FreeBSD.org
+MAINTAINER=	gahr@FreeBSD.org
 COMMENT=	Bringing together all the Mutt Code
 WWW=		https://neomutt.org
 
@@ -27,7 +28,7 @@ SHEBANG_FILES=	contrib/smime_keys \
 		data/account-command/macos-keychain/keychain.py
 
 OPTIONS_DEFINE=	NLS DOCS SASL IDN FLOCK GPGME NOTMUCH
-OPTIONS_DEFAULT=SASL TOKYOCABINET NOTMUCH GPGME LMDB NCURSES GSSAPI_BASE
+OPTIONS_DEFAULT=SASL TOKYOCABINET NOTMUCH GPGME LMDB GSSAPI_BASE
 OPTIONS_MULTI=	HCACHE
 OPTIONS_MULTI_HCACHE=	BDB GDBM KYOTOCABINET LMDB QDBM TOKYOCABINET
 OPTIONS_SINGLE=	GSSAPI
@@ -41,7 +42,6 @@ KYOTOCABINET_DESC=	Kyoto Cabinet support
 LMDB_DESC=		Lightning Memory-Mapped Database support
 QDBM_DESC=		Quick DataBase Manager support
 TOKYOCABINET_DESC=	Tokyo Cabinet support
-SCREEN_DESC=	Screen options
 
 CONFIGURE_ARGS=	--with-ssl="${OPENSSLBASE}" \
 		--locales-fix \
@@ -49,7 +49,6 @@ CONFIGURE_ARGS=	--with-ssl="${OPENSSLBASE}" \
 		--pcre2 \
 		--disable-idn \
 		--prefix=${PREFIX} \
-		--mandir=${PREFIX}/man \
 		${ICONV_CONFIGURE_ARGS}
 CONFIGURE_ENV=	CC_FOR_BUILD="${CC}"
 

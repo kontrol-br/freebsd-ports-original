@@ -1,6 +1,6 @@
 PORTNAME=	kopia
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.13.0
+DISTVERSION=	0.21.1
 PORTREVISION=	1
 CATEGORIES=	sysutils
 
@@ -9,6 +9,7 @@ COMMENT=	Fast and secure open-source backup/restore tool
 WWW=		https://kopia.io/
 
 LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		go:modules
 GO_MODULE=	github.com/kopia/kopia

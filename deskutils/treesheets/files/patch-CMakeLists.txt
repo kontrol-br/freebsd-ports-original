@@ -1,24 +1,34 @@
---- CMakeLists.txt.orig	2023-07-07 16:07:44 UTC
+--- CMakeLists.txt.orig	2025-06-14 21:33:28 UTC
 +++ CMakeLists.txt
-@@ -60,7 +60,12 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
- target_link_libraries(lobster-impl PRIVATE lobster)
+@@ -4,7 +4,7 @@ string(TIMESTAMP TimeStamp "%y%m%d.%H%M" UTC)
  
- set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
-+
-+OPTION(WITH_CLANG_TIDY "Run clang-tidy" OFF)
-+if (WITH_CLANG_TIDY)
- set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=cppcoreguidelines-*,clang-analyzer-*,readability-*,performance-*,portability-*,concurrency-*,modernize-*)
-+endif()
-+
- add_executable(
-     treesheets
-     src/main.cpp
-@@ -92,7 +97,7 @@ install(FILES TS/readme.html DESTINATION ${TREESHEETS_
- install(TARGETS treesheets DESTINATION ${TREESHEETS_BINDIR})
+ string(TIMESTAMP TimeStamp "%y%m%d.%H%M" UTC)
+ 
+-project(TreeSheets
++project(treesheets
+     DESCRIPTION "A free-form hierarchical data organizer"
+     HOMEPAGE_URL "https://github.com/aardappel/treesheets"
+     VERSION ${TimeStamp})
+@@ -174,11 +174,11 @@ target_link_libraries(TreeSheets PRIVATE ${TREESHEETS_
+ 
+ ## Platform specific installation paths
+ 
+-if(LINUX)
++if(LINUX OR BSD)
+     OPTION(TREESHEETS_RELOCATABLE_INSTALLATION "Install data relative to the TreeSheets binary, instead of respecting the Filesystem Hierarchy Standard" OFF)
+ endif()
+ 
+-if(LINUX AND NOT TREESHEETS_RELOCATABLE_INSTALLATION)
++if((LINUX OR BSD) AND NOT TREESHEETS_RELOCATABLE_INSTALLATION)
+     include(GNUInstallDirs)
+ 
+     set(TREESHEETS_BINDIR ${CMAKE_INSTALL_BINDIR})
+@@ -211,7 +211,7 @@ install(FILES TS/readme.html DESTINATION ${TREESHEETS_
+ install(TARGETS TreeSheets DESTINATION ${TREESHEETS_BINDIR})
  install(DIRECTORY TS/docs DESTINATION ${TREESHEETS_DOCDIR})
  install(FILES TS/readme.html DESTINATION ${TREESHEETS_DOCDIR})
 -install(DIRECTORY TS/examples DESTINATION ${TREESHEETS_DOCDIR})
-+install(DIRECTORY TS/examples DESTINATION %%EXAMPLESDIR%%)
++install(DIRECTORY TS/examples DESTINATION ${CMAKE_INSTALL_DATADIR}/examples/${CMAKE_PROJECT_NAME})
  
  install(DIRECTORY TS/images DESTINATION ${TREESHEETS_PKGDATADIR})
  install(DIRECTORY TS/scripts DESTINATION ${TREESHEETS_PKGDATADIR})

@@ -1,11 +1,11 @@
---- extensions/common/command.cc.orig	2022-11-30 08:12:58 UTC
+--- extensions/common/command.cc.orig	2025-08-07 06:57:29 UTC
 +++ extensions/common/command.cc
-@@ -280,7 +280,7 @@ std::string Command::CommandPlatform() {
-   return values::kKeybindingPlatformMac;
+@@ -117,7 +117,7 @@ std::string Command::CommandPlatform() {
+   return ui::kKeybindingPlatformMac;
  #elif BUILDFLAG(IS_CHROMEOS)
-   return values::kKeybindingPlatformChromeOs;
+   return ui::kKeybindingPlatformChromeOs;
 -#elif BUILDFLAG(IS_LINUX)
 +#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
-   return values::kKeybindingPlatformLinux;
+   return ui::kKeybindingPlatformLinux;
  #elif BUILDFLAG(IS_FUCHSIA)
-   // TODO(crbug.com/1312215): Change this once we decide what string should be
+   // TODO(crbug.com/40220501): Change this once we decide what string should be

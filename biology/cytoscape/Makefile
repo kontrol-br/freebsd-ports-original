@@ -14,14 +14,14 @@ LICENSE_FILE=	${WRKSRC}/api/LICENSE
 
 BROKEN_armv6=	build runs out of memory
 BROKEN_armv7=	build runs out of memory
+BROKEN_i386=	runs out of memory: Failed to create assembly: Error creating assembly archive windows: Problem creating zip: Execution exception: Java heap space
 
 BUILD_DEPENDS=	maven363>0:devel/maven363 \
 		bash:shells/bash
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		shebangfix
+USES=		java shebangfix
 SHEBANG_FILES=	gui-distribution/assembly/src/main/bin/cytoscape.sh
-USE_JAVA=	yes
 USE_GITHUB=	yes
 GH_TUPLE=	${PORTNAME}:${PORTNAME}-parent:${DISTVERSION}:p/parent \
 		${PORTNAME}:${PORTNAME}-api:${DISTVERSION}:a/api \

@@ -1,6 +1,6 @@
 PORTNAME=	gkrellm
-PORTVERSION=	2.3.11
-PORTREVISION=	1
+PORTVERSION=	2.4.0
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	http://gkrellm.srcbox.net/releases/ \
 		LOCAL/ume
@@ -8,7 +8,7 @@ PKGNAMESUFFIX=	2
 
 MAINTAINER=	ume@FreeBSD.org
 COMMENT=	GTK based system monitor
-WWW=		http://gkrellm.net
+WWW=		https://gkrellm.srcbox.net/
 
 LICENSE=	GPLv3
 
@@ -22,7 +22,7 @@ OPTIONS_SUB=		yes
 CLIENT_DESC=		GKrellM Client
 CLIENT_CONFLICTS=	gkrellm-[^2].* gkrellm[^2]-[^2].*
 CLIENT_USES=		xorg
-CLIENT_USE=		GNOME=gtk20 XORG=sm,x11
+CLIENT_USE=		GNOME=gtk20,gdkpixbufextra XORG=sm,x11
 CLIENT_USE_OFF=		GNOME=glib20
 CLIENT_VARS_OFF=	BUILD_WRKSRC=${WRKSRC}/server \
 			INSTALL_WRKSRC=${WRKSRC}/server
@@ -52,7 +52,7 @@ ALL_TARGET=	freebsd
 MAKE_ENV+=	INSTALLROOT=${PREFIX} INSTALL_PREFIX=${STAGEDIR} \
 		PKGCONFIGDIR=${PREFIX}/libdata/pkgconfig \
 		SINSTALLDIR=${PREFIX}/sbin \
-		MANDIR=${MAN1PREFIX}/man/man1 SMANDIR=${MANPREFIX}/man/man8 \
+		MANDIR=${PREFIX}/share/man/man1 SMANDIR=${PREFIX}/share/man/man8 \
 		VERSION=${PORTVERSION}
 
 CFLAGS+=	-DSYSTEM_THEMES_DIR='\"${LOCALBASE}/share/gkrellm2/themes\"' \

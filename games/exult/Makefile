@@ -1,8 +1,8 @@
 PORTNAME=	exult
-DISTVERSION?=	1.8
-PORTREVISION?=	3
+DISTVERSION=	1.12.0
 PORTEPOCH=	1
 CATEGORIES=	games
+MASTER_SITES=	SF/exult/exult-all-versions/${DISTVERSION:R}/
 
 MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Engine for Ultima VII (BG, FOV, SI, SS)
@@ -11,35 +11,24 @@ WWW=		http://exult.info
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libfreetype.so:print/freetype2 \
-		libogg.so:audio/libogg \
-		libpng.so:graphics/png \
+BUILD_DEPENDS=	autoconf-archive>=0:devel/autoconf-archive
+LIB_DEPENDS=	libogg.so:audio/libogg \
+		libpng16.so:graphics/png \
 		libvorbis.so:audio/libvorbis
 
 USES=		autoreconf compiler:c++17-lang gmake libtool localbase \
 		pkgconfig sdl xorg
-
-USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30
-USE_SDL=	mixer2 sdl2
+USE_GNOME=	cairo gdkpixbuf
+USE_SDL=	sdl2
 USE_XORG=	x11 xext
 
 GNU_CONFIGURE=	yes
-
 CONFIGURE_ARGS=	--disable-static \
 		--enable-shared \
 		--with-icondir=${PREFIX}/share/pixmaps
 
-CONFLICTS_INSTALL=	exult-devel
-SUB_FILES=		pkg-message
-PLIST?=			${.CURDIR}/pkg-plist
-
-.if !defined(MASTERDIR)
-MASTER_SITES=	http://prdownloads.sourceforge.net/exult/
-EXTRA_PATCHES=	${PATCHDIR}/extra-patch-version.cc \
-		${PATCHDIR}/extra-patch-configure.ac
-.else
-USE_GITHUB=	yes
-.endif
+SUB_FILES=	pkg-message
+PORTDOCS=	*
 
 OPTIONS_DEFINE=		ALSA DEBUG DOCS FLUIDSYNTH GIMP STUDIO
 OPTIONS_DEFAULT=	STUDIO
@@ -60,19 +49,22 @@ FLUIDSYNTH_CONFIGURE_ENABLE=	fluidsynth
 
 GIMP_LIB_DEPENDS=	libbabl-0.1.so:x11/babl \
 			libfontconfig.so:x11-fonts/fontconfig \
+			libfreetype.so:print/freetype2 \
 			libgegl-0.4.so:graphics/gegl \
 			libgegl-npd-0.4.so:graphics/gegl \
 			libgimp-2.0.so:graphics/gimp-app \
 			libharfbuzz.so:print/harfbuzz \
 			libjson-glib-1.0.so:devel/json-glib
 GIMP_USES=		gnome
-GIMP_USE=		GNOME=gtk20 \
-			pango
+GIMP_USE=		GNOME=gtk20,pango
+
 GIMP_CONFIGURE_ENABLE=	gimp-plugin
 
-STUDIO_LIB_DEPENDS?=		libharfbuzz.so:print/harfbuzz
+STUDIO_LIB_DEPENDS=	libfreetype.so:print/freetype2 \
+			libharfbuzz.so:print/harfbuzz \
+			libicuuc.so:devel/icu
 STUDIO_USES=			gnome
-STUDIO_USE=			GNOME=libglade2
+STUDIO_USE=			GNOME=gtk30
 STUDIO_CONFIGURE_ENABLE=	exult-studio exult-studio-support
 
 post-install-DOCS-on:

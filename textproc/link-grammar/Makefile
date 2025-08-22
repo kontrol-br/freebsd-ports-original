@@ -1,11 +1,12 @@
 PORTNAME=	link-grammar
 DISTVERSION=	5.10.5
+PORTREVISION=	2
 CATEGORIES=	textproc
-MASTER_SITES=	http://www.abisource.com/downloads/${PORTNAME}/${PORTVERSION}/
+MASTER_SITES=	https://www.gnucash.org/${PORTNAME}/downloads/${PORTVERSION}/
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Grammar checking library
-WWW=		https://www.abisource.com/projects/link-grammar/
+WWW=		https://opencog.github.io/link-grammar-website/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -42,7 +43,7 @@ HUNSPELL_CONFIGURE_ENABLE=	hunspell
 HUNSPELL_LIB_DEPENDS=		libhunspell-1.7.so:textproc/hunspell
 
 JAVA_CONFIGURE_ENABLE=		java-bindings
-JAVA_USE=			JAVA
+JAVA_USES=			java
 JAVA_CPPFLAGS=			-I${JAVA_HOME}/include -I${JAVA_HOME}/include/freebsd
 
 PERL_CONFIGURE_ENABLE=		perl-bindings

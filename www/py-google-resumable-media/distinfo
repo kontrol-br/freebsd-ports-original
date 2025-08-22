@@ -1,3 +1,3 @@
-TIMESTAMP = 1682616706
-SHA256 (google-resumable-media-2.5.0.tar.gz) = 218931e8e2b2a73a58eb354a288e03a0fd5fb1c4583261ac6e4c078666468c93
-SIZE (google-resumable-media-2.5.0.tar.gz) = 2154543
+TIMESTAMP = 1753796130
+SHA256 (google_resumable_media-2.7.2.tar.gz) = 5280aed4629f2b60b847b0d42f9857fd4935c11af266744df33d8074cae92fe0
+SIZE (google_resumable_media-2.7.2.tar.gz) = 2163099

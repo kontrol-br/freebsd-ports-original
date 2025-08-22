@@ -1,8 +1,8 @@
 PORTNAME=	maven
-DISTVERSION=	3.8.8
+DISTVERSION=	3.8.9
 CATEGORIES=	devel java
 MASTER_SITES=	APACHE/maven/maven-3/${DISTVERSION}/binaries
-DISTNAME=	apache-maven-${DISTVERSION}-bin
+DISTNAME=	apache-${PORTNAME}-${DISTVERSION}-bin
 
 MAINTAINER=	michaelo@apache.org
 COMMENT=	Java project management tool
@@ -12,22 +12,23 @@ LICENSE=	APACHE20
 
 RUN_DEPENDS=	mvn:devel/maven-wrapper
 
-USES=		cpe
+USES=		cpe java
 CPE_VENDOR=	apache
 CPE_PRODUCT=	maven
-USE_JAVA=	yes
 
-DATADIR=	${JAVASHAREDIR}/${PORTNAME}
+DATADIR=	${JAVASHAREDIR}/${INSTANCE_ID}
 NO_ARCH=	yes
 NO_BUILD=	yes
-WRKSRC=		${WRKDIR}/apache-maven-${DISTVERSION}
-PLIST_SUB=	PORTVERSION=${PORTVERSION}
-INSTANCE_FILE=	${PORTNAME}-${PORTVERSION}
-INSTANCES_DIR=	etc/maven-wrapper/instances.d/
+WRKSRC=		${WRKDIR}/${DISTNAME:S/-bin//}
+PLIST_SUB=	PORTVERSION=${PORTVERSION} \
+	INSTANCE_ID=${INSTANCE_ID} \
+	INSTANCES_DIR=${INSTANCES_DIR}
+INSTANCE_ID=	${DISTNAME:S/-bin//:R}
+INSTANCES_DIR=	${LOCALBASE}/etc/maven-wrapper/instances.d
 
 post-extract:
 	${RM} -r ${WRKSRC}/lib/jansi-native ${WRKSRC}/bin/*.cmd
-	${ECHO_CMD} "${DATADIR}" > ${WRKSRC}/${INSTANCE_FILE}
+	${ECHO_CMD} "${DATADIR}" > ${WRKDIR}/${INSTANCE_ID}
 
 post-patch:
 	@${REINPLACE_CMD} \
@@ -47,8 +48,8 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/bin/mvn ${STAGEDIR}${DATADIR}/bin
 	${INSTALL_SCRIPT} ${WRKSRC}/bin/mvnDebug ${STAGEDIR}${DATADIR}/bin
 	${INSTALL_SCRIPT} ${WRKSRC}/bin/mvnyjp ${STAGEDIR}${DATADIR}/bin
-	@${MKDIR} ${STAGEDIR}${PREFIX}/${INSTANCES_DIR}
-	${INSTALL_DATA} ${WRKSRC}/${INSTANCE_FILE} \
-		${STAGEDIR}${PREFIX}/${INSTANCES_DIR}
+	@${MKDIR} ${STAGEDIR}${INSTANCES_DIR}
+	${INSTALL_DATA} ${WRKDIR}/${INSTANCE_ID} \
+		${STAGEDIR}${INSTANCES_DIR}
 
 .include <bsd.port.mk>

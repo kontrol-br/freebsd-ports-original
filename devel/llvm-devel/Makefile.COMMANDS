@@ -10,8 +10,10 @@ LLVM_COMMANDS=	\
 		llvm-bitcode-strip \
 		llvm-cat \
 		llvm-cfi-verify \
+		llvm-cgdata \
 		llvm-config \
 		llvm-cov \
+		llvm-ctxprof-util \
 		llvm-cvtres \
 		llvm-cxxmap \
 		llvm-debuginfo-analyzer \
@@ -28,14 +30,15 @@ LLVM_COMMANDS=	\
 		llvm-gsymutil \
 		llvm-ifs \
 		llvm-install-name-tool \
+		llvm-ir2vec \
 		llvm-jitlink \
 		llvm-libtool-darwin \
 		llvm-link \
 		llvm-lipo \
 		llvm-mc \
 		llvm-ml \
+		llvm-ml64 \
 		llvm-modextract \
-		llvm-mt \
 		llvm-nm \
 		llvm-objcopy \
 		llvm-objdump \
@@ -65,6 +68,7 @@ LLVM_COMMANDS=	\
 		llvm-windres \
 		llvm-xray \
 		opt \
+		reduce-chunk-list \
 		sancov
 
 CLANG_COMMANDS=	\
@@ -87,6 +91,7 @@ CLANG_COMMANDS=	\
 		hmaptool \
 		intercept-build \
 		nvptx-arch \
+		offload-arch \
 		scan-build \
 		scan-build-py \
 		scan-view
@@ -98,11 +103,12 @@ EXTRAS_COMMANDS= \
 		clang-doc \
 		clang-include-cleaner \
 		clang-include-fixer \
+		clang-installapi \
 		clang-move \
-		clang-pseudo \
+		clang-nvlink-wrapper \
 		clang-query \
-		clang-rename \
 		clang-reorder-fields \
+		clang-sycl-linker \
 		clang-tidy \
 		find-all-symbols \
 		modularize \
@@ -111,9 +117,10 @@ EXTRAS_COMMANDS= \
 FLANG_COMMANDS=	\
 		bbc \
 		f18-parse-demo \
+		fir-lsp-server \
 		fir-opt \
+		flang \
 		flang-new \
-		flang-to-external-fc \
 		tco
 
 LIT_COMMANDS=	\
@@ -131,24 +138,26 @@ LLD_COMMANDS=	\
 LLDB_COMMANDS=	\
 		lldb \
 		lldb-argdumper \
+		lldb-dap \
 		lldb-instr \
-		lldb-server \
-		lldb-vscode
+		lldb-server
 
 MLIR_COMMANDS=	\
 		mlir-cat \
-		mlir-cpu-runner \
 		mlir-lsp-server \
 		mlir-minimal-opt \
 		mlir-minimal-opt-canonicalize \
 		mlir-opt \
 		mlir-pdll \
 		mlir-pdll-lsp-server \
+		mlir-query \
 		mlir-reduce \
+		mlir-rewrite \
+		mlir-runner \
 		mlir-tblgen \
+		mlir-transform-opt \
 		mlir-translate \
-		tblgen-lsp-server
+		tblgen-lsp-server \
+		tblgen-to-irdl
 
-OPENMP_COMMANDS=	\
-		llvm-omp-device-info \
-		llvm-omp-kernel-replay
+OPENMP_COMMANDS=

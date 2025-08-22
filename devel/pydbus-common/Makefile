@@ -59,14 +59,14 @@ do-install:
 		${INSTALL_DATA} ${WRKSRC}/NEWS ${STAGEDIR}${DOCSDIR}
 
 do-install-HTMLDOCS-on:
-	${INSTALL_DATA} ${WRKSRC}/doc/_build/*.html ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/doc/html/*.html ${STAGEDIR}${DOCSDIR}
 
 .else # slave is defined
 LIB_DEPENDS+=	libdbus-glib-1.so:devel/dbus-glib
 RUN_DEPENDS+=	pydbus-common>=0:devel/pydbus-common
 USE_LDCONFIG=	yes
 USES+=		python
-USE_PYTHON=	flavors py3kplist
+USE_PYTHON=	flavors
 
 post-install:
 	@${RM} -r ${STAGEDIR}${PREFIX}/include/dbus-1.0 \

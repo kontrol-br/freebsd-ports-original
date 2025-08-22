@@ -1,7 +1,20 @@
 post-patch:
-	@${REINPLACE_CMD}  '76,79d' ${WRKSRC}/CMakeLists.txt
-.if ${PKGNAMESUFFIX} == "-traymonitor"
+.if (${PKGNAMESUFFIX} == "-traymonitor-qt5") || (${PKGNAMESUFFIX} == "-traymonitor-qt6")
 	@${REINPLACE_CMD} -e 's|-Werror -Wall|-Wall|g' ${PATCH_WRKSRC}/core/CMakeLists.txt
+	@${REINPLACE_CMD} -e 's|\@bindir\@|${LOCALBASE}/bin|g' ${WRKSRC}/core/src/qt-tray-monitor/bareos-tray-monitor.desktop.in
+	@${REINPLACE_CMD}  '206d' ${WRKSRC}/CMakeLists.txt
+.endif
+
+post-extract:
+.if (${PKGNAMESUFFIX} == "-traymonitor-qt5") || (${PKGNAMESUFFIX} == "-traymonitor-qt6")
+	@${MV} ${WRKSRC}/core/src/defaultconfigs/tray-monitor.d/client/FileDaemon-local.conf.in \
+		${WRKSRC}/core/src/defaultconfigs/tray-monitor.d/client/FileDaemon-local.conf
+	@${MV} ${WRKSRC}/core/src/defaultconfigs/tray-monitor.d/director/Director-local.conf.in \
+		${WRKSRC}/core/src/defaultconfigs/tray-monitor.d/director/Director-local.conf
+	@${MV} ${WRKSRC}/core/src/defaultconfigs/tray-monitor.d/monitor/bareos-mon.conf.in \
+		${WRKSRC}/core/src/defaultconfigs/tray-monitor.d/monitor/bareos-mon.conf
+	@${MV} ${WRKSRC}/core/src/defaultconfigs/tray-monitor.d/storage/StorageDaemon-local.conf.in \
+		${WRKSRC}/core/src/defaultconfigs/tray-monitor.d/storage/StorageDaemon-local.conf
 .endif
 
 post-build:
@@ -10,7 +23,7 @@ post-build:
 .endif
 
 pre-install:
-.if ${PKGNAMESUFFIX} == "-traymonitor"
+.if (${PKGNAMESUFFIX} == "-traymonitor-qt5") || (${PKGNAMESUFFIX} == "-traymonitor-qt6")
 .	for d in client director monitor storage
 		${MKDIR} ${STAGEDIR}${ETCDIR}/tray-monitor.d/${d}
 		${FIND} ${WRKSRC}/core/src/defaultconfigs/tray-monitor.d/${d} -type f -name '*.conf' -exec ${MV} -v {} {}.sample \;
@@ -27,12 +40,12 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/filed/static-bareos-fd ${STAGEDIR}${PREFIX}/sbin/bareos-fd-static
 	${INSTALL_PROGRAM} ${WRKSRC}/src/console/static-bconsole ${STAGEDIR}${PREFIX}/sbin/bconsole-static
 .endif
-.if ${PKGNAMESUFFIX} == "-traymonitor"
+.if (${PKGNAMESUFFIX} == "-traymonitor-qt5") || (${PKGNAMESUFFIX} == "-traymonitor-qt6")
 # Install config files and preserve existing ones
 .for d in client director monitor storage
 	${INSTALL_SCRIPT} ${WRKSRC}/core/src/defaultconfigs/tray-monitor.d/${d}/*.sample ${STAGEDIR}${ETCDIR}/tray-monitor.d/${d}/
 .endfor
 	${INSTALL_PROGRAM} ${CONFIGURE_WRKSRC}/core/src/qt-tray-monitor/bareos-tray-monitor ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_DATA} ${WRKSRC}/core/src/images/bareos_1.png ${STAGEDIR}${PREFIX}/share/pixmaps/bareos-tray-monitor.png
-	${INSTALL_DATA} ${WRKSRC}/core/src/qt-tray-monitor/bareos-tray-monitor.desktop ${STAGEDIR}${DESKTOPDIR}
+	${INSTALL_DATA} ${WRKSRC}/core/src/qt-tray-monitor/bareos-tray-monitor.desktop.in ${STAGEDIR}${DESKTOPDIR}/bareos-tray-monitor.desktop
 .endif

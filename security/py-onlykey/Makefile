@@ -1,6 +1,6 @@
 PORTNAME=	onlykey
 PORTVERSION=	1.2.2
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	security python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,6 +10,9 @@ COMMENT=	Python command line tool for configuring and using OnlyKey
 WWW=		https://github.com/trustcrypto/python-onlykey
 
 LICENSE=	MIT
+
+DEPRECATED=	Depends on expired security/libu2f-host
+EXPIRATION_DATE=2025-09-01
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}hidapi>0:comms/py-hidapi@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}aenum>0:devel/py-aenum@${PY_FLAVOR} \
@@ -28,7 +31,7 @@ USE_PYTHON=	autoplist distutils
 SUB_FILES=	pkg-message
 
 PLIST_FILES=	"@sample ${PREFIX}/etc/devd/onlykey.conf.sample" \
-		"${PREFIX}/man/man1/onlykey-cli.1.gz"
+		"${PREFIX}/share/man/man1/onlykey-cli.1.gz"
 
 NO_ARCH=	yes
 
@@ -36,6 +39,6 @@ post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/devd
 	${INSTALL_DATA} ${FILESDIR}/onlykey.conf.sample \
 		${STAGEDIR}${PREFIX}/etc/devd
-	${INSTALL_MAN} ${FILESDIR}/onlykey-cli.1 ${STAGEDIR}${PREFIX}/man/man1
+	${INSTALL_MAN} ${FILESDIR}/onlykey-cli.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

@@ -1,11 +1,11 @@
---- setup.py.orig	2022-11-09 18:39:08 UTC
+--- setup.py.orig	2024-12-06 18:35:30 UTC
 +++ setup.py
-@@ -320,7 +320,7 @@ def awscrt_ext():
-             # a proper MacOS Universal2 binary. The linker warns us about this,
-             # but WHATEVER. Building everything twice (x86_64 and arm64) takes too long.
-             if not is_macos_universal2():
--                extra_link_args += ['-Wl,-fatal_warnings']
-+                extra_link_args += ['-Wl,-fatal-warnings']
+@@ -359,7 +359,7 @@ def awscrt_ext():
+             # So it's simpler to link them in statically and have less runtime dependencies.
+             #
+             # Don't apply this trick to dependencies that are always on the OS (e.g. librt)
+-            libraries = [':lib{}.a'.format(x) for x in libraries]
++            libraries = [':lib{}.so'.format(x) for x in libraries]
  
-     return setuptools.Extension(
-         '_awscrt',
+         # OpenBSD doesn't have librt; functions are found in libc instead.
+         if not sys.platform.startswith('openbsd'):

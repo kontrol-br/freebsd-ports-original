@@ -1,7 +1,7 @@
 PORTNAME=	s2
-PORTVERSION=	0.10.0
+PORTVERSION=	0.12.0
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	3
 CATEGORIES=	graphics
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -15,14 +15,15 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 NOT_FOR_ARCHS=	i386
 NOT_FOR_ARCHS_REASON=	is currently 64-bit only
 
-LIB_DEPENDS=	libabsl_base.so:devel/abseil \
-		libgtest.so:devel/googletest
+LIB_DEPENDS=	libabsl_base.so:devel/abseil
 
 USES=		cmake compiler:c++17-lang localbase ssl
 
+CMAKE_ARGS=	-DCMAKE_CXX_STANDARD=17
+CMAKE_OFF=	BUILD_TESTS \
+		S2_USE_SYSTEM_INCLUDES \
+		WITH_PYTHON
 CMAKE_ON=	BUILD_SHARED_LIBS
-CMAKE_OFF=	WITH_PYTHON
-USE_CXXSTD=	c++17
 USE_LDCONFIG=	yes
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
@@ -31,22 +32,9 @@ GH_ACCOUNT=	google
 GH_PROJECT=	s2geometry
 USE_GITHUB=	yes
 
-OPTIONS_DEFINE=	EXAMPLES GFLAGS GLOG
-OPTIONS_DEFAULT=GFLAGS GLOG
-GFLAGS_DESC=	Use gflags to change command line flags
-GLOG_DESC=	Use glog for logging
+OPTIONS_DEFINE=	EXAMPLES
 
 EXAMPLES_CMAKE_BOOL=	BUILD_EXAMPLES
-GFLAGS_CMAKE_BOOL=	WITH_GFLAGS
-GFLAGS_LIB_DEPENDS=	libgflags.so:devel/gflags
-GLOG_CMAKE_BOOL=	WITH_GLOG
-GLOG_LIB_DEPENDS=	libglog.so:devel/glog
-
-.include <bsd.port.options.mk>
-
-.if ${ARCH} == powerpc64 && !defined(CPUTYPE)
-CXXFLAGS+=	-mcpu=power7
-.endif
 
 post-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

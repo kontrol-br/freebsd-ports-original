@@ -1,11 +1,11 @@
 PORTNAME=	libglademm
 PORTVERSION=	2.6.7
-PORTREVISION=	15
+PORTREVISION=	16
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome2
 
-MAINTAINER=	bland@FreeBSD.org
+MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	C++ wrapper for libglade2 library
 WWW=		http://gtkmm.sourceforge.net/
 

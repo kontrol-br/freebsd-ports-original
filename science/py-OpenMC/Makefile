@@ -1,7 +1,7 @@
 PORTNAME=	OpenMC
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.13.3
-PORTREVISION=	1
+DISTVERSION=	0.15.0
+PORTREVISION=	2
 CATEGORIES=	science
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 PY_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}h5py>0:science/py-h5py@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ipython>0:devel/ipython@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}lxml5>0:devel/py-lxml5@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}matplotlib>0:math/py-matplotlib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pandas>0:math/py-pandas@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}scipy>0:science/py-scipy@${PY_FLAVOR} \
@@ -45,5 +45,7 @@ post-install:
 pre-test:
 	# link the library
 	@if ! [ -e ${WRKSRC}/openmc/lib/libopenmc.so ]; then ${LN} -s ${LOCALBASE}/lib/libopenmc.so ${WRKSRC}/openmc/lib/libopenmc.so; fi
+
+# Some tests fail with the message: RuntimeError: No cross_sections.xml file was specified in materials.xml or in the OPENMC_CROSS_SECTIONS environment variable, see https://github.com/openmc-dev/openmc/issues/3053
 
 .include <bsd.port.mk>

@@ -2,12 +2,12 @@ PORTNAME=	vv
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.4.0-383
 DISTVERSIONSUFFIX=	-g7a783a8b
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	graphics
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Fast and simple 4D image viewer
-WWW=		https://www.creatis.insa-lyon.fr/rio/vv/
+WWW=		https://github.com/open-vv/vv
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

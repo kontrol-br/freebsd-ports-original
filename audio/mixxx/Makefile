@@ -1,6 +1,6 @@
 PORTNAME=	mixxx
-DISTVERSION=	2.3.2
-PORTREVISION=	9
+DISTVERSION=	2.5.2
+PORTREVISION=	1
 CATEGORIES=	audio
 
 MAINTAINER=	acm@FreeBSD.org
@@ -10,8 +10,12 @@ WWW=		https://mixxx.org/
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	lv2>=1.14.0:audio/lv2
-LIB_DEPENDS=	libchromaprint.so:audio/chromaprint \
+BUILD_DEPENDS=	benchmark>0:devel/benchmark \
+		googletest>0:devel/googletest \
+		lv2>=1.14.0:audio/lv2 \
+		microsoft-gsl>0:devel/microsoft-gsl
+LIB_DEPENDS=	libabsl_base.so:devel/abseil \
+		libchromaprint.so:audio/chromaprint \
 		libFLAC.so:audio/flac \
 		libfftw3.so:math/fftw3 \
 		libhidapi.so:comms/hidapi \
@@ -20,7 +24,6 @@ LIB_DEPENDS=	libchromaprint.so:audio/chromaprint \
 		libmodplug.so:audio/libmodplug \
 		libportaudio.so:audio/portaudio \
 		libSoundTouch.so:audio/soundtouch \
-		libebur128.so:audio/ebur128 \
 		librubberband.so:audio/rubberband \
 		libsndfile.so:audio/libsndfile \
 		libogg.so:audio/libogg \
@@ -33,17 +36,44 @@ LIB_DEPENDS=	libchromaprint.so:audio/chromaprint \
 		libkeyfinder.so:audio/libkeyfinder \
 		libmp3lame.so:audio/lame
 
-USES=		cmake compiler:c++11-lang gl iconv ninja qt:5 pkgconfig sqlite \
-		ssl xorg
+USES=		cmake:testing compiler:c++20-lang ebur128 gl iconv ninja pkgconfig \
+		sqlite ssl xorg
+
+FLAVORS=	qt5 qt6
+FLAVOR?=	${FLAVORS:[1]}
+
+qt5_CONFLICTS=          mixxx-qt6
+qt6_CONFLICTS=          mixxx-qt5
+
 USE_XORG=	ice sm x11 xext
 USE_GL=		gl glu
 USE_GITHUB=	yes
 GH_ACCOUNT=	mixxxdj
-USE_QT=		buildtools concurrent core dbus gui linguisttools:build network \
-		opengl qmake:build  script scripttools sql sql-sqlite3 svg \
-		testlib x11extras xml xmlpatterns widgets
 
-CONFLICTS=	mixxx22*
+.if ${FLAVOR} == qt6
+PKGNAMESUFFIX=  -qt6
+
+USES+=		qt:6
+USE_QT=		5compat base:run declarative:build tools:build shadertools \
+		sqldriver-sqlite:run svg
+CMAKE_ARGS+=	-DQT6=ON
+
+QTKEYCHAIN_LIB_DEPENDS=	libqt6keychain.so:security/qtkeychain@qt6
+
+PLIST_SUB+=	QT6=""
+.else
+PKGNAMESUFFIX=	-qt5
+
+USES+=		qt:5
+USE_QT=		buildtools concurrent core dbus declarative gui linguisttools:build \
+		network opengl printsupport qmake:build sql sql-sqlite3 svg testlib \
+		widgets x11extras xml
+CMAKE_ARGS+=	-DQT6=OFF
+
+QTKEYCHAIN_LIB_DEPENDS=	libqt5keychain.so:security/qtkeychain@qt5
+
+PLIST_SUB+=	QT6="@comment "
+.endif
 
 CMAKE_ARGS+=	-DINSTALL_USER_UDEV_RULES:BOOL=OFF \
 		-DOPTIMIZE:STRING=portable \
@@ -54,7 +84,7 @@ CMAKE_ARGS+=	-DINSTALL_USER_UDEV_RULES:BOOL=OFF \
 
 PORTDOCS=	*
 
-OPTIONS_DEFINE=		BROADCAST DOCS FFMPEG GPERFTOOLS HID OPUS \
+OPTIONS_DEFINE=		BROADCAST DOCS ENGINEPRIME FFMPEG GPERFTOOLS HID OPUS \
 			QTKEYCHAIN WAVPACK
 OPTIONS_DEFAULT=	BROADCAST FFMPEG HID OPUS QTKEYCHAIN WAVPACK
 OPTIONS_SUB=		yes
@@ -62,6 +92,9 @@ OPTIONS_SUB=		yes
 BROADCAST_DESC=		Live Broadcasting (Shoutcast) support
 #BROADCAST_LIB_DEPENDS=	libshout-idjc.so:audio/shout-idjc
 BROADCAST_CMAKE_BOOL=	BROADCAST
+ENGINEPRIME_DESC=	Denon Engine Prime library export support
+ENGINEPRIME_LIB_DEPENDS=	libdjinterop.so:audio/libdjinterop
+ENGINEPRIME_CMAKE_BOOL=	ENGINEPRIME
 FFMPEG_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
 FFMPEG_CMAKE_BOOL=	FFMPEG
 GPERFTOOLS_LIB_DEPENDS=	libtcmalloc.so:devel/google-perftools
@@ -72,7 +105,6 @@ OPUS_LIB_DEPENDS=	libopus.so:audio/opus \
 			libopusfile.so:audio/opusfile
 OPUS_CMAKE_BOOL=	OPUS
 QTKEYCHAIN_DESC=	Secure credentials storage for Live Broadcasting profiles
-QTKEYCHAIN_LIB_DEPENDS=	libqt5keychain.so:security/qtkeychain@qt5
 QTKEYCHAIN_CMAKE_BOOL=	QTKEYCHAIN
 WAVPACK_LIB_DEPENDS=	libwavpack.so:audio/wavpack
 WAVPACK_CMAKE_BOOL=	WAVPACK

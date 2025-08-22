@@ -1,6 +1,6 @@
 PORTNAME=	apache-openoffice
 PORTVERSION=	${AOOVERSION}
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	editors java
 MASTER_SITES=	https://dlcdn.apache.org/openoffice/${PORTVERSION}/source/ \
 		https://archive.apache.org/dist/openoffice/${PORTVERSION}/source/ \
@@ -56,7 +56,6 @@ BUILD_DEPENDS=								\
 		zip:archivers/zip					\
 		ant:devel/apache-ant					\
 		dmake:devel/dmake					\
-		epm:devel/epm						\
 		${LOCALBASE}/bin/gperf:devel/gperf			\
 		imake:devel/imake					\
 		libunwind>=20211201_1:devel/libunwind			\
@@ -75,7 +74,7 @@ LIB_DEPENDS=								\
 		libnspr4.so:devel/nspr					\
 		libcurl.so:ftp/curl					\
 		libcairo.so:graphics/cairo				\
-		libpng.so:graphics/png					\
+		libpng16.so:graphics/png				\
 		libgraphite.so:graphics/silgraphite			\
 		libblas.so:math/blas					\
 		libCbcSolver.so:math/cbc				\
@@ -111,13 +110,10 @@ BUILD_DEPENDS+=	gcc${GCC_DEFAULT}>0:lang/gcc${GCC_DEFAULT}
 RUN_DEPENDS+=	gcc${GCC_DEFAULT}>0:lang/gcc${GCC_DEFAULT}
 
 USES=		autoreconf bison compiler:c++11-lib cpe desktop-file-utils \
-		gettext-runtime gl gmake gnome iconv jpeg perl5 pkgconfig \
+		gettext-runtime gl gmake gnome iconv java jpeg perl5 pkgconfig \
 		shared-mime-info ssl tar:bzip2 xorg
 USE_GL=		gl glu
-USE_GNOME=	gdkpixbuf2 gdkpixbuf2xlib gtk20 libxslt libidl glib20
-USE_JAVA=	yes
-JAVA_BUILD=	jdk
-JAVA_RUN=	jdk
+USE_GNOME=	gdkpixbuf gdkpixbuf2xlib gtk20 libxslt glib20
 JAVA_VENDOR=	openjdk
 USE_PERL5=	build
 USE_XORG=	ice sm x11 xau xaw xcomposite xcursor xdamage xext xfixes xi \
@@ -127,15 +123,15 @@ CONFLICTS_INSTALL=	apache-openoffice-devel
 
 AOOVERSION1=	4
 AOOVERSION2=	1
-AOOVERSION3=	14
+AOOVERSION3=	15
 # From solenv/inc/minor.mk SOURCEREVISION LAST_MINOR BUILD
-AOOTAG=		AOO4114m1\(Build:9811\)
-GITREVISION=	a0d24fb625
+AOOTAG=		AOO4115m2\(Build:9813\)
+GITREVISION=	5f13fa0070
 EXTSRC=		ApacheOpenOffice.ext_sources.${AOOVERSION1}.x.x.20150707.tar.gz
 
 AOOVERSION=	${AOOVERSION1}.${AOOVERSION2}.${AOOVERSION3}
 AOOXXX=		${AOOVERSION1}${AOOVERSION2}${AOOVERSION3}
-AOOSUFFIX=	${PORTVERSION}
+AOOSUFFIX=	${AOOVERSION1}.${AOOVERSION2}
 AOOSRC=		apache-openoffice-${AOOVERSION}-${GITREVISION}-src${EXTRACT_SUFX}
 
 AOOUDIR=		.openoffice.org\/${AOOVERSION1}
@@ -200,18 +196,15 @@ WITH=	SDK
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( \
-    (${OSVERSION} >= 1400051 && ${OSVERSION} < 1400057))
-BROKEN=	please update FreeBSD base system first to fix an ABI incompatibility
-.endif
-
-.if ( ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400092 && ${SSL_DEFAULT} == base ) || ${SSL_DEFAULT:Mopenssl3*}
-BROKEN_SSL=	base openssl30 openssl31
-BROKEN_SSL_REASON=	Undefined symbol ERR_GET_FUNC
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1500000
+# nm: '../unxfbsdi.pro/slo/b2dcubicbezier.o': Invalid argument
+EXTRA_PATCHES+=		${FILESDIR}/extra-patch-nm
 .endif
 
 .if defined(WITH_DEBUG)
 CONFIGURE_ARGS+=	--enable-symbols
+.else
+CONFIGURE_ARGS+=	--enable-strip-solver
 .endif
 
 .include <${FILESDIR}/Makefile.localized>
@@ -269,7 +262,6 @@ CONFIGURE_ARGS+=							\
 			--with-system-coinmp				\
 			--with-system-curl				\
 			--with-system-dicts				\
-			--with-epm=${LOCALBASE}/bin/epm			\
 			--with-system-expat				\
 			--disable-fetch-external			\
 			--without-fonts					\

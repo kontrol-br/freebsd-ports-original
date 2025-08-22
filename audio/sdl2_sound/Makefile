@@ -1,6 +1,6 @@
 PORTNAME=	sdl2_sound
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.0.1
+DISTVERSION=	2.0.4
 CATEGORIES=	audio
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -17,6 +17,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	icculus
 GH_PROJECT=	SDL_sound
 USE_LDCONFIG=	yes
+CMAKE_OFF=	SDLSOUND_BUILD_DOCS
 
 PORTDOCS=	*
 PORTEXAMPLES=	*
@@ -35,11 +36,10 @@ post-install:
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	cd ${WRKSRC}/docs && ${INSTALL_DATA} CHANGELOG.txt \
-		CREDITS.txt README.txt ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC} && ${INSTALL_DATA} README.md docs/CHANGELOG.txt docs/CREDITS.txt ${STAGEDIR}${DOCSDIR}/
 
 post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/examples/*.c ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_DATA} ${WRKSRC}/examples/*.c ${STAGEDIR}${EXAMPLESDIR}/
 
 .include <bsd.port.mk>

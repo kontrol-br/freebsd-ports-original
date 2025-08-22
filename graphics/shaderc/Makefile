@@ -1,9 +1,9 @@
 PORTNAME=	shaderc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2023.6
+DISTVERSION=	2025.3
 CATEGORIES=	graphics devel
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GLSL/HLSL to SPIR-V shader compiler
 WWW=		https://github.com/google/shaderc
 
@@ -13,11 +13,13 @@ BUILD_DEPENDS=	glslang>0:graphics/glslang \
 		spirv-tools>0:graphics/spirv-tools
 TEST_DEPENDS=	googletest>0:devel/googletest
 
-USES=		cmake:testing compiler:c++11-lib localbase:ldflags python:build
+USES=		cmake:testing compiler:c++11-lib localbase:ldflags \
+		python:build shebangfix
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 GH_ACCOUNT=	google
-GH_TUPLE=	KhronosGroup:SPIRV-Headers:1.5.4.raytracing.fixed-292-gf1ba373:headers/third_party/spirv-headers
+GH_TUPLE=	KhronosGroup:SPIRV-Headers:1.5.4.raytracing.fixed-430-g2a611a9:headers/third_party/spirv-headers
+SHEBANG_FILES=	utils/add_copyright.py
 CMAKE_ON+=	${CMAKE_TESTING_OFF}
 CMAKE_TESTING_OFF=	SHADERC_SKIP_TESTS
 CMAKE_ARGS=	-Dglslang_SOURCE_DIR:PATH="${LOCALBASE}/include/glslang" \

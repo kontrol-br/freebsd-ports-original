@@ -1,7 +1,6 @@
 PORTNAME=	gsimplecal
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.4.1
-PORTREVISION=	2
+DISTVERSION=	2.5.2
 CATEGORIES=	deskutils
 
 MAINTAINER=	eduardo@FreeBSD.org
@@ -19,6 +18,6 @@ USE_GNOME=	glib20 gtk30
 GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/gsimplecal \
-		man/man1/gsimplecal.1.gz
+		share/man/man1/gsimplecal.1.gz
 
 .include <bsd.port.mk>

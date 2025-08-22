@@ -1,7 +1,6 @@
 PORTNAME=	cargo-generate
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.18.3
-PORTREVISION=	1
+DISTVERSION=	0.23.4
 CATEGORIES=	devel
 
 MAINTAINER=	lcook@FreeBSD.org
@@ -19,16 +18,12 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 
 USES=		cargo localbase ssl
 USE_GITHUB=	yes
-GH_ACCOUNT=	ashleygwilliams
 
 PLIST_FILES=	bin/${PORTNAME}
 PORTDOCS=	CHANGELOG.md CODE_OF_CONDUCT.md CONTRIBUTING.md README.md \
 		TEMPLATES.md
 
 OPTIONS_DEFINE=	DOCS
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

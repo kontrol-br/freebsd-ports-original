@@ -1,6 +1,5 @@
 PORTNAME=	ruby
-DISTVERSION=	${RUBY_DISTVERSION}
-PORTREVISION=	${RUBY_PORTREVISION}
+PORTVERSION=	${RUBY_DISTVERSION}
 PORTEPOCH=	${RUBY_PORTEPOCH}
 CATEGORIES=	lang ruby
 MASTER_SITES=	RUBY/${MASTER_SITE_SUBDIR_RUBY}
@@ -15,15 +14,17 @@ LICENSE_COMB=	dual
 LICENSE_FILE_BSD2CLAUSE=	${WRKSRC}/BSDL
 LICENSE_FILE_RUBY=	${WRKSRC}/COPYING
 
+DEPRECATED=	Please migrate to newer version. Ruby 3.2 is expected to reach its EoL on March 31, 2026
+EXPIRATION_DATE=	2026-04-30
+
 # Using LIB_DEPENDS finds the libffi from gcc which causes problems
 BUILD_DEPENDS=	libffi>=0:devel/libffi
 LIB_DEPENDS=	libyaml.so:textproc/libyaml
 RUN_DEPENDS=	libffi>=0:devel/libffi
 
-USES=		autoreconf cpe ruby:none ssl tar:xz
+USES=		autoreconf cpe localbase ruby:none ssl tar:xz
 CPE_VENDOR=	ruby-lang
-CPE_VERSION=	${RUBY_RELVERSION}
-CPE_UPDATE=	p${RUBY_PATCHLEVEL}
+CPE_UPDATE=	p0
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
@@ -37,10 +38,18 @@ CONFIGURE_ARGS=	${RUBY_CONFIGURE_ARGS} \
 		--with-vendordir="${PREFIX}/lib/ruby/vendor_ruby"
 CONFIGURE_ENV=	debugflags=
 
-CPPFLAGS+=	-I${LOCALBASE}/include
 # Keep this, else ruby will fail to load libraries dependent of libpthread.
-LIBS+=		-lpthread -L${LOCALBASE}/lib
-WRKSRC=		${RUBY_WRKSRC}
+LIBS+=		-lpthread
+
+# We get these from other ports
+EXTRACT_AFTER_ARGS=	--exclude ${DISTNAME}/bin/gem \
+			--exclude ${DISTNAME}/ext/win32* \
+			--exclude ${DISTNAME}/lib/bundler* \
+			--exclude ${DISTNAME}/libexec/bundler \
+			--exclude ${DISTNAME}/man/erb.1 \
+			--exclude ${DISTNAME}/man/irb.1 \
+			--exclude ${DISTNAME}/man/ri.1 \
+			--no-same-owner --no-same-permissions
 
 RUBY_VER=	3.2
 
@@ -99,10 +108,6 @@ _SUF2=		,${PORTEPOCH}
 LIB_DEPENDS+=	libunwind.so:devel/libunwind
 .endif
 
-.if defined(PPC_ABI) && ${PPC_ABI} == ELFv1
-USE_GCC=	yes
-.endif
-
 .if ${ARCH} == armv6 || ${ARCH} == armv7 || ${ARCH} == powerpc
 CONFIGURE_ARGS+=	--with-setjmp-type=_setjmp
 CONFIGURE_ENV+=		ac_cv_func__setjmp=yes
@@ -124,16 +129,10 @@ EXTDOCS=	readline/README ripper/README stringio/README.md \
 		syslog/syslog.txt
 
 # Macros to change variables in rbconfig.rb
+# NOTE: The last argument RB_SET_CONF_VAR is a dummy argument. See bug 222872.
 RB_SET_CONF_VAR=	${SH} -c \
 			'${REINPLACE_CMD} -E -e "s,(CONFIG\[\"$$0\"\][[:space:]]*=[[:space:]]*)(\(?)(.*)(\)?),\1\2$$1\4," ${WRKSRC}/rbconfig.rb' \
-			--
-
-post-patch:
-# We get these from other ports
-.for d in bin/* ext/dbm ext/gdbm ext/win32* lib/bundler* libexec/bundler* \
-	man/bundle* man/erb.1 man/gemfile* man/irb.1 man/ri.1
-	@${RM} -r ${BUILD_WRKSRC}/${d}
-.endfor
+			RB_SET_CONF_VAR
 
 post-build:
 #
@@ -175,7 +174,7 @@ post-install:
 # Link "ruby.1.gz" to "ruby31.1.gz", etc.
 #
 . for FILE in ${INSTALLED_MANUALS}
-	${LN} -fs ${FILE}${RUBY_SUFFIX}.1.gz ${STAGEDIR}${MANPREFIX}/man/man1/${FILE}.1.gz
+	${LN} -fs ${FILE}${RUBY_SUFFIX}.1.gz ${STAGEDIR}${PREFIX}/share/man/man1/${FILE}.1.gz
 . endfor
 .endif
 

@@ -25,6 +25,7 @@ share/bash-completion/completions/copyq
 %%DATADIR%%/themes/tooltip.css
 %%DATADIR%%/themes/wine.ini
 %%DATADIR%%/translations/copyq_ar.qm
+%%DATADIR%%/translations/copyq_ca.qm
 %%DATADIR%%/translations/copyq_cs.qm
 %%DATADIR%%/translations/copyq_da.qm
 %%DATADIR%%/translations/copyq_de.qm
@@ -33,6 +34,7 @@ share/bash-completion/completions/copyq
 %%DATADIR%%/translations/copyq_fa.qm
 %%DATADIR%%/translations/copyq_fi.qm
 %%DATADIR%%/translations/copyq_fr.qm
+%%DATADIR%%/translations/copyq_he.qm
 %%DATADIR%%/translations/copyq_hr.qm
 %%DATADIR%%/translations/copyq_hu.qm
 %%DATADIR%%/translations/copyq_id.qm

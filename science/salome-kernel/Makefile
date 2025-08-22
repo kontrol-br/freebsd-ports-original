@@ -1,6 +1,7 @@
 PORTNAME=	salome-kernel
 DISTVERSIONPREFIX=	V
 DISTVERSION=	9_11_0
+PORTREVISION=	4
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -9,6 +10,9 @@ WWW=		https://www.salome-platform.org/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Depends on expired science/salome-configuration
+EXPIRATION_DATE=2025-09-30
 
 FETCH_DEPENDS=	git:devel/git
 PY_DEPENDS=	${PYNUMPY} \
@@ -53,7 +57,7 @@ do-fetch:
 	    (cd ${PORTNAME}-${DISTVERSIONFULL} && git reset -q --hard ${DISTVERSIONFULL} && ${RM} -r .git) && \
 	    ${FIND} ${PORTNAME}-${DISTVERSIONFULL} -and -exec ${TOUCH} -h -d 1970-01-01T00:00:00Z {} \; && \
 	    ${FIND} ${PORTNAME}-${DISTVERSIONFULL} -print0 | LC_ALL=C ${SORT} -z | \
-	        ${TAR} czf ${PORTNAME}-${DISTVERSIONFULL}${EXTRACT_SUFX} --format=bsdtar --gid 0 --uid 0 --options gzip:!timestamp --no-recursion --null -T - && \
+	        ${TAR} czf ${PORTNAME}-${DISTVERSIONFULL}${EXTRACT_SUFX} --format=ustar --gid 0 --uid 0 --options gzip:!timestamp --no-recursion --null -T - && \
 	    ${RM} -r ${PORTNAME}-${DISTVERSIONFULL}; \
 	fi
 

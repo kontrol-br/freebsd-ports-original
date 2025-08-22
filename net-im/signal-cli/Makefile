@@ -21,12 +21,10 @@ LIB_DEPENDS=		libsignal_jni.so:net-im/libsignal-client \
 RUN_DEPENDS=		libsignal-client>=0.9.0:net-im/libsignal-client
 TEST_DEPENDS=		qrencode:graphics/libqrencode
 
-USES=		gmake shebangfix
+USES=		gmake java shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	AsamK
-USE_JAVA=	yes
 JAVA_VERSION=	11+
-JAVA_RUN=	jre
 USE_RC_SUBR=	signal_cli
 SHEBANG_FILES=	bin/${PORTNAME}
 SHEBANG_LANG=	sh
@@ -69,7 +67,7 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME} \
 		${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 	${INSTALL_MAN} ${WRKSRC}/man/signal-cli.1 \
-		${STAGEDIR}${MAN1PREFIX}/share/man/man1
+		${STAGEDIR}${PREFIX}/share/man/man1
 
 post-install-DBUS-on:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/dbus-1/services

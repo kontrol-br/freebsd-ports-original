@@ -1,5 +1,6 @@
 PORTNAME=	l-smash-works
 DISTVERSION=	20230716
+PORTREVISION=	1
 CATEGORIES=	multimedia
 PKGNAMEPREFIX=	vapoursynth-
 
@@ -9,6 +10,8 @@ WWW=		https://github.com/HomeOfAviSynthPlusEvolution/L-SMASH-Works
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+ONLY_FOR_ARCHS=	amd64 powerpc64le
 
 BUILD_DEPENDS=	${LOCALBASE}/include/vapoursynth/VSHelper.h:multimedia/vapoursynth
 LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
@@ -26,6 +29,8 @@ EXTRACT_AFTER_ARGS=${EXCLUDE:S,^,--exclude ,}
 WRKSRC_SUBDIR=	VapourSynth
 
 PLIST_FILES=	lib/vapoursynth/libvslsmashsource.so
+
+CFLAGS_powerpc64le=	-DNO_WARN_X86_INTRINSICS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%DISTVERSION%%|${DISTVERSION}|g' \

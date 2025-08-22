@@ -1,5 +1,5 @@
 PORTNAME=	kronosnet
-PORTVERSION=	1.25
+PORTVERSION=	1.26
 PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	https://kronosnet.org/releases/
@@ -17,11 +17,13 @@ LIB_DEPENDS=	liblzo2.so:archivers/lzo2 \
 		libqb.so:devel/libqb \
 		libzstd.so:archivers/zstd
 
-USES=		autoreconf gmake localbase libtool pkgconfig ssl
+USES=		autoreconf gmake gnome localbase libtool pkgconfig ssl
+USE_GNOME=	libxml2
 USE_BINUTILS=	yes
 USE_GCC=	yes
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 LDFLAGS+=	-B${LOCALBASE}/bin
 
 INSTALL_TARGET=	install-strip

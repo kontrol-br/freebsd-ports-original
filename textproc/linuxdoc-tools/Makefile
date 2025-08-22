@@ -1,5 +1,6 @@
 PORTNAME=	linuxdoc-tools
 DISTVERSION=	0.9.83
+PORTREVISION=	1
 CATEGORIES=	textproc
 
 MAINTAINER=	zirias@FreeBSD.org

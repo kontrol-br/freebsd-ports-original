@@ -1,5 +1,5 @@
 PORTNAME=	propshaft
-PORTVERSION=	0.7.0
+PORTVERSION=	1.2.1
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
@@ -10,10 +10,9 @@ WWW=		https://github.com/rails/propshaft
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
 
-RUN_DEPENDS=	rubygem-actionpack70>=7.0.0:www/rubygem-actionpack70 \
-		rubygem-activesupport70>=7.0.0:devel/rubygem-activesupport70 \
-		rubygem-rack>=0,3:www/rubygem-rack \
-		rubygem-railties70>=7.0.0:www/rubygem-railties70
+RUN_DEPENDS=	rubygem-actionpack80>=7.0.0:www/rubygem-actionpack80 \
+		rubygem-activesupport80>=7.0.0:devel/rubygem-activesupport80 \
+		rubygem-rack>=0,3:www/rubygem-rack
 
 USES=		gem
 

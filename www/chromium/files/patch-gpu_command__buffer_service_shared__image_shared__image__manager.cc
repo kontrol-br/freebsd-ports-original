@@ -1,11 +1,11 @@
---- gpu/command_buffer/service/shared_image/shared_image_manager.cc.orig	2023-04-28 17:01:32 UTC
+--- gpu/command_buffer/service/shared_image/shared_image_manager.cc.orig	2025-07-02 06:08:04 UTC
 +++ gpu/command_buffer/service/shared_image/shared_image_manager.cc
-@@ -499,7 +499,7 @@ bool SharedImageManager::SupportsScanoutImages() {
+@@ -736,7 +736,7 @@ bool SharedImageManager::SupportsScanoutImages() {
    return true;
  #elif BUILDFLAG(IS_ANDROID)
    return base::AndroidHardwareBufferCompat::IsSupportAvailable();
 -#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
 +#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
-   return ui::OzonePlatform::GetInstance()
-       ->GetPlatformRuntimeProperties()
-       .supports_native_pixmaps;
+   return supports_overlays_on_ozone_;
+ #elif BUILDFLAG(IS_WIN)
+   return gl::DirectCompositionTextureSupported();

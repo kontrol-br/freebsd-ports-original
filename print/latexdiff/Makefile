@@ -1,5 +1,5 @@
 PORTNAME=	latexdiff
-PORTVERSION=	1.3.3
+PORTVERSION=	1.3.4
 CATEGORIES=	print perl5
 MASTER_SITES=	https://github.com/ftilmann/${PORTNAME}/releases/download/${PORTVERSION}/
 
@@ -20,7 +20,7 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/${i} ${STAGEDIR}${PREFIX}/bin
 .endfor
 .for m in latexdiff.1 latexdiff-vc.1 latexrevise.1
-	${INSTALL_MAN} ${WRKSRC}/${m} ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/${m} ${STAGEDIR}${PREFIX}/share/man/man1
 .endfor
 	${LN} -s latexdiff-so ${STAGEDIR}${PREFIX}/bin/latexdiff
 

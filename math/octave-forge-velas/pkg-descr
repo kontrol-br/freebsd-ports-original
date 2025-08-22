@@ -1,4 +1,4 @@
-The octave-forge package is the result of The GNU Octave Repositry project,
+The octave-forge package is the result of The GNU Octave Repository project,
 which is intended to be a central location for custom scripts, functions and
 extensions for GNU Octave. contains the source for all the functions plus
 build and install scripts.
@@ -7,4 +7,4 @@ This is velas.
 
  VELAS is a user-friendly open-source toolbox for the visualization and
 analysis of elastic anisotropy written in GNU Octave that can be used for any
-crystal symmetry. 
+crystal symmetry.

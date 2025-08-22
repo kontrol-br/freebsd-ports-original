@@ -1,10 +1,9 @@
 PORTNAME=	uvg266
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.4.1
-PORTREVISION=	1
+DISTVERSION=	0.8.1
 CATEGORIES=	multimedia
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	VVC encoder based on Kvazaar
 WWW=		https://ultravideo.fi/#encoder_x
 

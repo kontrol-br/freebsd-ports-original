@@ -1,6 +1,6 @@
 PORTNAME=	gomplate
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.11.5
+DISTVERSION=	4.3.3
 PORTREVISION=	1
 CATEGORIES=	sysutils
 
@@ -13,13 +13,13 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		go:modules
 
-GO_MODULE=	github.com/hairyhenderson/gomplate/v3
-GH_TAG_COMMIT=	ea986e7
+GO_MODULE=	github.com/hairyhenderson/gomplate/v4
+GH_TAG_COMMIT=	3e4035c
 GO_TARGET=	./cmd/gomplate
 GO_BUILDFLAGS=	-ldflags "\
 		-w -s \
-		-X github.com/hairyhenderson/gomplate/v3/version.GitCommit=${GH_TAG_COMMIT} \
-		-X github.com/hairyhenderson/gomplate/v3/version.Version=${DISTVERSION}"
+		-X github.com/hairyhenderson/gomplate/v4/version.GitCommit=${GH_TAG_COMMIT} \
+		-X github.com/hairyhenderson/gomplate/v4/version.Version=${DISTVERSION}"
 
 PLIST_FILES=	bin/gomplate
 

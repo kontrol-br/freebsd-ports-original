@@ -1,5 +1,6 @@
 PORTNAME=	texinfo
-PORTVERSION=	7.0.3
+PORTVERSION=	7.1
+PORTREVISION=	12
 PORTEPOCH=	1
 CATEGORIES=	print
 MASTER_SITES=	GNU \
@@ -7,6 +8,7 @@ MASTER_SITES=	GNU \
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 		htmlxref.cnf-${HTMLXREF_CNF_RELDATE}:local \
 		texi2dvi-${TEXI2DVI_RELDATE}:local \
+		texi2pdf-${TEXI2PDF_RELDATE}:local \
 		texinfo.tex-${TEXINFO_TEX_RELDATE}:local
 DIST_SUBDIR=	texinfo
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
@@ -24,9 +26,6 @@ RUN_DEPENDS=	p5-Locale-libintl>=0:devel/p5-Locale-libintl \
 		p5-Text-Unidecode>=0:converters/p5-Text-Unidecode \
 		p5-Unicode-EastAsianWidth>=0:textproc/p5-Unicode-EastAsianWidth
 
-OPTIONS_DEFINE=	NLS
-OPTIONS_SUB=	yes
-
 USES=		charsetfix cpe gmake iconv:wchar_t libtool ncurses perl5 tar:xz tex
 
 CONFIGURE_ARGS=	--with-external-libintl-perl \
@@ -40,13 +39,16 @@ PKGDEINSTALL=	${PKGINSTALL}
 
 INFO=		info-stnd texi2any_api texi2any_internals texinfo
 
-# Use the date on https://ftp.gnu.org/gnu/texinfo/
-HTMLXREF_CNF_RELDATE=	20230402
-TEXI2DVI_RELDATE=	20221130
-TEXINFO_TEX_RELDATE=	20230327
-
 CPE_VENDOR=	gnu
-CPE_VERSION=	${PORTVERSION:R}
+
+# Use the date on https://ftp.gnu.org/gnu/texinfo/
+HTMLXREF_CNF_RELDATE=	20250626
+TEXI2DVI_RELDATE=	20241223
+TEXI2PDF_RELDATE=	20241223
+TEXINFO_TEX_RELDATE=	20250711
+
+OPTIONS_DEFINE=	NLS
+OPTIONS_SUB=	yes
 
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext
@@ -55,6 +57,7 @@ post-patch:
 	@${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/texinfo.tex-${TEXINFO_TEX_RELDATE} ${WRKSRC}/doc/texinfo.tex
 	@${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/htmlxref.cnf-${HTMLXREF_CNF_RELDATE} ${WRKSRC}/util/htmlxref.cnf
 	@${INSTALL_SCRIPT} ${DISTDIR}/${DIST_SUBDIR}/texi2dvi-${TEXI2DVI_RELDATE} ${WRKSRC}/util/texi2dvi
+	@${INSTALL_SCRIPT} ${DISTDIR}/${DIST_SUBDIR}/texi2pdf-${TEXI2PDF_RELDATE} ${WRKSRC}/util/texi2pdf
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/util/htmlxref.cnf ${STAGEDIR}${DATADIR}

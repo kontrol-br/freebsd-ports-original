@@ -1,51 +1,50 @@
 PORTNAME=	xdg-desktop-portal-hyprland
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.5.0
+DISTVERSION=	1.3.10
 CATEGORIES=	x11 wayland
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	tagattie@FreeBSD.org
 COMMENT=	xdg-desktop-portal backend for hyprland
 WWW=		https://github.com/hyprwm/xdg-desktop-portal-hyprland
 
-LICENSE=	MIT
+LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	wayland-protocols>=1.24:graphics/wayland-protocols
-LIB_DEPENDS=	libbasu.so:devel/basu \
-		libinih.so:devel/inih \
-		libepoll-shim.so:devel/libepoll-shim \
+BUILD_DEPENDS=	hyprland-protocols>0:graphics/hyprland-protocols \
+		hyprwayland-scanner>=0.4.2:devel/hyprwayland-scanner \
+		wayland-protocols>=1.33:graphics/wayland-protocols
+LIB_DEPENDS=	libhyprlang.so:devel/hyprlang \
+		libhyprutils.so:devel/hyprutils \
+		libsdbus-c++.so:devel/sdbus-cpp \
 		libdrm.so:graphics/libdrm \
 		libwayland-client.so:graphics/wayland \
-		libuuid.so:misc/e2fsprogs-libuuid \
 		libpipewire-0.3.so:multimedia/pipewire
-RUN_DEPENDS=	grim:x11/grim \
-		hyprland-share-picker:x11/hyprland-share-picker@${FLAVOR}
+RUN_DEPENDS=	xdg-desktop-portal>0:deskutils/xdg-desktop-portal \
+		grim:x11/grim \
+		slurp:x11/slurp
 
-FLAVORS=	qt5 qt6
-qt5_CONFLICTS_INSTALL=	${PORTNAME}-qt6
-qt6_CONFLICTS_INSTALL=	${PORTNAME}
-qt6_PKGNAMESUFFIX=	-qt6
+USES=		cmake compiler:c++11-lib gl pkgconfig qt:6
 
-USES=		compiler:c11 gl meson pkgconfig
 USE_GITHUB=	yes
-USE_GL=		gbm
 GH_ACCOUNT=	hyprwm
-GH_TUPLE=	hyprwm:hyprland-protocols:4d29e48:hyprland_protocols/subprojects/hyprland-protocols
-MESON_ARGS=	-Dsd-bus-provider=basu -Dsystemd=disabled
-PLIST_FILES=	libexec/${PORTNAME} \
+
+USE_GL=		gbm
+USE_QT=		base wayland:run
+
+LDFLAGS+=	-Wl,--as-needed # GL, sdbus-cpp deps
+
+PLIST_FILES=	bin/hyprland-share-picker \
+		lib/systemd/user/${PORTNAME}.service \
+		libexec/${PORTNAME} \
 		share/dbus-1/services/org.freedesktop.impl.portal.desktop.hyprland.service \
 		share/xdg-desktop-portal/portals/hyprland.portal
 
-OPTIONS_DEFINE=	SLURP
-OPTIONS_DEFAULT=SLURP
+PORTDOCS=	CONTRIBUTING.md README.md
 
-SLURP_DESC=		Simple output chooser
-SLURP_RUN_DEPENDS=	slurp:x11/slurp
+OPTIONS_DEFINE=	DOCS
 
-.ifdef GH_TUPLE
-post-configure:
-	@${REINPLACE_CMD} 's/meson install/& \
-		--skip-subprojects/' ${BUILD_WRKSRC}/build.ninja
-.endif
+post-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_MAN} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

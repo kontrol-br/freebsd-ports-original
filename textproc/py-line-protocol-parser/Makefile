@@ -1,9 +1,10 @@
 PORTNAME=	line-protocol-parser
 PORTVERSION=	1.1.1
+PORTREVISION=	1
 CATEGORIES=	textproc python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	bland@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Parses InfluxDB line protocol strings into Python dictionaries
 WWW=		https://github.com/Penlect/line-protocol-parser/
 

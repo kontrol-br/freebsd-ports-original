@@ -1,8 +1,8 @@
-PORTNAME=	libxml2
-DISTVERSION=	2.10.4
-PORTREVISION?=	0
+PORTNAME?=	libxml2
+DISTVERSION=	2.14.5
 CATEGORIES?=	textproc gnome
-MASTER_SITES=	GNOME/sources/${PORTNAME}/${DISTVERSION:R}/
+MASTER_SITES=	GNOME
+DISTNAME=	libxml2-${DISTVERSION}
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	desktop@FreeBSD.org
@@ -11,46 +11,40 @@ WWW=		http://xmlsoft.org/
 
 LICENSE=	MIT
 
-# Upstream offers CMake in addition to autotools, but we use the latter.
-# CMake is a heavy build system, heavier than autotools, and this
-# port has many consumers of its core functionality. Some such
-# consumers, especially when optioned appropriately (and users have
-# a right to do so), may become dependencies of dependencies of CMake.
-# Additionally, some consumers rely on symbol versioning that CMake
-# does not support (as of Q2 2022) without a hack. Please consider the
-# effects of the ecosystem and technical merits before considering
-# switching build systems again. Any changes to this end not dogfooded
-# thoroughly may be reverted.
-USES+=		cpe iconv libtool localbase pathfix pkgconfig tar:xz
+# Upstream recommends autotools on Unix-like systems
+USES+=		cpe gmake iconv libtool localbase pathfix pkgconfig tar:xz
 CPE_VENDOR=	xmlsoft
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 # Don't build with Python support unless requested
-CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/share/ \
-		--with-lzma=/usr \
-		--${LIBXML2_SLAVE:Dwith:Uwithout}-python${LIBXML2_SLAVE:D=${PYTHON_CMD}:U}
+CONFIGURE_ARGS+=	--sysconfdir=${PREFIX}/share/ \
+			--with-lzma=/usr \
+			--${LIBXML2_SLAVE:Dwith:Uwithout}-python${LIBXML2_SLAVE:D=${PYTHON_CMD}:U}
 
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 
-PLIST_SUB+=	LIBVERSION=${DISTVERSION}
-
-OPTIONS_DEFINE=	DOCS ICU MEM_DEBUG READLINE STATIC THREAD_ALLOC
-OPTIONS_DEFAULT=	READLINE STATIC
+OPTIONS_DEFINE=	DOCS ICU READLINE STATIC THREAD_ALLOC
+OPTIONS_GROUP=	LEGACY
+OPTIONS_GROUP_LEGACY=	HTTP LZMA ZLIB
+OPTIONS_DEFAULT=	HTTP LZMA READLINE STATIC ZLIB
 OPTIONS_SUB=		yes
 
-MEM_DEBUG_DESC=		Memory debugging (DEVELOPERS ONLY!)
+HTTP_DESC=		HTTP support
+LEGACY_DESC=		Enable legacy API compatibility
 READLINE_DESC=		History for xmllint
 THREAD_ALLOC_DESC=	Per-thread memory (DEVELOPERS ONLY!)
 
-ICU_LIB_DEPENDS=		libicudata.so:devel/icu
+HTTP_CONFIGURE_WITH=		http
+ICU_LIB_DEPENDS=		libicuuc.so:devel/icu
 ICU_CONFIGURE_WITH=		icu
-MEM_DEBUG_CONFIGURE_WITH=	mem-debug
+LZMA_CONFIGURE_WITH=		lzma
 READLINE_LIB_DEPENDS=		libreadline.so:devel/readline
 READLINE_CONFIGURE_WITH=	history \
 				readline
 STATIC_CONFIGURE_ENABLE=	static
 THREAD_ALLOC_CONFIGURE_WITH=	thread-alloc
+ZLIB_CONFIGURE_WITH=		zlib
 
 post-patch:
 	@${REINPLACE_CMD} -e \
@@ -67,7 +61,7 @@ post-install:
 # Install remaining documentation that's not connected to autotools
 	${INSTALL_MAN} ${WRKSRC}/doc/*.html ${STAGEDIR}${DOCSDIR}
 .else
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_LIBDIR}/site-packages/libxml2mod${PYTHON_EXT_SUFFIX}.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_LIBDIR}/site-packages/libxml2mod${PYTHON_SOABI}.so
 .endif
 
 .include <bsd.port.mk>

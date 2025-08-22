@@ -1,5 +1,5 @@
 PORTNAME=	mysqlclient
-DISTVERSION=	2.2.0
+DISTVERSION=	2.2.7
 CATEGORIES=	databases python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	${PY_SETUPTOOLS} \
 		${PYTHON_PKGNAMEPREFIX}wheel>=0.37:devel/py-wheel@${PY_FLAVOR}
 
-USES=		compiler:c11 iconv mysql pkgconfig python ssl
+USES=		compiler:c11 dos2unix iconv mysql pkgconfig python ssl
 USE_PYTHON=	autoplist concurrent pep517
 
 PORTDOCS=	*

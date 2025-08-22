@@ -1,5 +1,5 @@
-TIMESTAMP = 1690187187
-SHA256 (go/sysutils_minikube/minikube-v1.31.1/v1.31.1.mod) = bae93f60ae71320273980e4bbec74d36726233c2b6a863ab37d068440123f0fe
-SIZE (go/sysutils_minikube/minikube-v1.31.1/v1.31.1.mod) = 11597
-SHA256 (go/sysutils_minikube/minikube-v1.31.1/v1.31.1.zip) = 91a1d88b75294e996e8d22bb491c97cabfed7840c4aa41a0a28218ee9c3c7e31
-SIZE (go/sysutils_minikube/minikube-v1.31.1/v1.31.1.zip) = 89828142
+TIMESTAMP = 1749028722
+SHA256 (go/sysutils_minikube/minikube-v1.36.0/v1.36.0.mod) = e1ad9432cbfba02fe79490a68dd01d7ad8ba7f857dc3c9ddbf255e4c8b1c534a
+SIZE (go/sysutils_minikube/minikube-v1.36.0/v1.36.0.mod) = 13125
+SHA256 (go/sysutils_minikube/minikube-v1.36.0/v1.36.0.zip) = 469cc6dba47f4030b42acc8ed1abc8a87d557a44ede868902bd6442295d66672
+SIZE (go/sysutils_minikube/minikube-v1.36.0/v1.36.0.zip) = 107871930

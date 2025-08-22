@@ -1,8 +1,10 @@
 bin/far2l
+bin/far2ledit
 lib/far2l/Plugins/NetRocks/plug/NetRocks-FILE.broker
 lib/far2l/Plugins/NetRocks/plug/NetRocks-FTP.broker
 %%NFS%%lib/far2l/Plugins/NetRocks/plug/NetRocks-NFS.broker
 %%SFTP%%lib/far2l/Plugins/NetRocks/plug/NetRocks-SFTP.broker
+lib/far2l/Plugins/NetRocks/plug/NetRocks-SHELL.broker
 %%SMB%%lib/far2l/Plugins/NetRocks/plug/NetRocks-SMB.broker
 %%WEBDAV%%lib/far2l/Plugins/NetRocks/plug/NetRocks-WebDAV.broker
 lib/far2l/Plugins/NetRocks/plug/NetRocks.far-plug-wide
@@ -24,7 +26,11 @@ lib/far2l/far2l_askpass
 %%WXGTK%%lib/far2l/far2l_gui.so
 lib/far2l/far2l_sudoapp
 %%X11%%lib/far2l/far2l_ttyx.broker
+share/applications/far2l-tty.desktop
 share/applications/far2l.desktop
+share/applications/far2ledit-tty.desktop
+share/applications/far2ledit.desktop
+share/bash-completion/completions/far2l
 %%DATADIR%%/FarBel.lng
 %%DATADIR%%/FarCze.lng
 %%DATADIR%%/FarEng.hlf
@@ -38,9 +44,12 @@ share/applications/far2l.desktop
 %%DATADIR%%/FarSpa.lng
 %%DATADIR%%/FarUkr.hlf
 %%DATADIR%%/FarUkr.lng
+%%DATADIR%%/Plugins/NetRocks/plug/SHELL/remote.sh
+%%DATADIR%%/Plugins/NetRocks/plug/SHELL/ways.ini
 %%DATADIR%%/Plugins/NetRocks/plug/bel.lng
 %%DATADIR%%/Plugins/NetRocks/plug/eng.lng
 %%DATADIR%%/Plugins/NetRocks/plug/helpe.hlf
+%%DATADIR%%/Plugins/NetRocks/plug/helpr.hlf
 %%DATADIR%%/Plugins/NetRocks/plug/rus.lng
 %%DATADIR%%/Plugins/align/plug/AlignBel.lng
 %%DATADIR%%/Plugins/align/plug/AlignEng.lng
@@ -70,6 +79,7 @@ share/applications/far2l.desktop
 %%DATADIR%%/Plugins/calc/plug/units/time.csr
 %%DATADIR%%/Plugins/calc/plug/units/volume.csr
 %%DATADIR%%/Plugins/calc/plug/user-examples.csr
+%%DATADIR%%/Plugins/colorer/base/CHANGELOG.md
 %%DATADIR%%/Plugins/colorer/base/catalog.xml
 %%DATADIR%%/Plugins/colorer/base/hrc/auto/empty.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/base/asm.hrc
@@ -83,6 +93,7 @@ share/applications/far2l.desktop
 %%DATADIR%%/Plugins/colorer/base/hrc/base/d1-phobos.ent.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/base/d1-tango.ent.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/base/d2-phobos.ent.hrc
+%%DATADIR%%/Plugins/colorer/base/hrc/base/default.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/base/forth.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/base/fortran.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/base/fsharp.hrc
@@ -144,6 +155,7 @@ share/applications/far2l.desktop
 %%DATADIR%%/Plugins/colorer/base/hrc/inet/gen/xhtml-frameset.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/inet/gen/xhtml-strict.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/inet/gen/xhtml-trans.hrc
+%%DATADIR%%/Plugins/colorer/base/hrc/inet/graphql.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/inet/gsp.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/inet/haml.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/inet/html-css.hrc
@@ -161,7 +173,7 @@ share/applications/far2l.desktop
 %%DATADIR%%/Plugins/colorer/base/hrc/inet/svg-css.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/inet/twig.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/inet/vbscript.hrc
-%%DATADIR%%/Plugins/colorer/base/hrc/lib/default.hrc
+%%DATADIR%%/Plugins/colorer/base/hrc/lib/def.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/lib/doxygen.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/lib/far-macro-string.ent.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/lib/far.hrc
@@ -326,6 +338,7 @@ share/applications/far2l.desktop
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/config.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/dcl.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/dfm.hrc
+%%DATADIR%%/Plugins/colorer/base/hrc/scripts/dockerfile.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/far/farhelp.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/far/farlng.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/far/farmailscript.hrc
@@ -343,6 +356,8 @@ share/applications/far2l.desktop
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/gen/wsc.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/gen/wsf.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/graphviz.hrc
+%%DATADIR%%/Plugins/colorer/base/hrc/scripts/hcl/hcl.hrc
+%%DATADIR%%/Plugins/colorer/base/hrc/scripts/hcl/terraform.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/ini/bootini.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/ini/configsys.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/ini/ini.hrc
@@ -352,6 +367,7 @@ share/applications/far2l.desktop
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/javacc.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/javapolicy.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/javaprop.hrc
+%%DATADIR%%/Plugins/colorer/base/hrc/scripts/jenkinsfile.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/lemon.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/lex.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/linkdef.hrc
@@ -374,6 +390,8 @@ share/applications/far2l.desktop
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/scons.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/sh-keywords.ent.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/sh.hrc
+%%DATADIR%%/Plugins/colorer/base/hrc/scripts/shell-bash.hrc
+%%DATADIR%%/Plugins/colorer/base/hrc/scripts/shell-posix.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/solution.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/squirrel.hrc
 %%DATADIR%%/Plugins/colorer/base/hrc/scripts/tex.hrc
@@ -409,7 +427,6 @@ share/applications/far2l.desktop
 %%DATADIR%%/Plugins/colorer/base/hrd/catalog-console.xml
 %%DATADIR%%/Plugins/colorer/base/hrd/catalog-rgb.xml
 %%DATADIR%%/Plugins/colorer/base/hrd/catalog-text.xml
-%%DATADIR%%/Plugins/colorer/base/hrd/catalog-user.xml
 %%DATADIR%%/Plugins/colorer/base/hrd/console/black.hrd
 %%DATADIR%%/Plugins/colorer/base/hrd/console/blue.hrd
 %%DATADIR%%/Plugins/colorer/base/hrd/console/contrib/black_ay.hrd
@@ -433,6 +450,7 @@ share/applications/far2l.desktop
 %%DATADIR%%/Plugins/colorer/base/hrd/css/blue.css
 %%DATADIR%%/Plugins/colorer/base/hrd/css/contrib/bred3.css
 %%DATADIR%%/Plugins/colorer/base/hrd/css/contrib/fmx.css
+%%DATADIR%%/Plugins/colorer/base/hrd/css/contrib/navy-mirror.css
 %%DATADIR%%/Plugins/colorer/base/hrd/css/contrib/visual-rgb.css
 %%DATADIR%%/Plugins/colorer/base/hrd/css/eclipse.css
 %%DATADIR%%/Plugins/colorer/base/hrd/css/grayscale.css
@@ -446,6 +464,7 @@ share/applications/far2l.desktop
 %%DATADIR%%/Plugins/colorer/base/hrd/rgb/blue.hrd
 %%DATADIR%%/Plugins/colorer/base/hrd/rgb/contrib/bred3.hrd
 %%DATADIR%%/Plugins/colorer/base/hrd/rgb/contrib/fmx.hrd
+%%DATADIR%%/Plugins/colorer/base/hrd/rgb/contrib/navy-mirror.hrd
 %%DATADIR%%/Plugins/colorer/base/hrd/rgb/contrib/visual-rgb.hrd
 %%DATADIR%%/Plugins/colorer/base/hrd/rgb/default.hrd
 %%DATADIR%%/Plugins/colorer/base/hrd/rgb/eclipse.hrd
@@ -489,6 +508,7 @@ share/applications/far2l.desktop
 %%DATADIR%%/Plugins/filecase/plug/CaseRus.lng
 %%DATADIR%%/Plugins/incsrch/plug/incsrche.hlf
 %%DATADIR%%/Plugins/incsrch/plug/incsrchr.hlf
+%%DATADIR%%/Plugins/incsrch/plug/isrcbel.lng
 %%DATADIR%%/Plugins/incsrch/plug/isrceng.lng
 %%DATADIR%%/Plugins/incsrch/plug/isrcrus.lng
 %%DATADIR%%/Plugins/inside/plug/bel.lng
@@ -516,18 +536,31 @@ share/applications/far2l.desktop
 %%DATADIR%%/view.sh
 %%DATADIR%%/xlats.ini
 share/icons/far2l.svg
+share/icons/far2ledit.svg
 share/icons/hicolor/1024x1024/apps/far2l.svg
+share/icons/hicolor/1024x1024/apps/far2ledit.svg
 share/icons/hicolor/128x128/apps/far2l.svg
+share/icons/hicolor/128x128/apps/far2ledit.svg
 share/icons/hicolor/16x16/apps/far2l.svg
+share/icons/hicolor/16x16/apps/far2ledit.svg
 share/icons/hicolor/192x192/apps/far2l.svg
+share/icons/hicolor/192x192/apps/far2ledit.svg
 share/icons/hicolor/24x24/apps/far2l.svg
+share/icons/hicolor/24x24/apps/far2ledit.svg
 share/icons/hicolor/256x256/apps/far2l.svg
+share/icons/hicolor/256x256/apps/far2ledit.svg
 share/icons/hicolor/32x32/apps/far2l.svg
+share/icons/hicolor/32x32/apps/far2ledit.svg
 share/icons/hicolor/48x48/apps/far2l.svg
+share/icons/hicolor/48x48/apps/far2ledit.svg
 share/icons/hicolor/512x512/apps/far2l.svg
+share/icons/hicolor/512x512/apps/far2ledit.svg
 share/icons/hicolor/64x64/apps/far2l.svg
+share/icons/hicolor/64x64/apps/far2ledit.svg
 share/icons/hicolor/72x72/apps/far2l.svg
+share/icons/hicolor/72x72/apps/far2ledit.svg
 share/icons/hicolor/96x96/apps/far2l.svg
+share/icons/hicolor/96x96/apps/far2ledit.svg
 share/man/man1/far2l.1.gz
 share/man/ru/man1/far2l.1.gz
 @dir lib/far2l/Plugins/calc/plug/units

@@ -1,5 +1,5 @@
-TIMESTAMP = 1683348513
-SHA256 (go/dns_dnsx/dnsx-v1.1.4/v1.1.4.mod) = 8305ba881bc483bb45c263665444cdea35844bbbfc3de1f05118679cb7864f00
-SIZE (go/dns_dnsx/dnsx-v1.1.4/v1.1.4.mod) = 4367
-SHA256 (go/dns_dnsx/dnsx-v1.1.4/v1.1.4.zip) = dda9205c2e6618bc45fd3ef8787f8b3f132ab80746f21fc7bccc933f09a3d630
-SIZE (go/dns_dnsx/dnsx-v1.1.4/v1.1.4.zip) = 318815
+TIMESTAMP = 1738682873
+SHA256 (go/dns_dnsx/dnsx-v1.2.2/v1.2.2.mod) = efa1ab1a13833d9e03eeaffa43551d06d1db36af4ff7284b3efa8de6d687af2f
+SIZE (go/dns_dnsx/dnsx-v1.2.2/v1.2.2.mod) = 6136
+SHA256 (go/dns_dnsx/dnsx-v1.2.2/v1.2.2.zip) = 161451dbd35f57a6d9b73e1334a63cd101b0b0e4e01b7daadeb4413b3077ddc7
+SIZE (go/dns_dnsx/dnsx-v1.2.2/v1.2.2.zip) = 329288

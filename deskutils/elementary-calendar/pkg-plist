@@ -1,8 +1,8 @@
 bin/io.elementary.calendar
-etc/xdg/autostart/io.elementary.calendar-daemon.desktop
 include/elementary-calendar/elementary-calendar.h
 lib/io.elementary.calendar/plugins/CalDAV/libcaldav.so
 lib/io.elementary.calendar/plugins/Google/libgoogle.so
+lib/io.elementary.calendar/plugins/Web/libweb.so
 lib/libelementary-calendar.so
 lib/libelementary-calendar.so.0
 lib/libelementary-calendar.so.0.1
@@ -38,6 +38,7 @@ share/locale/el/LC_MESSAGES/io.elementary.calendar.mo
 share/locale/en_AU/LC_MESSAGES/io.elementary.calendar.mo
 share/locale/en_CA/LC_MESSAGES/io.elementary.calendar.mo
 share/locale/en_GB/LC_MESSAGES/io.elementary.calendar.mo
+share/locale/en_ZA/LC_MESSAGES/io.elementary.calendar.mo
 share/locale/eo/LC_MESSAGES/io.elementary.calendar.mo
 share/locale/es/LC_MESSAGES/io.elementary.calendar.mo
 share/locale/et/LC_MESSAGES/io.elementary.calendar.mo
@@ -104,6 +105,6 @@ share/locale/vi/LC_MESSAGES/io.elementary.calendar.mo
 share/locale/zh/LC_MESSAGES/io.elementary.calendar.mo
 share/locale/zh_CN/LC_MESSAGES/io.elementary.calendar.mo
 share/locale/zh_TW/LC_MESSAGES/io.elementary.calendar.mo
-share/metainfo/io.elementary.calendar.appdata.xml
+share/metainfo/io.elementary.calendar.metainfo.xml
 share/vala/vapi/elementary-calendar.deps
 share/vala/vapi/elementary-calendar.vapi

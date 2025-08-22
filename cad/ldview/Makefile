@@ -1,7 +1,7 @@
 PORTNAME=	ldview
 DISTVERSIONPREFIX=	v
 DISTVERSION=	4.5
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	cad
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -28,7 +28,7 @@ USE_XORG=	x11
 
 SHEBANG_FILES=	desktop/ldraw-thumbnailer
 
-QMAKE_ARGS=	MANDIR=${PREFIX}/man CONFIG+=EXPORT_3DS
+QMAKE_ARGS=	CONFIG+=EXPORT_3DS
 
 WRKSRC_SUBDIR=	QT
 
@@ -36,7 +36,7 @@ WRKSRC_SUBDIR=	QT
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|"/usr/share/ldraw"|"${PREFIX}/share/ldraw"|' ${WRKSRC}/ModelViewerWidget.cpp
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 	@${REINPLACE_CMD} -e 's|register ||' ${WRKSRC}/../LDLoader/LDrawIni.c
 .endif
 

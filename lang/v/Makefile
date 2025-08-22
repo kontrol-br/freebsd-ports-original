@@ -1,5 +1,5 @@
 PORTNAME=	v
-PORTVERSION=	0.4
+PORTVERSION=	0.4.10
 CATEGORIES=	lang
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -10,17 +10,19 @@ WWW=		https://vlang.io/ \
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_i386=	error: mismatched types
+
 USES=		compiler:c11 gmake
 
 ALL_TARGET=	v
 LDFLAGS+=	-lm
 TEST_TARGET=	check
 
-GH_ACCOUNT=	vlang
-GH_TUPLE=	vlang:vc:02102e5:vc/vc
 USE_GITHUB=	yes
+GH_TUPLE=	vlang:v:${PORTVERSION} \
+		vlang:vc:66ea39b:vc/vc
 
-PORTSCOUT=	skipv:weekly.*
+PORTSCOUT=	limit:^[0-9\.]*$$
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 

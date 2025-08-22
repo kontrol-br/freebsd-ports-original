@@ -1,6 +1,6 @@
 PORTNAME=	requests-credssp
 PORTVERSION=	1.2.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,8 +17,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}openssl>=16.0.0:security/py-openssl@${PY_FLA
 		${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyspnego>0:security/py-pyspnego@${PY_FLAVOR}
 
-USES=		python pycryptography:run
-USE_PYTHON=	autoplist distutils
+USES=		python
+USE_PYTHON=	autoplist cryptography distutils
 
 NO_ARCH=	yes
 

@@ -1,6 +1,6 @@
 PORTNAME=	av
-PORTVERSION=	10.0.0
-PORTREVISION=	2
+DISTVERSION=	14.0.1
+PORTREVISION=	1
 CATEGORIES=	multimedia python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,6 +16,8 @@ LIB_DEPENDS=	libavutil.so:multimedia/ffmpeg
 
 USES=		python pkgconfig
 USE_PYTHON=	autoplist concurrent cython distutils
+
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 
 post-install:
 	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR}/av/ -name '*.so' | ${XARGS} ${STRIP_CMD}

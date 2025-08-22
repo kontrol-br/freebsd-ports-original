@@ -1,19 +1,19 @@
 PORTNAME=	goocanvas
 PORTVERSION=	3.0.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	3
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	Cairo-based canvas widget for GTK+
+COMMENT=	Cairo-based canvas widget for GTK
 WWW=		https://gitlab.gnome.org/GNOME/goocanvas/
 
 LICENSE=	LGPL20
 
 USES=		gmake gnome libtool pkgconfig tar:xz
-USE_GNOME=	cairo gdkpixbuf2 gtk30 introspection:build
+USE_GNOME=	cairo gdkpixbuf gtk30 introspection:build
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-python=no

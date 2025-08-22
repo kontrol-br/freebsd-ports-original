@@ -1,6 +1,6 @@
 PORTNAME=	jql
 DISTVERSIONPREFIX=	jql-v
-DISTVERSION=	7.0.2
+DISTVERSION=	8.0.7
 CATEGORIES=	textproc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -15,120 +15,111 @@ USES=		cargo
 USE_GITHUB=	yes
 GH_ACCOUNT=	yamafaktory
 
-CARGO_CRATES=	addr2line-0.20.0 \
-		adler-1.0.2 \
+CARGO_CRATES=	addr2line-0.24.2 \
+		adler2-2.0.0 \
+		aho-corasick-1.1.3 \
 		anes-0.1.6 \
-		anstream-0.3.2 \
-		anstyle-1.0.1 \
-		anstyle-parse-0.2.1 \
-		anstyle-query-1.0.0 \
-		anstyle-wincon-1.0.1 \
-		anyhow-1.0.72 \
-		autocfg-1.1.0 \
-		backtrace-0.3.68 \
-		bitflags-2.3.3 \
-		bumpalo-3.13.0 \
-		bytes-1.4.0 \
+		anstream-0.6.18 \
+		anstyle-1.0.10 \
+		anstyle-parse-0.2.6 \
+		anstyle-query-1.1.2 \
+		anstyle-wincon-3.0.6 \
+		anyhow-1.0.98 \
+		autocfg-1.4.0 \
+		backtrace-0.3.74 \
+		bumpalo-3.16.0 \
+		bytes-1.9.0 \
 		cast-0.3.0 \
-		cc-1.0.79 \
+		cc-1.2.2 \
 		cfg-if-1.0.0 \
-		ciborium-0.2.1 \
-		ciborium-io-0.2.1 \
-		ciborium-ll-0.2.1 \
-		clap-4.3.16 \
-		clap_builder-4.3.16 \
-		clap_derive-4.3.12 \
-		clap_lex-0.5.0 \
-		colorchoice-1.0.0 \
-		colored_json-3.2.0 \
-		criterion-0.5.1 \
+		ciborium-0.2.2 \
+		ciborium-io-0.2.2 \
+		ciborium-ll-0.2.2 \
+		clap-4.5.40 \
+		clap_builder-4.5.40 \
+		clap_derive-4.5.40 \
+		clap_lex-0.7.4 \
+		colorchoice-1.0.3 \
+		colored_json-5.0.0 \
+		criterion-0.6.0 \
 		criterion-plot-0.5.0 \
-		crossbeam-channel-0.5.8 \
-		crossbeam-deque-0.8.3 \
-		crossbeam-epoch-0.9.15 \
-		crossbeam-utils-0.8.16 \
-		either-1.8.1 \
-		equivalent-1.0.0 \
-		errno-0.3.1 \
-		errno-dragonfly-0.1.2 \
-		gimli-0.27.3 \
-		half-1.8.2 \
-		hashbrown-0.14.0 \
-		heck-0.4.1 \
-		hermit-abi-0.3.1 \
-		indexmap-2.0.0 \
-		is-terminal-0.4.8 \
+		crossbeam-deque-0.8.5 \
+		crossbeam-epoch-0.9.18 \
+		crossbeam-utils-0.8.20 \
+		crunchy-0.2.2 \
+		either-1.13.0 \
+		equivalent-1.0.1 \
+		gimli-0.31.1 \
+		half-2.4.1 \
+		hashbrown-0.15.2 \
+		heck-0.5.0 \
+		indexmap-2.9.0 \
+		is_terminal_polyfill-1.70.1 \
 		itertools-0.10.5 \
-		itoa-1.0.6 \
-		js-sys-0.3.64 \
-		libc-0.2.147 \
-		linux-raw-sys-0.4.3 \
-		log-0.4.19 \
-		memchr-2.5.0 \
-		memoffset-0.9.0 \
-		minimal-lexical-0.2.1 \
-		miniz_oxide-0.7.1 \
-		nom-7.1.3 \
-		num-traits-0.2.15 \
-		num_cpus-1.16.0 \
-		object-0.31.1 \
-		once_cell-1.18.0 \
-		oorandom-11.1.3 \
-		pin-project-lite-0.2.9 \
-		plotters-0.3.5 \
-		plotters-backend-0.3.5 \
-		plotters-svg-0.3.5 \
-		proc-macro2-1.0.63 \
-		psm-0.1.21 \
-		quote-1.0.29 \
-		rayon-1.7.0 \
-		rayon-core-1.11.0 \
-		regex-1.8.4 \
-		regex-syntax-0.7.2 \
-		rustc-demangle-0.1.23 \
-		rustix-0.38.1 \
-		ryu-1.0.13 \
+		itertools-0.13.0 \
+		itoa-1.0.14 \
+		js-sys-0.3.74 \
+		libc-0.2.167 \
+		log-0.4.22 \
+		memchr-2.7.4 \
+		miniz_oxide-0.8.0 \
+		num-traits-0.2.19 \
+		object-0.36.5 \
+		once_cell-1.20.2 \
+		oorandom-11.1.4 \
+		pin-project-lite-0.2.15 \
+		plotters-0.3.7 \
+		plotters-backend-0.3.7 \
+		plotters-svg-0.3.7 \
+		proc-macro2-1.0.92 \
+		psm-0.1.24 \
+		quote-1.0.37 \
+		rayon-1.10.0 \
+		rayon-core-1.12.1 \
+		regex-1.11.1 \
+		regex-automata-0.4.9 \
+		regex-syntax-0.8.5 \
+		rustc-demangle-0.1.24 \
+		ryu-1.0.18 \
 		same-file-1.0.6 \
-		scopeguard-1.1.0 \
-		serde-1.0.171 \
-		serde_derive-1.0.171 \
-		serde_json-1.0.102 \
-		serde_stacker-0.1.10 \
-		stacker-0.1.15 \
-		strsim-0.10.0 \
-		syn-2.0.25 \
-		thiserror-1.0.43 \
-		thiserror-impl-1.0.43 \
+		serde-1.0.219 \
+		serde_derive-1.0.219 \
+		serde_json-1.0.140 \
+		serde_stacker-0.1.12 \
+		shlex-1.3.0 \
+		stacker-0.1.17 \
+		strsim-0.11.1 \
+		syn-2.0.90 \
+		thiserror-2.0.12 \
+		thiserror-impl-2.0.12 \
 		tinytemplate-1.2.1 \
-		tokio-1.29.1 \
-		tokio-macros-2.1.0 \
-		unicode-ident-1.0.9 \
-		utf8parse-0.2.1 \
-		walkdir-2.3.3 \
-		wasm-bindgen-0.2.87 \
-		wasm-bindgen-backend-0.2.87 \
-		wasm-bindgen-macro-0.2.87 \
-		wasm-bindgen-macro-support-0.2.87 \
-		wasm-bindgen-shared-0.2.87 \
-		web-sys-0.3.64 \
-		winapi-0.3.9 \
-		winapi-i686-pc-windows-gnu-0.4.0 \
-		winapi-util-0.1.5 \
-		winapi-x86_64-pc-windows-gnu-0.4.0 \
-		windows-sys-0.48.0 \
-		windows-targets-0.48.1 \
-		windows_aarch64_gnullvm-0.48.0 \
-		windows_aarch64_msvc-0.48.0 \
-		windows_i686_gnu-0.48.0 \
-		windows_i686_msvc-0.48.0 \
-		windows_x86_64_gnu-0.48.0 \
-		windows_x86_64_gnullvm-0.48.0 \
-		windows_x86_64_msvc-0.48.0 \
-		yansi-0.5.1
+		tokio-1.45.1 \
+		tokio-macros-2.5.0 \
+		unicode-ident-1.0.14 \
+		utf8parse-0.2.2 \
+		walkdir-2.5.0 \
+		wasm-bindgen-0.2.97 \
+		wasm-bindgen-backend-0.2.97 \
+		wasm-bindgen-macro-0.2.97 \
+		wasm-bindgen-macro-support-0.2.97 \
+		wasm-bindgen-shared-0.2.97 \
+		web-sys-0.3.74 \
+		winapi-util-0.1.9 \
+		windows-sys-0.59.0 \
+		windows-targets-0.52.6 \
+		windows_aarch64_gnullvm-0.52.6 \
+		windows_aarch64_msvc-0.52.6 \
+		windows_i686_gnu-0.52.6 \
+		windows_i686_gnullvm-0.52.6 \
+		windows_i686_msvc-0.52.6 \
+		windows_x86_64_gnu-0.52.6 \
+		windows_x86_64_gnullvm-0.52.6 \
+		windows_x86_64_msvc-0.52.6 \
+		winnow-0.7.11 \
+		yansi-1.0.1
 PLIST_FILES=	bin/${PORTNAME}
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKDIR}/target/*/release/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME} # otherwise there's error: found a virtual manifest at `xx` instead of a package manifest
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+	${INSTALL_PROGRAM} ${WRKDIR}/target/release/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME} # otherwise there's error: found a virtual manifest at `xx` instead of a package manifest
 
 .include <bsd.port.mk>

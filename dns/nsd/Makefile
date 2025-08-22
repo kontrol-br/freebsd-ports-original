@@ -1,5 +1,6 @@
 PORTNAME=	nsd
-DISTVERSION=	4.7.0
+DISTVERSION=	4.12.0
+PORTREVISION=	1
 CATEGORIES=	dns
 MASTER_SITES=	https://www.nlnetlabs.nl/downloads/nsd/
 
@@ -12,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libevent.so:devel/libevent
 
-USES=		cpe ssl
+USES=		cpe ssl pkgconfig
 
 CPE_VENDOR=	nlnetlabs
 USE_RC_SUBR=	nsd
@@ -20,13 +21,11 @@ USE_RC_SUBR=	nsd
 NSDUSER?=	nsd
 NSDGROUP?=	nsd
 NSDLSDIR=	/var
-NSDDBDIR=	/var/db/nsd
 NSDRUNDIR=	/var/run/nsd
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--localstatedir=${NSDLSDIR} \
 		--with-configdir=${ETCDIR} \
-		--with-dbfile=${NSDDBDIR}/nsd.db \
 		--with-libevent=${LOCALBASE} \
 		--with-pidfile=${NSDRUNDIR}/nsd.pid \
 		--with-ssl=${OPENSSLBASE} \
@@ -35,8 +34,7 @@ CONFIGURE_ARGS=	--localstatedir=${NSDLSDIR} \
 USERS=		${NSDUSER}
 GROUPS=		${NSDGROUP}
 
-PLIST_SUB=	NSDDBDIR=${NSDDBDIR} \
-		NSDGROUP=${NSDGROUP} \
+PLIST_SUB=	NSDGROUP=${NSDGROUP} \
 		NSDRUNDIR=${NSDRUNDIR} \
 		NSDUSER=${NSDUSER}
 
@@ -80,8 +78,6 @@ PACKED_CONFIGURE_ENABLE=	packed
 RADIXTREE_CONFIGURE_ENABLE=	radix-tree
 RRL_CONFIGURE_ENABLE=		ratelimit
 ZONE_STATS_CONFIGURE_ENABLE=	zone-stats
-
-NSDMAX_IPS?=	512
 
 post-build-MUNIN_PLUGIN-on:
 	${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' \

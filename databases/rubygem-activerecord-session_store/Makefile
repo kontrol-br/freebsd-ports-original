@@ -1,6 +1,5 @@
 PORTNAME=	activerecord-session_store
-PORTVERSION=	2.0.0
-PORTREVISION=	1
+PORTVERSION=	2.2.0
 CATEGORIES=	databases rubygems
 MASTER_SITES=	RG
 
@@ -11,11 +10,11 @@ WWW=		https://github.com/rails/activerecord-session_store
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
 
-RUN_DEPENDS=	rubygem-actionpack60>=5.2.4.1:www/rubygem-actionpack60 \
-		rubygem-activerecord60>=5.2.4.1:databases/rubygem-activerecord60 \
-		rubygem-multi_json>=1.11.2<2:devel/rubygem-multi_json \
-		rubygem-rack22>=2.0.8,3<3,3:www/rubygem-rack22 \
-		rubygem-railties60>=5.2.4.1:www/rubygem-railties60
+RUN_DEPENDS=	rubygem-actionpack80>=7.0:www/rubygem-actionpack80 \
+		rubygem-activerecord80>=7.0:databases/rubygem-activerecord80 \
+		rubygem-cgi>=0.3.6:www/rubygem-cgi \
+		rubygem-rack>=2.0.8,3<4,3:www/rubygem-rack \
+		rubygem-railties80>=7.0:www/rubygem-railties80
 
 USES=		gem
 

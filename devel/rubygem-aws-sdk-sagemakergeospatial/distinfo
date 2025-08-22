@@ -1,3 +1,3 @@
-TIMESTAMP = 1689399503
-SHA256 (rubygem/aws-sdk-sagemakergeospatial-1.8.0.gem) = 478ace1cc259e88d4bf587c70b1893caf9d853a73816778e0e92c456bfafb673
-SIZE (rubygem/aws-sdk-sagemakergeospatial-1.8.0.gem) = 43008
+TIMESTAMP = 1753370108
+SHA256 (rubygem/aws-sdk-sagemakergeospatial-1.33.0.gem) = f947a8eaac47edd456ea0624dbe96a3ab920dcdba3a3f49a2121dcc32b3e14af
+SIZE (rubygem/aws-sdk-sagemakergeospatial-1.33.0.gem) = 51200

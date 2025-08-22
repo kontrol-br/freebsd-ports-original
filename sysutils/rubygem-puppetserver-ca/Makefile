@@ -1,5 +1,5 @@
 PORTNAME=	puppetserver-ca
-PORTVERSION=	2.6.0
+PORTVERSION=	2.7.0
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 
@@ -11,6 +11,8 @@ LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		gem
+
+CONFLICTS_INSTALL=	rubygem-openvoxserver-ca
 
 NO_ARCH=	yes
 

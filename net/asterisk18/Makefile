@@ -1,5 +1,5 @@
 PORTNAME=	asterisk
-PORTVERSION=	18.19.0
+PORTVERSION=	18.26.3
 CATEGORIES=	net
 MASTER_SITES=	https://downloads.asterisk.org/pub/telephony/%SUBDIR%/:DEFAULT,g729
 MASTER_SITE_SUBDIR=	asterisk/ \
@@ -10,14 +10,17 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY:=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	ports@FreeBSD.org
+DEPRECATED=	Migrate to newer asterisk, security support ends soon
+EXPIRATION_DATE=2025-10-20
+
+MAINTAINER=	cmt@FreeBSD.org
 COMMENT=	Open Source PBX and telephony toolkit
 WWW=		https://www.asterisk.org
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid \
+LIB_DEPENDS=	libuuid.so:misc/libuuid \
 		libjansson.so:devel/jansson
 
 USES=		bison compiler:c11 cpe gmake gnome iconv libedit localbase \
@@ -30,9 +33,11 @@ USE_RC_SUBR=	asterisk
 
 SHEBANG_FILES=	agi/agi-test.agi \
 		agi/jukebox.agi \
-		contrib/scripts/astversion
+		contrib/scripts/astversion \
+		contrib/scripts/ast_coredumper
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--datarootdir=${DATADIR} \
 		--with-ilbc=internal \
 		--with-crypto=${OPENSSLBASE} \
@@ -53,7 +58,6 @@ LDFLAGS+=	-L.
 
 CONFLICTS=		ossp-uuid
 CONFLICTS_BUILD=	linuxthreads
-CONFLICTS_INSTALL=	asterisk13 asterisk16
 
 USERS=	${ASTERISK_USER}
 GROUPS=	${ASTERISK_GROUP} dahdi
@@ -64,10 +68,9 @@ OPTIONS_DEFINE=			ASTVERSION BACKTRACE CURL EXCHANGE FREETDS G729 LDAP LUA MACRO
 OPTIONS_DEFINE_aarch64=		GEOLOCATION
 OPTIONS_DEFINE_amd64=		DAHDI GEOLOCATION
 OPTIONS_DEFINE_i386=		DAHDI GEOLOCATION
-OPTIONS_DEFINE_powerpc=		DAHDI
-OPTIONS_DEFINE_powerpc64=	DAHDI
-OPTIONS_DEFINE_powerpc64le=	DAHDI
-OPTIONS_DEFINE_sparc64=		DAHDI
+OPTIONS_DEFINE_powerpc=		DAHDI GEOLOCATION
+OPTIONS_DEFINE_powerpc64=	DAHDI GEOLOCATION
+OPTIONS_DEFINE_powerpc64le=	DAHDI GEOLOCATION
 OPTIONS_DEFAULT=		CURL FREETDS GSM LUA MACRO MP3PLAYER NEWT ODBC OPUS MYSQL PGSQL \
 				PJSIP PORTAUDIO RADIUS SNMP SPANDSP SPEEX SRTP URIPARSER \
 				VORBIS XMLDOC
@@ -76,7 +79,6 @@ OPTIONS_DEFAULT_i386=		DAHDI XMPP
 OPTIONS_DEFAULT_powerpc=	DAHDI XMPP
 OPTIONS_DEFAULT_powerpc64=	DAHDI XMPP
 OPTIONS_DEFAULT_powerpc64le=	DAHDI XMPP
-OPTIONS_DEFAULT_sparc64=	DAHDI XMPP
 
 OPTIONS_GROUP=			CODECS DATABASE
 OPTIONS_GROUP_CODECS=		GSM NEWG711 OPUS SPEEX VORBIS
@@ -209,26 +211,25 @@ XMLDOC_CONFIGURE_ENABLE=	xmldoc
 XMPP_LIB_DEPENDS=	libiksemel.so:textproc/iksemel
 XMPP_CONFIGURE_WITH=	iksemel
 
-ASTERISK_CORE_G729_SOUNDS=	asterisk-core-sounds-en-g729-1.5.tar.gz
+ASTERISK_CORE_G729_SOUNDS=	asterisk-core-sounds-en-g729-1.6.1.tar.gz
 ASTERISK_MOH_G729_SOUNDS=	asterisk-moh-opsound-g729-2.03.tar.gz
 ASTERISK_USER?=		asterisk
 ASTERISK_GROUP?=	asterisk
 
-PJSIP_VERSION=	2.13.1
+PJSIP_VERSION=	2.14.1
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 USES+=		llvm:max=14
-CPP=            clang-cpp${LLVM_VERSION}
-CC=             clang${LLVM_VERSION}
-CXX=            clang++${LLVM_VERSION}
 .endif
 
 .include <bsd.port.pre.mk>
 
 .if ( ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400092 && ${SSL_DEFAULT} == base ) || ${SSL_DEFAULT:Mopenssl3*}
-CFLAGS+=      -DOPENSSL_API_COMPAT=0x30000000L
+LIB_DEPENDS+=	libgnutls.so:security/gnutls
+CFLAGS+=	-DOPENSSL_API_COMPAT=0x10100000L
+LDFLAGS+=	-lgnutls
 .endif
 
 .if empty(ICONV_LIB)
@@ -254,6 +255,12 @@ LLD_EMULATION=	elf_i386
 LLD_EMULATION=	elf_x86_64
 .elif ${ARCH} == aarch64
 LLD_EMULATION=	aarch64elf
+.elif ${ARCH} == powerpc64le
+LLD_EMULATION=	elf64lppc
+.elif ${ARCH} == powerpc64
+LLD_EMULATION=	elf64ppc
+.elif ${ARCH} == powerpc
+LLD_EMULATION=	elf32ppc
 .endif
 .endif
 

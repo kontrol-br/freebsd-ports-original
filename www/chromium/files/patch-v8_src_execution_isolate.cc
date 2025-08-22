@@ -1,6 +1,6 @@
---- v8/src/execution/isolate.cc.orig	2023-08-04 12:03:57 UTC
+--- v8/src/execution/isolate.cc.orig	2025-08-07 06:57:29 UTC
 +++ v8/src/execution/isolate.cc
-@@ -146,6 +146,10 @@
+@@ -173,6 +173,10 @@
  #include "src/execution/simulator-base.h"
  #endif
  
@@ -11,14 +11,16 @@
  extern "C" const uint8_t v8_Default_embedded_blob_code_[];
  extern "C" uint32_t v8_Default_embedded_blob_code_size_;
  extern "C" const uint8_t v8_Default_embedded_blob_data_[];
-@@ -3958,6 +3962,11 @@ void Isolate::InitializeDefaultEmbeddedBlob() {
+@@ -5206,6 +5210,13 @@ void Isolate::InitializeDefaultEmbeddedBlob() {
    uint32_t code_size = DefaultEmbeddedBlobCodeSize();
    const uint8_t* data = DefaultEmbeddedBlobData();
    uint32_t data_size = DefaultEmbeddedBlobDataSize();
 +
 +#if defined(V8_OS_OPENBSD) && !defined(V8_TARGET_ARCH_IA32)
-+  mprotect(reinterpret_cast<void *>(const_cast<uint8_t *>(code)),
-+          code_size, PROT_READ | PROT_EXEC);
++  if (code_size > 0) {
++    mprotect(reinterpret_cast<void *>(const_cast<uint8_t *>(code)),
++            code_size, PROT_READ | PROT_EXEC);
++  }
 +#endif
  
    if (StickyEmbeddedBlobCode() != nullptr) {

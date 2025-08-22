@@ -1,6 +1,7 @@
 PORTNAME=	ibus-uniemoji
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.6.0-16
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-ga26c364
 CATEGORIES=	textproc
 
@@ -11,7 +12,7 @@ WWW=		https://github.com/salty-horseibus-uniemoji
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}python-Levenshtein>0:devel/py-python-Levenshtein@${PY_FLAVOR} \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Levenshtein>0:devel/py-Levenshtein@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}xdg>0:devel/py-xdg@${PY_FLAVOR} \
 		${LOCALBASE}/share/gir-1.0/IBus-1.0.gir:textproc/ibus
 

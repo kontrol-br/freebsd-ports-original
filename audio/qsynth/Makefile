@@ -1,6 +1,5 @@
 PORTNAME=	qsynth
-DISTVERSION=	0.9.11
-PORTREVISION=	1
+DISTVERSION=	1.0.3
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
@@ -11,7 +10,8 @@ WWW=		https://qsynth.sourceforge.io/
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libfluidsynth.so:audio/fluidsynth
+LIB_DEPENDS=	libfluidsynth.so:audio/fluidsynth \
+		libpipewire-0.3.so:multimedia/pipewire
 
 USES=		cmake compiler:c++17-lang pkgconfig qt:6
 USE_QT=		base svg tools:build

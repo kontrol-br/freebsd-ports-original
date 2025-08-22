@@ -1,5 +1,5 @@
 PORTNAME=	gscan2pdf
-PORTVERSION=	2.13.2
+PORTVERSION=	2.13.4
 PORTREVISION=	3
 CATEGORIES=	graphics
 MASTER_SITES=	SF
@@ -71,8 +71,7 @@ TESSERACT_RUN_DEPENDS=	tesseract:graphics/tesseract
 
 post-patch:
 	@${REINPLACE_CMD} -e \
-		's|$$sharedir/man|$$prefixdir/man| ; \
-		 s|1p|1|' ${WRKSRC}/Makefile.PL
+		 's|1p|1|' ${WRKSRC}/Makefile.PL
 	@${REINPLACE_CMD} -e \
 		's|/usr/share|${PREFIX}/share|g' ${WRKSRC}/bin/${PORTNAME}
 

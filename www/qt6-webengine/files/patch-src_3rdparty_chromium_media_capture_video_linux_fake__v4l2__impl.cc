@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/media/capture/video/linux/fake_v4l2_impl.cc.orig	2023-03-28 19:45:02 UTC
+--- src/3rdparty/chromium/media/capture/video/linux/fake_v4l2_impl.cc.orig	2024-04-19 13:02:56 UTC
 +++ src/3rdparty/chromium/media/capture/video/linux/fake_v4l2_impl.cc
-@@ -426,7 +426,7 @@ int FakeV4L2Impl::close(int fd) {
+@@ -562,7 +562,7 @@ int FakeV4L2Impl::close(int fd) {
    return kSuccessReturnValue;
  }
  

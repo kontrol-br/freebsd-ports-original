@@ -8,13 +8,12 @@ DIST_SUBDIR=	eclipse
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Eclipse plug-in that provides FindBugs support
-WWW=		http://findbugs.sourceforge.net/manual/eclipse.html
+WWW=		https://findbugs.sourceforge.net/manual/eclipse.html
 
 RUN_DEPENDS=	eclipse:java/eclipse
 
-USES=		zip
+USES=		java zip
 NO_BUILD=	yes
-USE_JAVA=	yes
 JAVA_OS=	native
 
 PLIST_SUB=	\

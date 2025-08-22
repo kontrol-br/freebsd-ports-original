@@ -1,19 +1,18 @@
 PORTNAME=	gucharmap
-PORTVERSION=	15.0.0
-PORTREVISION=	1
+PORTVERSION=	16.0.2 # must sync with textproc/UCD
 CATEGORIES=	deskutils gnome
 #MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Unicode/ISO10646 character map and font viewer
-WWW=		https://wiki.gnome.org/Gucharmap
+WWW=		https://gitlab.gnome.org/GNOME/gucharmap
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	itstool:textproc/itstool \
-		UCD>=0:textproc/UCD \
+		UCD=16.0.0,1:textproc/UCD \
 		${LOCALBASE}/share/aclocal/yelp.m4:textproc/yelp-tools
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libpcre2-8.so:devel/pcre2
@@ -29,7 +28,6 @@ MESON_ARGS=	-Ducd_path=${LOCALBASE}/share/unicode/ucd/
 USE_GITLAB=	yes
 GL_SITE=	https://gitlab.gnome.org
 GL_ACCOUNT=	GNOME
-GL_TAGNAME=	36de4b20deb47bccd8434e36dcc48db8b9460e47
 
 GLIB_SCHEMAS=	org.gnome.Charmap.gschema.xml
 

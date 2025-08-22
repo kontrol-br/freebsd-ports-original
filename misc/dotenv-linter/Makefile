@@ -1,7 +1,7 @@
 PORTNAME=	dotenv-linter
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.3.0
-PORTREVISION=	6
+PORTREVISION=	23
 CATEGORIES=	misc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -10,6 +10,9 @@ WWW=		https://dotenv-linter.github.io
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_powerpc64=	compilation failure: called `Option::unwrap()` on a `None` value in ring-0.16.20/build.rs: # see https://github.com/dotenv-linter/dotenv-linter/issues/742
+BROKEN_powerpc64le=	compilation failure: called `Option::unwrap()` on a `None` value in ring-0.16.20/build.rs: # see https://github.com/dotenv-linter/dotenv-linter/issues/742
 
 USES=		cargo
 
@@ -137,8 +140,5 @@ CARGO_CRATES=	adler-1.0.2 \
 		winapi-x86_64-pc-windows-gnu-0.4.0
 
 PLIST_FILES=	bin/${PORTNAME}
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

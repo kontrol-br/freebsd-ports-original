@@ -1,12 +1,9 @@
 PORTNAME=	arcan
-DISTVERSION=	0.6.2.1
-PORTREVISION=	2
+DISTVERSION=	0.7.0.1
+PORTREVISION=	1
 CATEGORIES=	multimedia
 
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	9b807ac75c6f.patch:-p2 # https://github.com/letoram/arcan/issues/258
-
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	hoanga@gmail.com	
 COMMENT=	Display Server, Multimedia Framework, Game Engine
 WWW=		https://arcan-fe.com/
 
@@ -30,16 +27,19 @@ WRKSRC_SUBDIR=	src
 CMAKE_ON=	HYBRID_HEADLESS
 CMAKE_OFF=	STATIC_LIBUVC
 CMAKE_ARGS=	-DDISTR_TAG:STRING="portbld" \
-		-DENGINE_BUILDTAG:STRING="${DISTVERSIONFULL}"
+		-DENGINE_BUILDTAG:STRING="${DISTVERSIONFULL}" \
+		-DMAN_DEST=share/man/man1 \
+		-DAPIMAN_DEST=share/man/man3
 LDFLAGS+=	-Wl,--as-needed # bzip2, ffmpeg, librt, libutil, lzma, zlib
 LDFLAGS_i386=	-Wl,-z,notext
 
-OPTIONS_DEFINE=	ESPEAK FFMPEG LUAJIT MANPAGES SDL SUID TESSERACT UVC VLC VNC WAYLAND
-OPTIONS_DEFAULT=ESPEAK FFMPEG LUAJIT MANPAGES SDL SUID TESSERACT UVC VLC VNC WAYLAND
+OPTIONS_DEFINE=	ESPEAK FFMPEG HUNSPELL LUAJIT MANPAGES SDL SUID TESSERACT UVC VLC VNC WAYLAND
+OPTIONS_DEFAULT=ESPEAK FFMPEG HUNSPELL LUAJIT MANPAGES SDL SUID TESSERACT UVC VLC VNC WAYLAND
 OPTIONS_SUB=	yes
 
 ESPEAK_LIB_DEPENDS=	libespeak-ng.so:audio/espeak-ng
 FFMPEG_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
+HUNSPELL_LIB_DEPENDS=	libhunspell-1.7.so:textproc/hunspell
 
 MANPAGES_USES=		ruby:build
 
@@ -74,7 +74,7 @@ WAYLAND_BUILD_DEPENDS=	wayland-protocols>0:graphics/wayland-protocols
 WAYLAND_LIB_DEPENDS=	libwayland-server.so:graphics/wayland \
 			libxcb-icccm.so:x11/xcb-util-wm \
 			libxkbcommon.so:x11/libxkbcommon
-WAYLAND_RUN_DEPENDS=	xwayland-devel>0:x11-servers/xwayland-devel
+WAYLAND_RUN_DEPENDS=	Xwayland:x11-servers/xwayland
 WAYLAND_USES=		xorg
 WAYLAND_USE=		XORG=xcb
 WAYLAND_CMAKE_BOOL_OFF=	DISABLE_WAYLAND
@@ -102,6 +102,10 @@ post-patch-FFMPEG-off:
 		${WRKSRC}/a12/CMakeLists.txt \
 		${WRKSRC}/frameserver/decode/default/CMakeLists.txt \
 		${WRKSRC}/frameserver/encode/default/CMakeLists.txt
+
+post-patch-HUNSPELL-off:
+	@${REINPLACE_CMD} -i.nohunspell '/pkg.*HUNSPELL/d' \
+		${WRKSRC}/frameserver/decode/default/CMakeLists.txt
 
 post-patch-TESSERACT-off:
 	@${REINPLACE_CMD} -i.notesseract '/pkg.*tesseract/d' \

@@ -1,11 +1,12 @@
 PORTNAME=	qmidiarp
 DISTVERSIONPREFIX=	qmidiarp-
 DISTVERSION=	0.7.0
+PORTREVISION=	1
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	MIDI arpeggiator, sequencer and LFO for JACK
-WWW=		http://qmidiarp.sourceforge.net/
+WWW=		https://qmidiarp.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -28,6 +29,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	emuse
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--enable-qt5 --enable-translations=yes
 
 CXXFLAGS+=	-Duint=uint32_t # workaround for https://sourceforge.net/p/qmidiarp/bugs/27/

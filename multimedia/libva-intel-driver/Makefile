@@ -1,6 +1,5 @@
 PORTNAME=	libva-intel-driver
-DISTVERSION=	2.4.1
-PORTREVISION=	2
+DISTVERSION=	2.4.4
 CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -8,7 +7,7 @@ COMMENT=	VAAPI legacy driver for Intel GMA 4500 (Gen4) to UHD 630 (Gen9.5)
 WWW=		https://01.org/linuxmedia
 
 LICENSE=	MIT
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 ONLY_FOR_ARCHS=	amd64 i386
 ONLY_FOR_ARCHS_REASON=	only Intel GPUs on x86 are supported
@@ -19,7 +18,7 @@ LIB_DEPENDS=	libdrm_intel.so:graphics/libdrm \
 
 USES=		compiler:c11 meson pkgconfig
 USE_GITHUB=	yes
-GH_ACCOUNT=	intel
+GH_ACCOUNT=	irql-notlessorequal
 GH_PROJECT=	intel-vaapi-driver
 PLIST_FILES=	lib/dri/i965_drv_video.so
 

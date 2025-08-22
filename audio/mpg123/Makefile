@@ -1,6 +1,5 @@
 PORTNAME=	mpg123
-DISTVERSION=	1.31.3
-PORTREVISION=	1
+DISTVERSION=	1.33.2
 CATEGORIES=	audio
 MASTER_SITES=	SF \
 		https://www.mpg123.de/download/
@@ -11,10 +10,11 @@ WWW=		https://www.mpg123.de/
 
 LICENSE=	LGPL21
 
-USES=		cpe tar:bzip2 libtool localbase pathfix
+USES=		cpe tar:bzip2 libtool localbase
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--with-optimization=0
 INSTALL_TARGET=	install-strip
 

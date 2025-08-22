@@ -1,6 +1,5 @@
 PORTNAME=	GD-Barcode
-PORTVERSION=	1.15
-PORTREVISION=	6
+DISTVERSION=	2.01
 CATEGORIES=	graphics perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -18,4 +17,5 @@ RUN_DEPENDS=	p5-GD>=0:graphics/p5-GD
 USES=		perl5
 USE_PERL5=	configure
 
+NO_ARCH=	yes
 .include <bsd.port.mk>

@@ -1,24 +1,26 @@
 PORTNAME=	pcre2
-PORTVERSION=	10.42
+DISTVERSION=	10.45
+PORTREVISION=	1
 CATEGORIES=	devel
-MASTER_SITES=	https://github.com/PCRE2Project/${PORTNAME}/releases/download/${PORTNAME}-${PORTVERSION}/
+MASTER_SITES=	https://github.com/PCRE2Project/${PORTNAME}/releases/download/${PORTNAME}-${DISTVERSION}/
 
 MAINTAINER=	krion@FreeBSD.org
 COMMENT=	Perl Compatible Regular Expressions library, version 2
 WWW=		https://www.pcre.org/
 
 LICENSE=	BSD3CLAUSE
-LICENSE_FILE=	${WRKSRC}/LICENCE
+LICENSE_FILE=	${WRKSRC}/LICENCE.md
 
 USES=		autoreconf cpe libtool pkgconfig tar:bz2
 CPE_VENDOR=	pcre
 
 USE_LDCONFIG=	yes
 
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-pcre2-16 \
-		--enable-pcre2-32
-INSTALL_TARGET=	install-strip
+GNU_CONFIGURE=			yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
+CONFIGURE_ARGS=			--enable-pcre2-16 \
+				--enable-pcre2-32
+INSTALL_TARGET=			install-strip
 
 OPTIONS_DEFINE=		DOCS LIBBZ2 LIBZ
 OPTIONS_RADIO=		CLI
@@ -27,16 +29,16 @@ OPTIONS_RADIO_CLI=	LIBEDIT READLINE
 LIBBZ2_DESC=	Using pcre2grep with .bz2 files
 LIBZ_DESC=	Using pcre2grep with .gz files
 
-LIBBZ2_CONFIGURE_ON=	--enable-pcre2grep-libbz2
+LIBBZ2_CONFIGURE_ON=		--enable-pcre2grep-libbz2
 LIBEDIT_USES=			libedit
 LIBEDIT_CONFIGURE_ENABLE=	pcre2test-libedit
-LIBZ_CONFIGURE_ON=	--enable-pcre2grep-libz
+LIBZ_CONFIGURE_ON=		--enable-pcre2grep-libz
 READLINE_USES=			readline
 READLINE_CONFIGURE_ENABLE=	pcre2test-libreadline
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} != "sparc64" && ${ARCH:Mmips64*} == "" && ${ARCH:Mriscv64*} == ""
+.if ${ARCH:Mmips64*} == "" && ${ARCH:Mriscv64*} == ""
 CONFIGURE_ARGS+=	--enable-jit
 .else
 CONFIGURE_ARGS+=	--disable-jit
@@ -69,7 +71,7 @@ CONFIGURE_ARGS+=	--with-parens-nest-limit=${WITH_PARENS_NEST_LIMIT}
 
 #prevent regression test coredumps from causing failures on the
 #package-building cluster:
-.ifndef(MAINTAINER_MODE)
+.ifndef (MAINTAINER_MODE)
 CORELIMIT?=	/usr/bin/limits -Sc 0
 .endif
 TESTLOGS?=	RunGrepTest RunTest pcre_jit_test pcre_scanner_unittest \

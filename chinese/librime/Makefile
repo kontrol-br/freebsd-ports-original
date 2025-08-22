@@ -1,6 +1,6 @@
 PORTNAME=	librime
-PORTVERSION=	1.7.3
-PORTREVISION=	6
+PORTVERSION=	1.11.2
+PORTREVISION=	4
 CATEGORIES=	chinese textproc
 
 MAINTAINER=	khng@FreeBSD.org
@@ -19,7 +19,7 @@ LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libopencc.so:chinese/opencc \
 		libyaml-cpp.so:devel/yaml-cpp \
 
-USES=		cmake compiler:c++14-lang gettext pathfix perl5 pkgconfig xorg
+USES=		cmake compiler:c++14-lang gettext perl5 pkgconfig xorg
 USE_PERL5=	build patch
 
 CMAKE_OFF=	BUILD_TEST
@@ -27,7 +27,6 @@ CMAKE_OFF=	BUILD_TEST
 USE_CXXSTD=	c++14
 USE_LDCONFIG=	yes
 USE_XORG=	xorgproto
-LDFLAGS+=	-lintl
 USE_GITHUB=	yes
 GH_ACCOUNT=	rime
 

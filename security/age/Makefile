@@ -1,10 +1,10 @@
 PORTNAME=	age
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.1.1
+DISTVERSION=	1.2.1
 PORTREVISION=	6
 CATEGORIES=	security
 
-MAINTAINER=	dmgk@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Simple, modern and secure file encryption tool
 WWW=		https://github.com/FiloSottile/age
 
@@ -19,10 +19,10 @@ GO_TARGET=	./cmd/age \
 
 PLIST_FILES=	bin/age \
 		bin/age-keygen \
-		man/man1/age-keygen.1.gz \
-		man/man1/age.1.gz
+		share/man/man1/age-keygen.1.gz \
+		share/man/man1/age.1.gz
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/doc/*.1 ${STAGEDIR}${PREFIX}/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/doc/*.1 ${STAGEDIR}${PREFIX}/share/man/man1/
 
 .include <bsd.port.mk>

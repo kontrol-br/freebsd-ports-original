@@ -1,0 +1,154 @@
+PORTNAME=	fblog
+DISTVERSIONPREFIX=	v
+DISTVERSION=	4.14.0
+PORTREVISION=	2
+CATEGORIES=	textproc
+
+MAINTAINER=	yuri@FreeBSD.org
+COMMENT=	Small command-line JSON Log viewer
+WWW=		https://github.com/brocode/fblog
+
+LICENSE=	WTFPL
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+USES=		cargo
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	brocode
+
+CARGO_CRATES=	aho-corasick-1.1.3 \
+		android-tzdata-0.1.1 \
+		android_system_properties-0.1.5 \
+		anstream-0.6.18 \
+		anstyle-1.0.10 \
+		anstyle-parse-0.2.6 \
+		anstyle-query-1.1.2 \
+		anstyle-wincon-3.0.7 \
+		autocfg-1.4.0 \
+		bitflags-2.9.1 \
+		block-buffer-0.10.4 \
+		bstr-1.12.0 \
+		bumpalo-3.17.0 \
+		cc-1.2.22 \
+		cfg-if-1.0.0 \
+		chrono-0.4.41 \
+		clap-4.5.38 \
+		clap_builder-4.5.38 \
+		clap_complete-4.5.50 \
+		clap_derive-4.5.32 \
+		clap_lex-0.7.4 \
+		colorchoice-1.0.3 \
+		core-foundation-sys-0.8.7 \
+		cpufeatures-0.2.17 \
+		crypto-common-0.1.6 \
+		darling-0.20.11 \
+		darling_core-0.20.11 \
+		darling_macro-0.20.11 \
+		derive_builder-0.20.2 \
+		derive_builder_core-0.20.2 \
+		derive_builder_macro-0.20.2 \
+		digest-0.10.7 \
+		dirs-6.0.0 \
+		dirs-sys-0.5.0 \
+		either-1.15.0 \
+		env_home-0.1.0 \
+		equivalent-1.0.2 \
+		errno-0.3.11 \
+		fnv-1.0.7 \
+		generic-array-0.14.7 \
+		getrandom-0.2.16 \
+		handlebars-6.3.2 \
+		hashbrown-0.15.3 \
+		heck-0.5.0 \
+		iana-time-zone-0.1.63 \
+		iana-time-zone-haiku-0.1.2 \
+		ident_case-1.0.1 \
+		indexmap-2.9.0 \
+		is_terminal_polyfill-1.70.1 \
+		itoa-1.0.15 \
+		js-sys-0.3.77 \
+		lazy_static-1.5.0 \
+		libc-0.2.172 \
+		libredox-0.1.3 \
+		linux-raw-sys-0.9.4 \
+		lock_api-0.4.12 \
+		log-0.4.27 \
+		lua-src-547.0.0 \
+		luajit-src-210.5.12+a4f56a4 \
+		memchr-2.7.4 \
+		mlua-0.10.3 \
+		mlua-sys-0.6.7 \
+		num-modular-0.6.1 \
+		num-order-1.2.0 \
+		num-traits-0.2.19 \
+		once_cell-1.21.3 \
+		option-ext-0.2.0 \
+		parking_lot-0.12.3 \
+		parking_lot_core-0.9.10 \
+		pest-2.8.0 \
+		pest_derive-2.8.0 \
+		pest_generator-2.8.0 \
+		pest_meta-2.8.0 \
+		pkg-config-0.3.32 \
+		proc-macro2-1.0.95 \
+		quote-1.0.40 \
+		redox_syscall-0.5.12 \
+		redox_users-0.5.0 \
+		regex-1.11.1 \
+		regex-automata-0.4.9 \
+		regex-syntax-0.8.5 \
+		rustc-hash-2.1.1 \
+		rustix-1.0.7 \
+		rustversion-1.0.20 \
+		ryu-1.0.20 \
+		scopeguard-1.2.0 \
+		serde-1.0.219 \
+		serde_derive-1.0.219 \
+		serde_json-1.0.140 \
+		serde_spanned-0.6.8 \
+		sha2-0.10.9 \
+		shlex-1.3.0 \
+		smallvec-1.15.0 \
+		strsim-0.11.1 \
+		syn-2.0.101 \
+		thiserror-2.0.12 \
+		thiserror-impl-2.0.12 \
+		toml-0.8.22 \
+		toml_datetime-0.6.9 \
+		toml_edit-0.22.26 \
+		toml_write-0.1.1 \
+		typenum-1.18.0 \
+		ucd-trie-0.1.7 \
+		unicode-ident-1.0.18 \
+		utf8parse-0.2.2 \
+		version_check-0.9.5 \
+		wasi-0.11.0+wasi-snapshot-preview1 \
+		wasm-bindgen-0.2.100 \
+		wasm-bindgen-backend-0.2.100 \
+		wasm-bindgen-macro-0.2.100 \
+		wasm-bindgen-macro-support-0.2.100 \
+		wasm-bindgen-shared-0.2.100 \
+		which-7.0.3 \
+		windows-core-0.61.0 \
+		windows-implement-0.60.0 \
+		windows-interface-0.59.1 \
+		windows-link-0.1.1 \
+		windows-result-0.3.2 \
+		windows-strings-0.4.0 \
+		windows-sys-0.59.0 \
+		windows-targets-0.52.6 \
+		windows_aarch64_gnullvm-0.52.6 \
+		windows_aarch64_msvc-0.52.6 \
+		windows_i686_gnu-0.52.6 \
+		windows_i686_gnullvm-0.52.6 \
+		windows_i686_msvc-0.52.6 \
+		windows_x86_64_gnu-0.52.6 \
+		windows_x86_64_gnullvm-0.52.6 \
+		windows_x86_64_msvc-0.52.6 \
+		winnow-0.7.10 \
+		winsafe-0.0.19 \
+		yansi-1.0.1
+
+PLIST_FILES=	bin/${PORTNAME}
+
+.include <bsd.port.mk>

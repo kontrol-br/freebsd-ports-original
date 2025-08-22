@@ -1,6 +1,6 @@
 PORTNAME=	pyenv
-PORTVERSION=	2.3.22
 DISTVERSIONPREFIX=	v
+DISTVERSION=	2.6.7
 CATEGORIES=	devel python
 
 MAINTAINER=	olgeni@FreeBSD.org
@@ -13,22 +13,21 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 RUN_DEPENDS=	bash:shells/bash
 
 USES=		cpe python shebangfix
-
-USE_GITHUB=	yes
-
-NO_BUILD=	yes
-
-REINPLACE_ARGS=	-i ''
-
 CPE_VENDOR=	pyenv_project
+USE_GITHUB=	yes
 
 SHEBANG_FILES=	plugins/python-build/scripts/add_miniconda.py \
 		plugins/python-build/scripts/add_miniforge.py
+
+REINPLACE_ARGS=	-i ''
+NO_BUILD=	yes
 
 post-patch:
 	@${REINPLACE_CMD} ${REINPLACE_ARGS} -e "s|\$${root}/completions|${DATADIR}/completions|g" \
 		${WRKSRC}/libexec/pyenv-init
 	@${RM} ${WRKSRC}/libexec/pyenv.orig
+	@${FIND} ${WRKSRC} -name .gitignore -delete
+	@${FIND} ${WRKSRC} -type d -empty -delete
 
 do-install:
 	CC="${CC}" ${WRKSRC}/src/${CONFIGURE_CMD}

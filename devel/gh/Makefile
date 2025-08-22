@@ -1,10 +1,9 @@
 PORTNAME=	gh
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.32.0
-PORTREVISION=	1
+DISTVERSION=	2.76.2
 CATEGORIES=	devel
 
-MAINTAINER=	lcook@FreeBSD.org
+MAINTAINER=	dutra@FreeBSD.org
 COMMENT=	GitHub's official command line tool
 WWW=		https://cli.github.com
 
@@ -13,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	git:devel/git
 
-USES=		go:modules
+USES=		go:1.24,modules
 
 _BUILD_VERSION=	${DISTVERSION}
 _BUILD_DATE=	$$(date +%Y-%m-%d)
@@ -56,6 +55,6 @@ post-install-DOCS-on:
 
 post-install-MANPAGES-on:
 	${INSTALL_MAN} ${WRKSRC}/docs/man/*.1 \
-		${STAGEDIR}${MAN1PREFIX}/man/man1
+		${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

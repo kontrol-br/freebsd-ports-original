@@ -1,6 +1,6 @@
 PORTNAME=	galaxyhack
 PORTVERSION=	1.74
-PORTREVISION=	39
+PORTREVISION=	43
 CATEGORIES=	games
 MASTER_SITES=	SF \
 		SF/${PORTNAME}/Fleet%20packages/020906:fleets
@@ -9,10 +9,12 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	AI script based strategy game
-WWW=		http://galaxyhack.sourceforge.net/
+WWW=		https://galaxyhack.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		fails to build with boost-1.85+
 
 BUILD_DEPENDS=	winicontoppm:graphics/netpbm
 LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs \

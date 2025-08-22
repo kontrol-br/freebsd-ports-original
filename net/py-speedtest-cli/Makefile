@@ -1,5 +1,6 @@
 PORTNAME=	speedtest-cli
 PORTVERSION=	2.1.3
+PORTREVISION=	1
 CATEGORIES=	net python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,6 +16,8 @@ USES=		python
 USE_PYTHON=	autoplist distutils
 
 NO_ARCH=	yes
+
+CONFLICTS_INSTALL=	speedtest # bin/speedtest
 
 OPTIONS_DEFINE=	DOCS
 

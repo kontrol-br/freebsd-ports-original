@@ -1,11 +1,13 @@
     COMMENT = CAD tools
 
+    SUBDIR += Clipper2
     SUBDIR += PrusaSlicer
     SUBDIR += abc
     SUBDIR += admesh
     SUBDIR += adms
     SUBDIR += alliance
     SUBDIR += antimony
+    SUBDIR += apio
     SUBDIR += appcsxcad
     SUBDIR += archimedes
     SUBDIR += astk-client
@@ -38,6 +40,7 @@
     SUBDIR += gds3d
     SUBDIR += gdscpp
     SUBDIR += gdsreader
+    SUBDIR += gdstk
     SUBDIR += gdt
     SUBDIR += geda
     SUBDIR += gerbv
@@ -54,7 +57,6 @@
     SUBDIR += impact
     SUBDIR += irsim
     SUBDIR += iverilog
-    SUBDIR += jspice3
     SUBDIR += k40-whisperer
     SUBDIR += kicad
     SUBDIR += kicad-devel
@@ -73,6 +75,7 @@
     SUBDIR += ldview
     SUBDIR += leocad
     SUBDIR += lepton-eda
+    SUBDIR += libbgcode
     SUBDIR += libgdsii
     SUBDIR += libopencad
     SUBDIR += librecad
@@ -104,15 +107,14 @@
     SUBDIR += pcb-rnd
     SUBDIR += pdnmesh
     SUBDIR += py-amaranth
-    SUBDIR += py-cadquery
     SUBDIR += py-cocotb
-    SUBDIR += py-cq-editor
+    SUBDIR += py-csxcad
     SUBDIR += py-edalize
     SUBDIR += py-ezdxf
     SUBDIR += py-gdspy
+    SUBDIR += py-gdstk
     SUBDIR += py-gmsh
     SUBDIR += py-lcapy
-    SUBDIR += py-ocp
     SUBDIR += py-phidl
     SUBDIR += py-pyfda
     SUBDIR += py-pygmsh
@@ -140,10 +142,11 @@
     SUBDIR += stm32flash
     SUBDIR += sumo
     SUBDIR += surelog
+    SUBDIR += surfer
     SUBDIR += svlint
     SUBDIR += svls
     SUBDIR += sweethome3d
-    SUBDIR += tkgate
+    SUBDIR += symbiyosys
     SUBDIR += tochnog
     SUBDIR += uhdm
     SUBDIR += uranium
@@ -154,6 +157,7 @@
     SUBDIR += xcircuit
     SUBDIR += xyce
     SUBDIR += yosys
+    SUBDIR += yosys-ghdl-plugin
     SUBDIR += yosys-systemverilog
     SUBDIR += z88
     SUBDIR += zcad

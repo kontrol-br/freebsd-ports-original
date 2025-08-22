@@ -1,19 +1,24 @@
 PORTNAME=	plasmatube
-DISTVERSION=	23.01.0
-PORTREVISION=	1
-CATEGORIES=	multimedia kde
-MASTER_SITES=	KDE/stable/plasma-mobile/${DISTVERSION}/
+DISTVERSION=	${KDE_APPLICATIONS_VERSION}
+CATEGORIES=	multimedia kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Elegant user interface for YouTube
 WWW=		https://apps.kde.org/plasmatube/
 
-LIB_DEPENDS=	libmpv.so:multimedia/mpv
+LIB_DEPENDS=	libmpv.so:multimedia/mpv \
+		libMpvQt.so:multimedia/mpvqt \
+		libqt6keychain.so:security/qtkeychain@qt6
 
-USES=		cmake kde:5 localbase:ldflags pkgconfig qt:5 tar:xz
-USE_KDE=	config ecm i18n kirigami2
-USE_QT=		core declarative gui network quickcontrols2 svg testlib \
-		widgets xml \
-		buildtools:build qmake:build
+USES=		cmake gettext kde:6 localbase:ldflags pkgconfig qt:6 tar:xz
+USE_KDE=	config coreaddons dbusaddons i18n kirigami-addons kirigami2 \
+		windowsystem \
+		ecm:build
+USE_QT=		base declarative
+
+# Replace default Invidious instance with one that currently works 
+#post-patch:
+#	@${REINPLACE_CMD} -e 's|https://inv.riverside.rocks|https://vid.puffyan.us|' \
+#		${WRKSRC}/src/PlasmaTubeSettings.kcfg
 
 .include <bsd.port.mk>

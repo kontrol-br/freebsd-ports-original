@@ -1,5 +1,5 @@
 PORTNAME=	opencl
-PORTVERSION=	3.0.14
+PORTVERSION=	3.0.17
 CATEGORIES=	devel
 
 MAINTAINER=	ohartmann@walstatt.org
@@ -14,8 +14,8 @@ GH_PROJECT=	OpenCL-Headers OpenCL-CLHPP:clhpp
 GH_TAGNAME=	${HEADER_TAG} ${CLHPP_TAG}:clhpp
 
 # the header releases don't have tags yet, so use git commit for now
-HEADER_TAG=	v2023.04.17
-CLHPP_TAG=	v2023.04.17 #  include missing CL/opencl.hpp
+HEADER_TAG=	v2024.10.24
+CLHPP_TAG=	v2024.10.24 #  include missing CL/opencl.hpp
 
 NO_BUILD=	yes
 NO_ARCH=	yes

@@ -1,36 +1,73 @@
 PORTNAME=	zeek
-DISTVERSION=	5.0.9
+DISTVERSION=	8.0.0
 CATEGORIES=	security
 MASTER_SITES=	https://download.zeek.org/
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	leres@FreeBSD.org
 COMMENT=	System for detecting network intruders in real-time
 WWW=		https://www.zeek.org/
 
-LICENSE=	BSD3CLAUSE
-
-BROKEN_FreeBSD_12_powerpc64=	does not build: error: zero-size array 'names'
+LICENSE=	CC-BY-4.0
 
 BUILD_DEPENDS=	bison>=3.3:devel/bison \
-		cmake>=3.15.0:devel/cmake \
 		flex>=2.6:textproc/flex \
 		swig>=4.0.2:devel/swig
-LIB_DEPENDS=	libcares.so:dns/c-ares
-RUN_DEPENDS=	c-ares>=1.18.1:dns/c-ares
+LIB_DEPENDS=	libcares.so:dns/c-ares \
+		libzmq.so:net/libzmq4
+RUN_DEPENDS=	c-ares>=1.25.0:dns/c-ares
 
 USES=		bison cmake compiler:c++17-lang cpe gettext-runtime perl5 \
 		python shebangfix ssl
 
 USE_LDCONFIG=	yes
 
+EXTRACT_AFTER_ARGS=	--exclude ${DISTNAME}/auxil/c-ares \
+			--no-same-owner --no-same-permissions
+
 BINARY_ALIAS=	python3=${PYTHON_CMD}
 
-PORTSCOUT=	limit:0,even
+PORTSCOUT=	limit:^[0-9]*\.0\.
 
 CXXFLAGS_powerpc64=	-mpower8-vector
 
-SHEBANG_FILES=	auxil/zeekctl/auxil/trace-summary/trace-summary
+SHEBANG_FILES=	\
+	auxil/broker/bindings/python/3rdparty/pybind11/docs/conf.py \
+	auxil/broker/bindings/python/3rdparty/pybind11/setup.py \
+	auxil/broker/bindings/python/3rdparty/pybind11/tools/make_changelog.py \
+	auxil/broker/bindings/python/3rdparty/pybind11/tools/setup_global.py.in \
+	auxil/broker/bindings/python/3rdparty/pybind11/tools/setup_main.py.in \
+	auxil/btest/btest \
+	auxil/btest/btest-setsid \
+	auxil/netcontrol-connectors/acld/acld.py \
+	auxil/netcontrol-connectors/command-line/command-line.py \
+	auxil/netcontrol-connectors/openflow/controller.py \
+	auxil/netcontrol-connectors/test/simple-client.py \
+	auxil/package-manager/zkg \
+	auxil/spicy/3rdparty/benchmark/tools/compare.py \
+	auxil/spicy/3rdparty/benchmark/tools/strip_asm.py \
+	auxil/spicy/3rdparty/doctest/scripts/bench/bench.py \
+	auxil/spicy/3rdparty/doctest/scripts/bench/run_all.py \
+	auxil/spicy/doc/scripts/spicy-doc-to-rst \
+	auxil/spicy/tests/Scripts/license-header.py \
+	auxil/spicy/tests/Scripts/stray_baselines.py \
+	auxil/vcpkg/ports/gobject-introspection/portfile.cmake \
+	auxil/zeek-aux/devel-tools/github-manage \
+	auxil/zeek-client/man/build.py \
+	auxil/zeek-client/zeek-client \
+	auxil/zeekctl/ZeekControl/test_cli.py \
+	auxil/zeekctl/auxil/pysubnettree/setup.py \
+	auxil/zeekctl/auxil/trace-summary/trace-summary \
+	auxil/zeekctl/bin/stats-to-csv \
+	auxil/zeekctl/bin/zeekctl.in \
+	auxil/zeekctl/bin/zeekctld.in \
+	auxil/zeekctl/testing/Cfg/bin/zeek__test \
+	auxil/zeekctl/testing/Scripts/diff-to-bytes-output \
+	auxil/zeekctl/util/extract-strictly-local-conns \
+	auxil/zeekctl/util/reformat-stats \
+	ci/collect-repo-info.py \
+	testing/coverage/coverage_cleanup.py \
+	testing/scripts/coverage-calc \
+	testing/scripts/httpd.py
 
 SUB_FILES=	pkg-message
 NO_MTREE=	yes
@@ -39,29 +76,30 @@ CMAKE_ON=	BROKER_DISABLE_DOC_EXAMPLES BROKER_DISABLE_TESTS \
 		BUILD_SHARED_LIBS BUILD_STATIC_BROKER INSTALL_AUX_TOOLS
 CMAKE_ARGS=	-DCARES_ROOT_DIR:PATH=${PREFIX} \
 		-DCMAKE_EXE_LINKER_FLAGS="${OPENSSL_LDFLAGS}" \
+		-DDISABLE_JAVASCRIPT:BOOL=ON \
+		-DINSTALL_BTEST:BOOL=OFF \
+		-DINSTALL_BTEST_PCAPS:BOOL=OFF \
+		-DINSTALL_ZKG:BOOL=OFF \
 		-DPY_MOD_INSTALL_DIR:PATH=${PREFIX}/lib/zeekctl \
 		-DZEEK_ETC_INSTALL_DIR:PATH=${PREFIX}/etc \
-		-DZEEK_MAN_INSTALL_PATH=${MANPREFIX}/man \
 		-DZEEK_ROOT_DIR:PATH=${PREFIX} \
 		-DZEEK_SCRIPT_INSTALL_PATH:PATH=${PREFIX}/share/zeek
 
 ZEEKUSER?=	zeek
 ZEEKGROUP?=	zeek
-PLIST_SUB+=	ARCH=${UNAME_M} \
-		LCASE_OPSYS=${OPSYS:tl} \
-		ZEEKGROUP=${ZEEKGROUP} \
+PLIST_SUB+=	ZEEKGROUP=${ZEEKGROUP} \
 		ZEEKUSER=${ZEEKUSER}
 
 USERS=		${ZEEKUSER}
 GROUPS=		${ZEEKGROUP}
 
-OPTIONS_DEFINE=	GEOIP2 IPSUMDUMP LBL_CF LBL_HF NETMAP PERFTOOLS SPICY ZEEKCTL \
+OPTIONS_DEFINE=	GEOIP2 IPSUMDUMP LBL_CF LBL_HF PERFTOOLS SPICY ZEEKCTL \
 		ZKG
 
 OPTIONS_SINGLE=			BUILD_TYPE
 OPTIONS_SINGLE_BUILD_TYPE=	DEBUG MINSIZEREL RELEASE RELWITHDEBINFO
 
-OPTIONS_DEFAULT=	GEOIP2 IPSUMDUMP LBL_CF LBL_HF NETMAP RELEASE ZEEKCTL \
+OPTIONS_DEFAULT=	GEOIP2 IPSUMDUMP LBL_CF LBL_HF RELEASE ZEEKCTL \
 			ZKG
 OPTIONS_DEFAULT_aarch64=	SPICY
 OPTIONS_DEFAULT_amd64=	SPICY
@@ -76,7 +114,6 @@ IPSUMDUMP_DESC=		Enables traffic summaries
 LBL_CF_DESC=		Unix time to formated time/date filter support
 LBL_HF_DESC=		Address to hostname filter support
 MINSIZEREL_DESC=	Optimizations on, debug symbols/flags off
-NETMAP_DESC=		Native Netmap Packet IOSource for Zeek
 PERFTOOLS_DESC=		Use Perftools to improve memory & CPU usage
 RELEASE_DESC=		Optimizations on, debug symbols/flags off
 RELWITHDEBINFO_DESC=	Optimizations/debug symbols on, debug flags off
@@ -91,11 +128,11 @@ IPSUMDUMP_BUILD_DEPENDS=	ipsumdump:net/ipsumdump
 IPSUMDUMP_RUN_DEPENDS=		ipsumdump:net/ipsumdump
 LBL_CF_RUN_DEPENDS=		${LOCALBASE}/bin/cf:sysutils/lbl-cf
 LBL_HF_RUN_DEPENDS=		${LOCALBASE}/bin/hf:sysutils/lbl-hf
-NETMAP_GH_TUPLE=		zeek:zeek-netmap:v2.0.0:zeek_netmap
-NETMAP_USE=			GITHUB=nodefault
-PERFTOOLS_BUILD_DEPENDS=	${LOCALBASE}/bin/perftools-pprof:devel/google-perftools
+PERFTOOLS_BUILD_DEPENDS=	${LOCALBASE}/include/gperftools/tcmalloc.h:devel/google-perftools \
+				${LOCALBASE}/bin/pprof:devel/pprof
 PERFTOOLS_CMAKE_BOOL=		ENABLE_PERFTOOLS
-PERFTOOLS_RUN_DEPENDS=		${LOCALBASE}/bin/perftools-pprof:devel/google-perftools
+PERFTOOLS_RUN_DEPENDS=		${LOCALBASE}/lib/libtcmalloc.so.4:devel/google-perftools \
+				${LOCALBASE}/bin/pprof:devel/pprof
 SPICY_CMAKE_OFF=		-DDISABLE_SPICY=ON
 ZEEKCTL_BUILD_DEPENDS=		${LOCALBASE}/bin/bash:shells/bash \
 				${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
@@ -121,13 +158,6 @@ STRIP=
 USE_RC_SUBR=	zeek
 .endif
 
-post-extract:
-	@${RM} -rf ${WRKSRC}/auxil/c-ares
-
-post-patch:
-	${REINPLACE_CMD} -e '\|/usr/local/|s|$$| ${STAGEDIR}${PREFIX}/|' \
-	    ${WRKSRC_zeek_netmap}/cmake/FindNetmap.cmake
-
 post-install-ZEEKCTL-on:
 	${MKDIR} ${STAGEDIR}${PREFIX}/logs
 	${MKDIR} ${STAGEDIR}${PREFIX}/spool/tmp
@@ -139,6 +169,8 @@ post-install-ZEEKCTL-on:
 	${RM} ${STAGEDIR}${PREFIX}/share/zeekctl/scripts/zeekctl-config.sh
 	${LN} -s ../../../spool/zeekctl-config.sh \
 	    ${STAGEDIR}${PREFIX}/share/zeekctl/scripts/zeekctl-config.sh
+	${RM} ${STAGEDIR}${PREFIX}/lib/broctl
+	${LN} -s zeek/python/zeekctl ${STAGEDIR}${PREFIX}/lib/broctl
 
 post-install:
 	${MV} ${STAGEDIR}${DATADIR}/site/local.zeek \
@@ -149,32 +181,8 @@ post-install:
 post-install-SPICY-on:
 	@${RM} -rf ${STAGEDIR}${PREFIX}/include/hilti/rt/3rdparty/SafeInt/Archive
 	@${RM} -rf ${STAGEDIR}${PREFIX}/include/hilti/rt/3rdparty/SafeInt/Test
-	@${RMDIR} ${STAGEDIR}${PREFIX}/include/zeek/builtin-plugins/spicy-plugin/bin
-	@${RMDIR} ${STAGEDIR}${PREFIX}/include/zeek/builtin-plugins/spicy-plugin/cmake
-	@${RM} -rf ${STAGEDIR}${PREFIX}/include/zeek/builtin-plugins/spicy-plugin/include
-	@${RMDIR} ${STAGEDIR}${PREFIX}/include/zeek/builtin-plugins/spicy-plugin/spicy
-	@${RM} -rf ${STAGEDIR}${PREFIX}/include/zeek/builtin-plugins/spicy-plugin/src
-	@${RM} -rf ${STAGEDIR}${PREFIX}/include/zeek/builtin-plugins/spicy-plugin/tests
-	@${RMDIR} ${STAGEDIR}${PREFIX}/include/zeek/script_opt/CPP/maint
-	@${RMDIR} ${STAGEDIR}${PREFIX}/lib/zeek-spicy/modules
 
 pre-install-ZEEKCTL-on:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/rc.d
 
-post-install-NETMAP-on:
-	${MKDIR} ${WRKDIR}/zeek-bin
-	${CP} ${STAGEDIR}${PREFIX}/bin/zeek-config ${WRKDIR}/zeek-bin
-	${REINPLACE_CMD} -e 's|${PREFIX}|${STAGEDIR}${PREFIX}|g' \
-	    ${WRKDIR}/zeek-bin/zeek-config
-	cd ${WRKSRC_zeek_netmap} && ${SETENV} PATH=${WRKDIR}/zeek-bin:${PATH} \
-	    ./configure --with-netmap=/usr \
-	    --install-root=${STAGEDIR}${PREFIX}/lib/zeek/plugins
-	cd ${WRKSRC_zeek_netmap}/build && make && make install
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/zeek/plugins/Zeek_Netmap/lib/Zeek-Netmap.freebsd-${UNAME_M}.so
-
-.include <bsd.port.pre.mk>
-
-# Would like to use ARCH (uname -p) but it's not always correct (e.g. arm64)
-UNAME_M!=	${UNAME} -m
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

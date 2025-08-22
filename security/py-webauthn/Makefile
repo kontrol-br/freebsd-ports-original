@@ -1,24 +1,25 @@
 PORTNAME=	webauthn
-PORTVERSION=	1.2.1
+PORTVERSION=	2.6.0
 CATEGORIES=	security python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	WebAuthn Python module
-WWW=		https://github.com/duo-labs/py_webauthn
+WWW=		https://duo-labs.github.io/py_webauthn/ \
+		https://github.com/duo-labs/py_webauthn
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}asn1crypto>=0.24.0:devel/py-asn1crypto@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}attrs>=21.2.0:devel/py-attrs@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}cattrs>=1.8.0:devel/py-cattrs@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}cbor2>=4.0.1:devel/py-cbor2@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}openssl>=20.0.1,1:security/py-openssl@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=61.0:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}asn1crypto>=1.5.1:devel/py-asn1crypto@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}cbor2>=5.6.5:devel/py-cbor2@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}openssl>=25.0.0,1:security/py-openssl@${PY_FLAVOR}
 
-USES=		pycryptography:run python
-USE_PYTHON=	autoplist concurrent distutils unittest
+USES=		python
+USE_PYTHON=	autoplist concurrent cryptography pep517 unittest
 
 NO_ARCH=	yes
 

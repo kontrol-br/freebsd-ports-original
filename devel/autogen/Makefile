@@ -1,6 +1,6 @@
 PORTNAME=	autogen
 PORTVERSION=	5.18.16
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	devel
 MASTER_SITES=	GNU/autogen/rel${PORTVERSION}
 
@@ -31,8 +31,7 @@ USE_LDCONFIG=	yes
 
 INFO=		autogen
 
-# bin/columns
-CONFLICTS_INSTALL=	columns
+CONFLICTS_INSTALL=	columns # bin/columns
 
 SHEBANG_FILES=	autoopts/tpl/*.pl
 

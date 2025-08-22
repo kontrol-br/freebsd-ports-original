@@ -1,19 +1,17 @@
 PORTNAME=	jalingo
 PORTVERSION=	0.6.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	textproc java
 MASTER_SITES=	SF/${PORTNAME}/JaLingo/${PORTVERSION}
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Free OS independent dictionary application
-WWW=		http://jalingo.sourceforge.net/
+WWW=		https://jalingo.sourceforge.net/
 
 LICENSE=	GPLv2
 
-USES=		7z
-USE_ANT=	yes
-USE_JAVA=	yes
+USES=		7z java:ant,run
 
 ALL_TARGET=	dist
 

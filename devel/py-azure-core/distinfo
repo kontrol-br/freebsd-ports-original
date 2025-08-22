@@ -1,3 +1,3 @@
-TIMESTAMP = 1689398825
-SHA256 (azure-core-1.28.0.zip) = e9eefc66fc1fde56dab6f04d4e5d12c60754d5a9fa49bdcfd8534fc96ed936bd
-SIZE (azure-core-1.28.0.zip) = 384884
+TIMESTAMP = 1752266064
+SHA256 (azure_core-1.35.0.tar.gz) = c0be528489485e9ede59b6971eb63c1eaacf83ef53001bfe3904e475e972be5c
+SIZE (azure_core-1.35.0.tar.gz) = 339689

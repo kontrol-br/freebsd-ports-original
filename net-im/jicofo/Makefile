@@ -1,5 +1,5 @@
 PORTNAME=	jicofo
-DISTVERSION=	1.0-996
+DISTVERSION=	1.0-1118
 CATEGORIES=	net-im java
 
 MAINTAINER=	acm@FreeBSD.org
@@ -10,12 +10,12 @@ LICENSE=	APACHE20
 
 ONLY_FOR_ARCHS=	i386 amd64 powerpc64 powerpc64le
 
-BUILD_DEPENDS=	${LOCALBASE}/share/java/maven/bin/mvn:devel/maven
+BUILD_DEPENDS=	maven>0:devel/maven
 
+USES=		java
 USE_GITHUB=	yes
 GH_ACCOUNT=	jitsi
-GH_TAGNAME=	aafb61b
-USE_JAVA=	yes
+GH_TAGNAME=	5803269
 JAVA_VERSION=	11
 
 USE_RC_SUBR=	${PORTNAME}

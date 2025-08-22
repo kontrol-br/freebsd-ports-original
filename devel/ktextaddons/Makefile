@@ -1,20 +1,22 @@
 PORTNAME=	ktextaddons
-DISTVERSION=	1.2.1
-PORTREVISION=	1
+DISTVERSION=	1.7.1
 CATEGORIES=	devel kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Various text handling addons
-WWW=		https://invent.kde.org/libraries/ktextaddons
+WWW=		https://invent.kde.org/libraries/ktextaddons/
 
-LIB_DEPENDS=	libqt5keychain.so:security/qtkeychain
+LICENSE=	LGPL20+
 
-USES=		cmake kde:5 qt:5 tar:xz
-USE_KDE=	archive auth codecs config configwidgets coreaddons ecm i18n \
-		widgetsaddons xmlgui
-USE_QT=		core dbus gui network speech widgets xml \
-		buildtools:build qmake:build
+LIB_DEPENDS=	libqt6keychain.so:security/qtkeychain@qt6
+
+USES=		gettext cmake kde:6 qt:6 tar:xz xorg
+USE_KDE=	archive coreaddons colorscheme i18n kio sonnet \
+		syntaxhighlighting textwidgets widgetsaddons \
+		ecm:build
+USE_QT=		base speech
+USE_XORG=	x11
 
 PLIST_SUB+=	LIBVERSION=${PORTVERSION}
 

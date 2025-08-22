@@ -2,10 +2,14 @@ PORTNAME=		krb5
 PORTVERSION=		1.22.${MIT_COMMIT_DATE}
 CATEGORIES=		security
 .if !defined(MASTERDIR)
-PKGNAMESUFFIX=		-devel
+PKGNAME_X=		-${FLAVOR:S/default//}-devel
+.else
+PKGNAME_X=		-${FLAVOR:S/default//}
 .endif
-HASH=			f4dcb7e44
-MIT_COMMIT_DATE=	2023.08.07
+PKGNAMESUFFIX=		${PKGNAME_X:S/--/-/:C/-$//}
+
+HASH=			59256a0cc
+MIT_COMMIT_DATE=	2025.08.20
 
 PATCH_SITES=		http://web.mit.edu/kerberos/advisories/
 PATCH_DIST_STRIP=	-p2
@@ -29,13 +33,16 @@ GNU_CONFIGURE=		yes
 USES=			autoreconf compiler:c11 cpe gmake localbase perl5 \
 			libtool:build gssapi:bootstrap,mit pkgconfig ssl
 CONFIGURE_ARGS?=	--enable-shared --without-system-verto \
-			--disable-rpath --localstatedir="${PREFIX}/var"
-CONFIGURE_ENV=		INSTALL="${INSTALL}" INSTALL_LIB="${INSTALL_LIB}" YACC="${YACC}"
+			--disable-rpath
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
+CONFIGURE_ENV=		INSTALL="${INSTALL}" INSTALL_LIB="${INSTALL_LIB}" YACC="${YACC}" WARN_CFLAGS=-Wno-strict-prototypes
 MAKE_ARGS=		INSTALL="${INSTALL}" INSTALL_LIB="${INSTALL_LIB}"
 
 CPE_VENDOR=		mit
 CPE_VERSION=		5-${PORTVERSION}
 CPE_PRODUCT=		kerberos
+
+FLAVORS=		default ldap
 
 OPTIONS_DEFINE=		EXAMPLES NLS DNS_FOR_REALM LDAP LMDB
 OPTIONS_DEFAULT=	KRB5_PDF KRB5_HTML READLINE
@@ -60,9 +67,23 @@ LIBEDIT_CONFIGURE_WITH=	libedit
 LIBEDIT_BASE_CONFIGURE_WITH=	libedit
 LIBEDIT_BASE_DESC=	Use libedit in FreeBSD base
 
+.if ${FLAVOR:U} == ldap
+OPTIONS_DEFAULT+=	LDAP LMDB
+.endif
+
 .if defined(KRB5_HOME)
 PREFIX=			${KRB5_HOME}
 .endif
+.if !defined(KRB5_LOCALSTATEDIR)
+KRB5_LOCALSTATEDIR=	"${PREFIX}/var"
+.endif
+.if !defined(KRB5_RUNSTATEDIR)
+KRB5_RUNSTATEDIR=	"${PREFIX}/var/run"
+.endif
+CONFIGURE_ARGS+=	--runstatedir="${KRB5_RUNSTATEDIR}"
+CONFIGURE_ARGS+=	--localstatedir="${KRB5_LOCALSTATEDIR}"
+PLIST_SUB+=		KRB5_LOCALSTATEDIR=${KRB5_LOCALSTATEDIR}
+PLIST_SUB+=		KRB5_RUNSTATEDIR=${KRB5_RUNSTATEDIR}
 CPPFLAGS+=		-I${OPENSSLINC}
 LDFLAGS+=		-L${OPENSSLLIB}
 
@@ -98,9 +119,6 @@ CONFIGURE_ARGS+=	--program-transform-name="${PROGRAM_TRANSFORM_NAME}"
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/doc/krb5
-	${ECHO_CMD} @dir share/doc/krb5 >> ${TMPPLIST}
-	@${SED} "s|%%PREFIX%%|${PREFIX}|" ${FILESDIR}/kdc.in > ${STAGEDIR}${PREFIX}/sbin/kdc; \
-	${CHMOD} +x ${STAGEDIR}${PREFIX}/sbin/kdc
 
 post-install-LDAP-on:
 	${MKDIR} ${STAGEDIR}${DATADIR}

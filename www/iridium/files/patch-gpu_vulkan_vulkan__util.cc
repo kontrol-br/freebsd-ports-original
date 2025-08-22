@@ -1,6 +1,6 @@
---- gpu/vulkan/vulkan_util.cc.orig	2022-10-05 07:34:01 UTC
+--- gpu/vulkan/vulkan_util.cc.orig	2025-05-07 06:48:23 UTC
 +++ gpu/vulkan/vulkan_util.cc
-@@ -199,7 +199,7 @@ bool CheckVulkanCompabilities(const VulkanInfo& vulkan
+@@ -467,7 +467,7 @@ bool CheckVulkanCompatibilities(
      }
    }
  

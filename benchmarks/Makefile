@@ -10,7 +10,6 @@
     SUBDIR += clpeak
     SUBDIR += cpipe
     SUBDIR += dbench
-    SUBDIR += dbs
     SUBDIR += ddosify
     SUBDIR += dhrystone
     SUBDIR += dkftpbench
@@ -35,11 +34,12 @@
     SUBDIR += ior
     SUBDIR += iorate
     SUBDIR += iozone
-    SUBDIR += iozone21
+    SUBDIR += ipc-bench
     SUBDIR += iperf
     SUBDIR += iperf3
     SUBDIR += kdiskmark
     SUBDIR += libcelero
+    SUBDIR += libcpucycles
     SUBDIR += libmicro
     SUBDIR += linux-gputest
     SUBDIR += linux-unigine-heaven
@@ -76,12 +76,14 @@
     SUBDIR += polygraph
     SUBDIR += postal
     SUBDIR += postmark
+    SUBDIR += py-asv
+    SUBDIR += py-asv-runner
     SUBDIR += py-locust
+    SUBDIR += py-locust-cloud
     SUBDIR += py-naarad
     SUBDIR += py-throughpy
     SUBDIR += py-zopkio
     SUBDIR += raidtest
-    SUBDIR += ramspeed
     SUBDIR += randomio
     SUBDIR += rubygem-benchmark
     SUBDIR += rubygem-benchmark-ips
@@ -103,6 +105,7 @@
     SUBDIR += sysbench
     SUBDIR += tcpblast
     SUBDIR += thrulay
+    SUBDIR += tinymembench
     SUBDIR += tsung
     SUBDIR += ttcp
     SUBDIR += typometer

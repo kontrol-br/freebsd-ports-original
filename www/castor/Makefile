@@ -1,19 +1,19 @@
 PORTNAME=	castor
 DISTVERSION=	0.8.16
-PORTREVISION=	27
+PORTREVISION=	45
 CATEGORIES=	www
 MASTER_SITES=	https://git.sr.ht/~julienxx/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	kraileth@elderlinux.org
-COMMENT=	Browser for text-based protocols like Gemini and Gopher using GTK+
+COMMENT=	Browser for text-based protocols like Gemini and Gopher using GTK
 WWW=		https://git.sr.ht/~julienxx/castor
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		cargo desktop-file-utils gnome ssl
-USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30
+USE_GNOME=	cairo gdkpixbuf glib20 gtk30
 
 CARGO_CRATES=	aho-corasick-0.7.13 \
 		ansi-parser-0.6.5 \
@@ -129,13 +129,12 @@ SUB_FILES=	pkg-message
 
 .include <bsd.port.options.mk>
 
-.if ( ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400092 && ${SSL_DEFAULT} == base ) || ${SSL_DEFAULT:Mopenssl3*}
-BROKEN_SSL=	base openssl30 openssl31
+.if ( ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400092 && ${SSL_DEFAULT} == base ) || ${SSL_DEFAULT:Mopenssl} || ${SSL_DEFAULT:Mopenssl3*}
+BROKEN_SSL=	base openssl openssl31
 BROKEN_SSL_REASON=	Fails to detect OpenSSL 3.0.0 library
 .endif
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/castor
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/examples/castor
 	${INSTALL_DATA} ${WRKSRC}/data/Castor.desktop ${STAGEDIR}${PREFIX}/share/applications
 	${INSTALL_DATA} ${WRKSRC}/data/castor_settings.toml.example ${STAGEDIR}${PREFIX}/share/examples/castor

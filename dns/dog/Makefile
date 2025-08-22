@@ -1,21 +1,17 @@
 PORTNAME=	dog
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.1.0
-PORTREVISION=	26
+PORTREVISION=	43
 CATEGORIES=	dns net
 
 MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	Command-line DNS client
 WWW=		https://dns.lookup.dog/
 
-LICENSE=	EUPL
-LICENSE_NAME=	European Union Public Licence V. 1.2
+LICENSE=	EUPL12
 LICENSE_FILE=	${WRKSRC}/LICENCE
-LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 USES=		cargo ssl
-BROKEN_SSL=	openssl30 openssl31
-BROKEN_SSL_REASON=	Fails to detect OpenSSL 3.0.0 and later
 USE_GITHUB=	yes
 GH_ACCOUNT=	ogham
 
@@ -107,8 +103,11 @@ COMPLETIONS_PLIST_FILES=	share/bash-completion/completions/${PORTNAME} \
 				share/fish/vendor_completions.d/${PORTNAME}.fish \
 				share/zsh/site-functions/_${PORTNAME}
 
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+.include <bsd.port.options.mk>
+
+.if ( ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400092 && ${SSL_DEFAULT} == base ) || ${SSL_DEFAULT:Mopenssl} || ${SSL_DEFAULT:Mopenssl3*}
+BROKEN=	Fails to detect OpenSSL 3.0.0 and later
+.endif
 
 post-install-COMPLETIONS-on:
 .for _shell in bash fish zsh

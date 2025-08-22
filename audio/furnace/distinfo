@@ -1,3 +1,5 @@
-TIMESTAMP = 1646315847
-SHA256 (furnace_0.5.8+git20220302+ds.orig.tar.xz) = b89706460bb558b58e01812982667b68fd86ff536071ca3814e7cb69f6c3f60f
-SIZE (furnace_0.5.8+git20220302+ds.orig.tar.xz) = 22444528
+TIMESTAMP = 1750413201
+SHA256 (tildearrow-furnace-v0.6.8.3_GH0.tar.gz) = c54b93dc7211a8e86828ea6b436628920df7a7dc87b130b3752f2251f5466e9c
+SIZE (tildearrow-furnace-v0.6.8.3_GH0.tar.gz) = 58169952
+SHA256 (superctr-adpcm-ef7a21715_GH0.tar.gz) = 0f311dd8abb3099abc86870fc3946e50ed0d9857188909ed9b25582896184dca
+SIZE (superctr-adpcm-ef7a21715_GH0.tar.gz) = 5489

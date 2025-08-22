@@ -1,10 +1,8 @@
 PORTNAME=	furnace
-PORTVERSION=	0.5.8
-PORTREVISION=	4
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.6.8.3
+PORTREVISION=	1
 CATEGORIES=	audio
-MASTER_SITES=	http://sid.ethz.ch/debian/furnace/ \
-		LOCAL/ehaupt
-DISTNAME=	${PORTNAME}_${PORTVERSION}+git20220302+ds.orig
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Chiptune tracker compatible with DefleMask modules (.dmf)
@@ -14,30 +12,60 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libasound.so:audio/alsa-lib \
+		libfftw3.so:math/fftw3 \
 		libfmt.so:devel/libfmt \
+		libfreetype.so:print/freetype2 \
+		libsndfile.so:audio/libsndfile \
+		libportaudio.so:audio/portaudio \
 		librtmidi.so:audio/rtmidi \
-		libsndfile.so:audio/libsndfile
 
-USES=		cmake pkgconfig sdl tar:xz
+USES=		cmake compiler:c++14-lang desktop-file-utils gl \
+		localbase:ldflags pkgconfig sdl shared-mime-info
+USE_GITHUB=	yes
+GH_ACCOUNT=	tildearrow
+GH_TUPLE=	superctr:adpcm:ef7a21715:adpcm/extern/adpcm
+USE_GL=		gl
 USE_SDL=	sdl2
 
-CMAKE_ARGS+=	-DBUILD_GUI:BOOL=ON \
-		-DSYSTEM_FMT:BOOL=ON \
-		-DSYSTEM_LIBSNDFILE:BOOL=ON \
-		-DSYSTEM_RTMIDI=ON \
-		-DSYSTEM_SDL2:BOOL=ON \
-		-DSYSTEM_ZLIB:BOOL=ON
+CMAKE_ON=	SYSTEM_FFTW \
+		SYSTEM_FMT \
+		SYSTEM_FREETYPE \
+		SYSTEM_LIBSNDFILE \
+		SYSTEM_PORTAUDIO \
+		SYSTEM_RTMIDI \
+		SYSTEM_SDL2 \
+		SYSTEM_ZLIB
+CMAKE_OFF=	WITH_RENDER_OPENGL1
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}+git20220302+ds
+EXTRACT_AFTER_ARGS=	--exclude ${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}/extern/fftw \
+			--exclude ${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}/extern/fmt \
+			--exclude ${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}/extern/freetype \
+			--exclude ${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}/extern/libsndfile-modified \
+			--exclude ${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}/extern/portaudio \
+			--exclude ${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}/extern/rtmidi \
+			--exclude ${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}/extern/SDL \
+			--exclude ${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}/extern/zlib \
+			--no-same-owner --no-same-permissions
 
-OPTIONS_DEFINE=	DOCS JACK
+# bogus tags
+PORTSCOUT=	ignore:1
+
+OPTIONS_DEFINE=	DOCS JACK NLS
+OPTIONS_SUB=	yes
 
 JACK_LIB_DEPENDS=	libjack.so:audio/jack
-JACK_CMAKE_OFF=		-DWITH_JACK:BOOL=OFF
+JACK_CMAKE_BOOL=	WITH_JACK
+
+NLS_USES=	gettext-runtime
+NLS_CMAKE_BOOL=	WITH_LOCALE
 
 post-install:
 	${INSTALL_DATA} \
 		${STAGEDIR}${PREFIX}/share/icons/hicolor/1024x1024/apps/furnace.png \
 		${STAGEDIR}${PREFIX}/share/icons/
+
+# maintainer section
+maketuples:
+	submodules2tuple -b ${DISTVERSIONPREFIX}${DISTVERSION} ${WWW}
 
 .include <bsd.port.mk>

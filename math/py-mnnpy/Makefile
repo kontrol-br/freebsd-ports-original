@@ -1,5 +1,6 @@
 PORTNAME=	mnnpy
 DISTVERSION=	0.1.9.5
+PORTREVISION=	2
 CATEGORIES=	math python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -22,7 +23,18 @@ RUN_DEPENDS=	${PY_DEPENDS}
 USES=		python
 USE_PYTHON=	distutils cython autoplist
 
+post-patch:
+.if defined(CPUTYPE)
+.  if ${ARCH:Mpowerpc*}
+	@${REINPLACE_CMD} -e "s|'-march=native'|'-mcpu=${CPUTYPE}'|" ${WRKSRC}/setup.py
+.  else
+	@${REINPLACE_CMD} -e "s|'-march=native'|'-march=${CPUTYPE}'|" ${WRKSRC}/setup.py
+.  endif
+.else
+	@${REINPLACE_CMD} -e "s|'-march=native', ||" ${WRKSRC}/setup.py
+.endif
+
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/mnnpy/_utils.cpython-39.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/mnnpy/_utils.cpython-${PYTHON_SUFFIX}.so
 
 .include <bsd.port.mk>

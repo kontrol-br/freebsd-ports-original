@@ -12,10 +12,10 @@ WWW=		http://www.rlvm.net/
 LICENSE=	GPLv2 GPLv3 MIT
 LICENSE_COMB=	multi
 
-BROKEN_FreeBSD_12_powerpc64=	fails to link on powerpc64 elfv1: gcn_platform.cc: undefined reference to gcn::Exception::Exception
+BROKEN=		fails to build with boost 1.85
 
 BUILD_DEPENDS=	boost-libs>0:devel/boost-libs \
-		utf8cpp>0:devel/utf8cpp
+		utf8cpp>=4.0.3:devel/utf8cpp
 LIB_DEPENDS=	libsndfile.so:audio/libsndfile \
 		libvorbisfile.so:audio/libvorbis \
 		libguichan.so:devel/guichan

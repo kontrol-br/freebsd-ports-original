@@ -1,18 +1,19 @@
 PORTNAME=	openvdb
 DISTVERSIONPREFIX=	v
-DISTVERSION=	10.0.1
-PORTREVISION=	7
+DISTVERSION=	12.0.1
+PORTREVISION=	2
 CATEGORIES=	misc
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Tools for storage and manipulation of sparse volumetric data
-WWW=		https://www.openvdb.org/
+WWW=		https://www.openvdb.org/ \
+		https://github.com/AcademySoftwareFoundation/openvdb
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libblosc.so:archivers/c-blosc \
-		libboost_system.so:devel/boost-libs \
+		libboost_iostreams.so:devel/boost-libs \
 		libImath.so:math/Imath \
 		libtbb.so:devel/onetbb
 TEST_DEPENDS=	googletest>0:devel/googletest
@@ -39,14 +40,12 @@ TOOLS_LIB_DEPENDS=	libglfw.so:graphics/glfw \
 TOOLS_USES=		gl xorg
 TOOLS_USE=		GL=gl,glu XORG=ice,sm,x11,xcursor,xext,xi,xinerama,xrandr,xxf86vm
 
-xpost-patch: # extra fix for OneTBB
-	@cd ${WRKSRC}/openvdb/openvdb && \
-		${MKDIR} thread
-
 # DOCS is broken: https://github.com/AcademySoftwareFoundation/openvdb/issues/899
 #DOCS_CMAKE_BOOL=	OPENVDB_BUILD_DOCS
 #DOCS_BUILD_DEPENDS=	doxygen:devel/doxygen
 
 #PORTDOCS=	*
+
+# 100% tests passed, 0 tests failed out of 1
 
 .include <bsd.port.mk>

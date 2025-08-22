@@ -1,5 +1,5 @@
 PORTNAME=	ocp
-PORTVERSION=	0.2.106
+PORTVERSION=	3.0.1
 PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	audio
@@ -69,22 +69,22 @@ MIDI_RUN_DEPENDS=	eawpats>0:audio/eawpats
 OSS_CONFIGURE_WITH=	oss
 
 SDL_IMPLIES=		X11
-SDL_BUILD_DEPENDS=	${LOCALBASE}/share/fonts/gnu-unifont-ttf/unifont.ttf:x11-fonts/gnu-unifont-ttf
+SDL_BUILD_DEPENDS=	${LOCALBASE}/share/fonts/gnu-unifont-otf/unifont.otf:x11-fonts/gnu-unifont-otf
 SDL_LIB_DEPENDS=	libfreetype.so:print/freetype2
-SDL_RUN_DEPENDS=	${LOCALBASE}/share/fonts/gnu-unifont-ttf/unifont.ttf:x11-fonts/gnu-unifont-ttf
+SDL_RUN_DEPENDS=	${LOCALBASE}/share/fonts/gnu-unifont-otf/unifont.otf:x11-fonts/gnu-unifont-otf
 SDL_USES=		desktop-file-utils sdl
 SDL_USE=		SDL=sdl2
 SDL_CONFIGURE_WITH=	sdl2 \
-			unifontdir=${LOCALBASE}/share/fonts/gnu-unifont-ttf
+			unifontdir=${LOCALBASE}/share/fonts/gnu-unifont-otf
 SDL_PLIST_SUB=		DESKTOP=''
 SDL_PLIST_SUB_OFF=	DESKTOP='@comment '
 
-X11_BUILD_DEPENDS=	${LOCALBASE}/share/fonts/gnu-unifont-ttf/unifont.ttf:x11-fonts/gnu-unifont-ttf
+X11_BUILD_DEPENDS=	${LOCALBASE}/share/fonts/gnu-unifont-otf/unifont.otf:x11-fonts/gnu-unifont-otf
 X11_LIB_DEPENDS=	libfreetype.so:print/freetype2
-X11_RUN_DEPENDS=	${LOCALBASE}/share/fonts/gnu-unifont-ttf/unifont.ttf:x11-fonts/gnu-unifont-ttf
+X11_RUN_DEPENDS=	${LOCALBASE}/share/fonts/gnu-unifont-otf/unifont.otf:x11-fonts/gnu-unifont-otf
 X11_USES=		desktop-file-utils xorg
 X11_USE=		XORG=x11,xext,xpm,xxf86dga,xxf86vm
-X11_CONFIGURE_WITH=	unifontdir-ttf=${LOCALBASE}/share/fonts/gnu-unifont-ttf \
+X11_CONFIGURE_WITH=	unifontdir-otf=${LOCALBASE}/share/fonts/gnu-unifont-otf \
 			x11
 X11_PLIST_SUB=		DESKTOP='' \
 			XORG=''
@@ -95,7 +95,7 @@ TIMIDITY_CFG=	${LOCALBASE}/share/timidity/timidity.cfg
 
 .include <bsd.port.pre.mk>
 
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+.if ${COMPILER_TYPE} == clang
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

@@ -1,5 +1,6 @@
 PORTNAME=	pyjwt1
 PORTVERSION=	1.7.1
+PORTREVISION=	1
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,15 +19,14 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pycryptodome>=0:security/py-pycryptodome@${PY_FLAVOR}
 
 USES=		python
-USE_PYTHON=	distutils concurrent autoplist
+USE_PYTHON=	autoplist concurrent cryptography_test distutils
 
 CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}-pyjwt
 
 OPTIONS_DEFINE=	RSASSA
 
 RSASSA_DESC=		RSASSA-PKCS1 v1.5 signature support
-RSASSA_USES=		pycryptography:run,test
-RSASSA_USES_OFF=	pycryptography:test
+RSASSA_USE=		PYTHON=cryptography
 
 NO_ARCH=	yes
 

@@ -1,17 +1,16 @@
 PORTNAME=	nuclei
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.9.7
-PORTREVISION=	1
+DISTVERSION=	3.4.7
 CATEGORIES=	security
 
-MAINTAINER=	nulldutra@proton.me
+MAINTAINER=	dutra@FreeBSD.org
 COMMENT=	Fast vulnerability scanner
 WWW=		https://github.com/projectdiscovery/nuclei
 
 LICENSE=	MIT
 
-USES=		go:modules
-GO_MODULE=	github.com/projectdiscovery/nuclei/v2
+USES=		go:1.22,modules
+GO_MODULE=	github.com/projectdiscovery/nuclei/v3
 
 GO_TARGET=	./cmd/${PORTNAME}
 

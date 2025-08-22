@@ -1,5 +1,5 @@
 PORTNAME=	serendipity
-PORTVERSION=	2.3.5
+PORTVERSION=	2.5.0
 PORTREVISION=	1
 CATEGORIES=	www
 
@@ -24,7 +24,8 @@ SUB_FILES=	pkg-message
 CPE_VENDOR=	s9y
 
 SHEBANG_FILES=	lang/*.sh \
-		lang/UTF-8/*.sh
+		lang/UTF-8/*.sh \
+		bundled-libs/smarty/smarty/*.sh
 
 OPTIONS_DEFINE=	MYSQL PGSQL SQLITE MAGICK
 OPTIONS_DEFAULT=	MYSQL MAGICK

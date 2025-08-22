@@ -5,9 +5,12 @@ CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome2
 
-MAINTAINER=	bland@FreeBSD.org
+MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	C++ wrapper for gconf2 API library
 WWW=		http://gtkmm.sourceforge.net/
+
+DEPRECATED=	Gconf has been replaced with gsettings
+EXPIRATION_DATE=	2025-08-24
 
 LIB_DEPENDS=	libglibmm-2.4.so:devel/glibmm
 

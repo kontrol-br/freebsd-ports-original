@@ -1,8 +1,8 @@
 PORTNAME=	bvm
-PORTVERSION=	1.3.3
+DISTVERSION=	1.3.5
 CATEGORIES=	sysutils
 
-MAINTAINER=	guoqiang_cn@126.com
+MAINTAINER=	bigdragonsoft@gmail.com
 COMMENT=	Bhyve VM Manager
 WWW=		https://github.com/bigdragonsoft/bvm
 
@@ -31,6 +31,6 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/bvm ${STAGEDIR}${PREFIX}/bin/
 	${INSTALL_PROGRAM} ${WRKSRC}/src/bvmb ${STAGEDIR}${PREFIX}/bin/
 	${INSTALL_PROGRAM} ${WRKSRC}/src/bvmdhcp ${STAGEDIR}${PREFIX}/bin/
-	${INSTALL_MAN} ${WRKSRC}/bvm.8 ${STAGEDIR}${MAN8PREFIX}/man/man8
+	${INSTALL_MAN} ${WRKSRC}/bvm.8 ${STAGEDIR}${PREFIX}/share/man/man8
 
 .include <bsd.port.mk>

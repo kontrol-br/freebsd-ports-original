@@ -1,6 +1,6 @@
 PORTNAME=	drm-515-kmod
 PORTVERSION=	${DRM_KMOD_DISTVERSION}
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	graphics kld
 
 .include "Makefile.version"
@@ -12,10 +12,12 @@ WWW=		https://github.com/freebsd/drm-kmod/
 LICENSE=	BSD2CLAUSE MIT GPLv2
 LICENSE_COMB=	multi
 
-ONLY_FOR_ARCHS=	aarch64 amd64 i386 powerpc64 powerpc64le
-ONLY_FOR_ARCHS_REASON=	the new KMS components are only supported on amd64, i386, aarch64, and powerpc64
+ONLY_FOR_ARCHS=	amd64 powerpc64 powerpc64le
+ONLY_FOR_ARCHS_REASON=	the new KMS components are only supported on amd64 and powerpc64
 
-CONFLICTS_INSTALL=	drm-510-kmod
+CONFLICTS_INSTALL=	drm-510-kmod \
+			drm-61-kmod \
+			drm-66-kmod
 
 USES=		kmod uidfix compiler:c++11-lang
 
@@ -25,6 +27,9 @@ GH_PROJECT=	drm-kmod
 GH_TAGNAME=	${DRM_KMOD_GH_TAGNAME}
 
 .include <bsd.port.options.mk>
+
+SUB_FILES=	pkg-message
+SUB_LIST=	OPSYS=${OPSYS} OSREL=${OSREL}
 
 .if ${OPSYS} == FreeBSD && ${OSVERSION} < 1400081
 IGNORE=		not supported on older than 14.0, no kernel support

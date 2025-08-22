@@ -1,5 +1,6 @@
 PORTNAME=	cepa
 PORTVERSION=	1.8.4
+PORTREVISION=	1
 CATEGORIES=	net security python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -20,8 +21,8 @@ TEST_DEPENDS=	tor:security/tor \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tox>0:devel/py-tox@${PY_FLAVOR}
 
-USES=		python pycryptography:run shebangfix
-USE_PYTHON=	distutils autoplist concurrent
+USES=		python shebangfix
+USE_PYTHON=	autoplist concurrent cryptography distutils
 NO_ARCH=	yes
 
 SHEBANG_FILES=		*.py

@@ -1,5 +1,5 @@
 PORTNAME=	wifibox-alpine
-PORTVERSION=	20230326
+PORTVERSION=	20250323
 CATEGORIES=	net
 
 MAINTAINER=	pali.gabor@gmail.com
@@ -14,7 +14,7 @@ EXTRACT_ONLY=	${_DISTFILES:M*_GH0.tar.gz}
 
 BUILD_DEPENDS=	gtar>0:archivers/gtar \
 		patchelf>0:sysutils/patchelf \
-		squashfs-tools-ng>0:sysutils/squashfs-tools-ng
+		squashfs-tools-ng>0:filesystems/squashfs-tools-ng
 
 .include "${.CURDIR}/flavors.mk"
 
@@ -22,17 +22,18 @@ BUILD_DEPENDS=	gtar>0:archivers/gtar \
 ${flavor}_PKGNAMESUFFIX=	-${flavor}
 .endfor
 
-OPTIONS_DEFINE=			UDS_PASSTHRU
+OPTIONS_DEFINE=			UDS_PASSTHRU IPV6
 OPTIONS_SUB=			yes
 
-OPTIONS_SINGLE=			COMPRESSION APPLICATION
+OPTIONS_SINGLE=			COMPRESSION APPLICATION KERNEL
 OPTIONS_SINGLE_COMPRESSION=	COMP_GZIP COMP_LZ4 COMP_LZO COMP_XZ COMP_ZSTD
 OPTIONS_SINGLE_APPLICATION=	APP_HOSTAPD APP_WPA_SUPPLICANT
+OPTIONS_SINGLE_KERNEL=		KERN_LTS KERN_EDGE
 
 OPTIONS_GROUP=			EXTRAS
 OPTIONS_GROUP_EXTRAS=		XX_MDNS XX_FORWARDING XX_TCPDUMP
 
-OPTIONS_DEFAULT=		COMP_XZ APP_WPA_SUPPLICANT UDS_PASSTHRU
+OPTIONS_DEFAULT=		COMP_XZ APP_WPA_SUPPLICANT UDS_PASSTHRU KERN_LTS IPV6
 
 COMP_GZIP_DESC=		gzip
 COMP_LZ4_DESC=		lz4
@@ -40,28 +41,33 @@ COMP_LZO_DESC=		lzo
 COMP_XZ_DESC=		xz
 COMP_ZSTD_DESC=		zstd
 
-UDS_PASSTHRU_DESC=		Control socket pass-through
+UDS_PASSTHRU_DESC=		Control socket pass-through (wpa_supplicant/hostapd)
+IPV6_DESC=			IPv6 support
 APP_HOSTAPD_DESC=		Access Point (hostapd)
 APP_WPA_SUPPLICANT_DESC=	WPA Supplicant (wpa_supplicant)
 XX_MDNS_DESC=			mDNS Responder Daemon
 XX_FORWARDING_DESC=		User-space forwarding
 XX_TCPDUMP_DESC=		Packet analysis with tcpdump
 
+KERN_LTS_DESC=			Linux LTS (6.12.x)
+KERN_EDGE_DESC=			Linux edge (6.13.x)
+
 UDS_PASSTHRU_RUN_DEPENDS=	socat>0:net/socat
 
 .if ${FLAVOR:U} == default
 OPTIONS_GROUP+=		FIRMWARE
-OPTIONS_GROUP_FIRMWARE=	FW_ATH10K FW_ATH11K FW_ATMEL FW_B43 FW_B43LEGACY FW_BRCM\
-			FW_IPW2100 FW_IPW2200 FW_IWL3945 FW_IWL4965 FW_IWLWIFI\
+OPTIONS_GROUP_FIRMWARE=	FW_ATH10K FW_ATH11K FW_ATH12K FW_ATMEL FW_B43 FW_B43LEGACY\
+			FW_BRCM FW_IPW2100 FW_IPW2200 FW_IWL3945 FW_IWL4965 FW_IWLWIFI\
 			FW_MEDIATEK FW_MARVELL FW_RT61 FW_RTLWIFI FW_RTW88 FW_RTW89\
 			FW_TI
 OPTIONS_GROUP_EXTRAS+=	XX_DRIVER_WL
 
-OPTIONS_DEFAULT+=	FW_ATH10K FW_ATH11K FW_BRCM FW_IWLWIFI FW_MEDIATEK\
+OPTIONS_DEFAULT+=	FW_ATH10K FW_ATH11K FW_ATH12K FW_BRCM FW_IWLWIFI FW_MEDIATEK\
 			FW_MARVELL FW_RT61 FW_RTLWIFI FW_RTW88 FW_RTW89
 
 FW_ATH10K_DESC=		Qualcomm Atheros 802.11ac
 FW_ATH11K_DESC=		Qualcomm Atheros 802.11ax
+FW_ATH12K_DESC=		Qualcomm Atheros 802.11be
 FW_ATMEL_DESC=		Atmel at76c50x 802.11b
 FW_B43_DESC=		Broadcom B43xx 802.11a/b/g/n
 FW_B43LEGACY_DESC=	Broadcom B43xx 802.11b (legacy)
@@ -87,54 +93,44 @@ _GITHUB_SITE=	https://github.com/pgj/freebsd-wifibox-alpine/releases/download
 USE_GITHUB=	nodefault
 GH_ACCOUNT=	pgj
 GH_PROJECT=	freebsd-wifibox-alpine:scripts
-GH_TAGNAME=	d0d856b049361e83b2c27ac2bb66d5971ead2f06:scripts
+GH_TAGNAME=	3c9aa05dd7933a2b109c52d81ff22199082db4e5:scripts
 
-ALPINE_VERSION=	3.17.2
-ALPINE_DATE=	2023.03.25
+ALPINE_VERSION=		3.21.3
+LINUX_LTS_VERSION=	6.12.19-r0
+LINUX_EDGE_VERSION=	6.13.7-r0
 
-_ALPINE_VER=	${ALPINE_VERSION:C@([0-9]+)\.([0-9]+).*@\1.\2@}
-
-.if defined(ALPINE_DATE)
-_SNAPSHOT=	${ALPINE_DATE:S/./-/g}
-_ALPINE_SITE=	https://mirror.fit.cvut.cz/alpine/snapshots/${_SNAPSHOT}/v${_ALPINE_VER}
-.else
-_ALPINE_SITE=	https://mirror.fit.cvut.cz/alpine/v${_ALPINE_VER}
-.endif
-
-_LINUXFW_SITE=	https://git.kernel.org/pub/scm/linux/kernel/git/firmware/
-_LINUXFW_TAG=	20230310
+_LINUXFW_SITE=	https://cdn.kernel.org/pub/linux/kernel/firmware/
+_LINUXFW_TAG=	20250311
 _LINUXFW=	linux-firmware-${_LINUXFW_TAG}
 
-MASTER_SITES+=	${_ALPINE_SITE}/releases/x86_64/:rootfs \
-		${_ALPINE_SITE}/main/x86_64/:main_packages \
-		${_ALPINE_SITE}/community/x86_64/:community_packages \
+MASTER_SITES+=	${_GITHUB_SITE}/upstream/:upstream \
 		${_GITHUB_SITE}/packages/:custom_packages \
-		${_LINUXFW_SITE}/linux-firmware.git/snapshot/:linux_firmware \
+		${_LINUXFW_SITE}:linux_firmware \
 		https://sources.openwrt.org/:openwrt \
 		https://lwfinger.com/b43-firmware/:b43 \
 		https://thekelleys.org.uk/atmel/:atmel \
 		https://github.com/openwrt/mt76/archive/:mt76
 
 _MINIROOTFS=	alpine-minirootfs-${ALPINE_VERSION}-x86_64.tar.gz
-_PACKAGES=	baselayout-3.4.0-r0:wifibox \
-		busybox-1.35.0-r3:wifibox \
-		ifupdown-ng-0.12.1-r0:wifibox \
-		iptables-1.8.8-r0:wifibox \
-		iw-5.19-r0 \
-		libcap2-2.66-r0 \
-		libcap-utils-2.66-r0 \
-		libcrypto3-3.0.8-r1 \
-		libmnl-1.0.5-r0 \
-		libnftnl-1.2.4-r0 \
-		libnl3-3.7.0-r0 \
-		libssl3-3.0.8-r1 \
-		linux-lts-5.15.104-r0:wifibox \
-		musl-1.2.3-r4 \
-		openrc-0.45.2-r0:wifibox
+_PACKAGES=	baselayout-3.6.8-r0:wifibox \
+		busybox-1.37.0-r0:wifibox \
+		ifupdown-ng-0.12.1-r4:wifibox \
+		iptables-1.8.11-r0:wifibox \
+		iw-6.9-r0 \
+		libcap2-2.71-r0 \
+		libcrypto3-3.3.3-r0 \
+		libmnl-1.0.5-r2 \
+		libnftnl-1.2.8-r0 \
+		libnl3-3.9.0-r1 \
+		libssl3-3.3.3-r0 \
+		musl-1.2.5-r9 \
+		openrc-0.55.1-r0:wifibox \
+		skalibs-libs-2.14.3.0-r0 \
+		utmps-libs-0.1.2.3-r2
 
 _BOOT_SERVICES=		bootmisc defaults modules hostname hwclock networking sysctl \
 			syslog urandom
-_DEFAULT_SERVICES=	acpid crond iptables udhcpd
+_DEFAULT_SERVICES=	acpid crond iptables udhcpd remove-wireless
 _SYSINIT_SERVICES=	devfs dmesg hwdrivers mdev
 
 _ATMEL_FIRMWARE=	atmel-firmware-1.3
@@ -144,13 +140,25 @@ _IPW2100_FIRMWARE=	ipw/ipw2100-1.3 \
 			ipw/ipw2100-1.3-i
 _IPW2200_FIRMWARE=	iwi/ipw2200-bss \
 			iwi/ipw2200-ibss
-_MT76_FIRMWARE=		021ded363dfeafb8e71bb5a3901449faca9bb011
+_MT76_FIRMWARE=		de635e1e3adc90ca804da87144d86539aab65f74
 
 _LINUX64_KMOD!=		(kldstat -qn linux64 && echo "found") || echo ""
+_LINUX_EMUL_PATH!=	(sysctl -qn compat.linux.emul_path) || echo ""
+_LINUX_EP_EXISTS!=	(test -d "${_LINUX_EMUL_PATH}" && echo "found") || echo ""
 
-.if empty(_LINUX64_KMOD)
+.if empty(IGNORE) && empty(_LINUX64_KMOD)
 IGNORE=	needs the linux64 kernel module to build
 .endif
+
+.if empty(IGNORE) && empty(_LINUX_EMUL_PATH)
+IGNORE=	needs compat.linux.emul_path to be set
+.endif
+
+.if empty(IGNORE) && empty(_LINUX_EP_EXISTS)
+IGNORE= needs compat.linux.emul_path to point to an existing directory
+.endif
+
+.include <bsd.port.options.mk>
 
 pre-everything::
 .if !defined(FIRMWARE_FILES)
@@ -162,44 +170,72 @@ pre-everything::
 	@sleep 1
 .endif
 
-.include <bsd.port.options.mk>
+.if ${PORT_OPTIONS:MFW_BRCM} && !defined(BRCM_FWCONF_FILES)
+	@${ECHO_MSG} "===> NOTICE:"
+	@${ECHO_MSG}
+	@${ECHO_MSG} "The Broadcom driver was selected.  Note that it might require additional"
+	@${ECHO_MSG} "firmware configuration files to function properly, e.g. brcmfmac43602-pcie.txt."
+	@${ECHO_MSG} "Use the BRCM_FWCONF_FILES make(1) variable specify the location of these files"
+	@${ECHO_MSG} "to have them added to the guest image."
+	@${ECHO_MSG}
+	@sleep 1
+.endif
 
 .if ${PORT_OPTIONS:MUDS_PASSTHRU}
 _BOOT_SERVICES+=	uds_passthru
 .endif
 
+.if ${PORT_OPTIONS:MIPV6}
+_BOOT_SERVICES+=	ip6tables radvd
+.endif
+
 .if (${PORT_OPTIONS:MUDS_PASSTHRU} && empty(PORT_OPTIONS:MXX_FORWARDING)) \
 	|| make(makesum) || make(fetch-url-list-int)
-_PACKAGES+=		socat-1.7.4.4-r0:wifibox
+_PACKAGES+=		socat-1.8.0.1-r0:wifibox
 .endif
 
 .if ${PORT_OPTIONS:MXX_FORWARDING} || make(makesum) || make(fetch-url-list-int)
-_PACKAGES+=		socat-with-udp-1.7.4.4-r0:wifibox
+_PACKAGES+=		socat-with-udp-1.8.0.1-r0:wifibox
 .endif
 
 .if ${PORT_OPTIONS:MUDS_PASSTHRU} || make(makesum) || make(fetch-url-list-int)
-_PACKAGES+=		uds_passthru-0.1.1-r1:wifibox
+_PACKAGES+=		uds_passthru-0.1.1-r5:wifibox
+.endif
+
+.if ${PORT_OPTIONS:MIPV6} || make(makesum) || make(fetch-url-list-int)
+_PACKAGES+=		radvd-2.19-r3:wifibox
+.endif
+
+.if ${PORT_OPTIONS:MIPV6} && ${PORT_OPTIONS:MAPP_WPA_SUPPLICANT} \
+	|| make(makesum) || make(fetch-url-list-int)
+_PACKAGES+=		dhcpcd-10.1.0-r0:wifibox
 .endif
 
 .if ${PORT_OPTIONS:MAPP_WPA_SUPPLICANT}
 _VIRTFS_MOUNTS=		app_config:/etc/wpa_supplicant
 _BOOT_SERVICES+=	wpa_supplicant
 _ETC_SRCS=		etc/wpa_supplicant
+.if ${PORT_OPTIONS:MIPV6}
+_ETC_SRCS+=		etc/optional/ipv6/wpa_supplicant
+.endif
 .endif
 
 .if ${PORT_OPTIONS:MAPP_WPA_SUPPLICANT} || make(makesum) || make(fetch-url-list-int)
-_PACKAGES+=		pcsc-lite-libs-1.9.9-r0 \
-			wpa_supplicant-2.10-r3:wifibox
+_PACKAGES+=		pcsc-lite-libs-2.2.3-r1 \
+			wpa_supplicant-2.10-r10:wifibox
 .endif
 
 .if ${PORT_OPTIONS:MAPP_HOSTAPD}
 _VIRTFS_MOUNTS=		app_config:/etc/hostapd
 _BOOT_SERVICES+=	hostapd
 _ETC_SRCS=		etc/hostapd
+.if ${PORT_OPTIONS:MIPV6}
+_ETC_SRCS+=		etc/optional/ipv6/hostapd
+.endif
 .endif
 
 .if ${PORT_OPTIONS:MAPP_HOSTAPD} || make(makesum) || make(fetch-url-list-int)
-_PACKAGES+=		hostapd-2.10-r2:wifibox
+_PACKAGES+=		hostapd-2.11-r0:wifibox
 .endif
 
 .if ${PORT_OPTIONS:MXX_MDNS}
@@ -208,8 +244,8 @@ _ETC_SRCS+=		etc/optional/mdns
 .endif
 
 .if ${PORT_OPTIONS:MXX_MDNS} || make(makesum) || make(fetch-url-list-int)
-_PACKAGES+=		mbedtls-2.28.2-r0 \
-			mDNSResponder-1790.80.10-r0:wifibox
+_PACKAGES+=		mbedtls2-2.28.8-r1 \
+			mDNSResponder-2559.80.8-r0:wifibox
 .endif
 
 .if ${PORT_OPTIONS:MXX_FORWARDING}
@@ -218,12 +254,20 @@ _ETC_SRCS+=		etc/optional/forwarding
 .endif
 
 .if ${PORT_OPTIONS:MXX_FORWARDING} || make(makesum) || make(fetch-url-list-int)
-_PACKAGES+=		forwarding-0.1.0-r1:wifibox
+_PACKAGES+=		forwarding-0.1.0-r5:wifibox
 .endif
 
 .if ${PORT_OPTIONS:MXX_TCPDUMP} || make(makesum) || make(fetch-url-list-int)
-_PACKAGES+=		libpcap-1.10.1-r1 \
-			tcpdump-4.99.1-r4
+_PACKAGES+=		libpcap-1.10.5-r0 \
+			tcpdump-4.99.5-r0
+.endif
+
+.if ${PORT_OPTIONS:MKERN_LTS} || make(makesum) || make(fetch-url-list-int)
+_PACKAGES+=		linux-lts-${LINUX_LTS_VERSION}:wifibox
+.endif
+
+.if ${PORT_OPTIONS:MKERN_EDGE} || make(makesum) || make(fetch-url-list-int)
+_PACKAGES+=		linux-edge-${LINUX_EDGE_VERSION}:wifibox
 .endif
 
 .if ${PORT_OPTIONS:MXX_MDNS} || ${PORT_OPTIONS:MXX_FORWARDING}
@@ -237,11 +281,12 @@ PORT_OPTIONS+=		FW_${flavor:tu}
 .endfor
 
 DIST_SUBDIR=	wifibox-alpine
-DISTFILES+=	${_MINIROOTFS}:rootfs
+DISTFILES+=	${_MINIROOTFS}:upstream
 
 LFW_ATH10K_FILES=	ath10k
 LFW_ATH11K_FILES=	ath11k
-LFW_BRCM_FILES=		brcm
+LFW_ATH12K_FILES=	ath12k
+LFW_BRCM_FILES=		brcm cypress
 LFW_IWL3945_FILES=	iwlwifi-3945-*.ucode
 LFW_IWL4965_FILES=	iwlwifi-4965-*.ucode
 LFW_IWLWIFI_FILES=	iwlwifi-*
@@ -259,20 +304,67 @@ LINUX_FIRMWARE+=	${L${fw_opt}_FILES}
 .endif
 .endfor
 
-.if ${PORT_OPTIONS:MFW_RTW88} || make(makesum) || make(fetch-url-list-int)
-_PACKAGES+=	rtl8821ce-20230101-r3:wifibox
+RTL8821CE_VERSION=	20250312
+RTW88_VERSION=		20250315
+RTW89_VERSION=		20250317
+BROADCOM_WL_VERSION=	6.30.223.271
+
+_LINUX_LTS_MAJOR=	${LINUX_LTS_VERSION:C/^([0-9]*)\..*/\1/}
+_LINUX_LTS_MINOR=	${LINUX_LTS_VERSION:C/^[0-9]*\.([0-9]*)\..*/\1/}
+_LINUX_LTS_PATCH=	${LINUX_LTS_VERSION:C/^[0-9]*\.[0-9]*\.([0-9]*)-.*/\1/}
+_LINUX_LTS_REVISION=	${LINUX_LTS_VERSION:C/^.*-r([0-9]*)/\1/}
+
+_KERN_LTS_REL!=		printf "%02d%02d%03d%02d" \
+			${_LINUX_LTS_MAJOR} \
+			${_LINUX_LTS_MINOR} \
+			${_LINUX_LTS_PATCH} \
+			${_LINUX_LTS_REVISION}
+
+_LINUX_EDGE_MAJOR=	${LINUX_EDGE_VERSION:C/^([0-9]*)\..*/\1/}
+_LINUX_EDGE_MINOR=	${LINUX_EDGE_VERSION:C/^[0-9]*\.([0-9]*)\..*/\1/}
+_LINUX_EDGE_PATCH=	${LINUX_EDGE_VERSION:C/^[0-9]*\.[0-9]*\.([0-9]*)-.*/\1/}
+_LINUX_EDGE_REVISION=	${LINUX_EDGE_VERSION:C/^.*-r([0-9]*)/\1/}
+
+_KERN_EDGE_REL!=	printf "%02d%02d%03d%02d" \
+			${_LINUX_EDGE_MAJOR} \
+			${_LINUX_EDGE_MINOR} \
+			${_LINUX_EDGE_PATCH} \
+			${_LINUX_EDGE_REVISION}
+
+.if ${PORT_OPTIONS:MFW_RTW88} && ${PORT_OPTIONS:MKERN_LTS} \
+	|| make(makesum) || make(fetch-url-list-int)
+_PACKAGES+=	rtl8821ce-${RTL8821CE_VERSION}-r${_KERN_LTS_REL}00:wifibox \
+		rtw88-${RTW88_VERSION}-r${_KERN_LTS_REL}00:wifibox
 .endif
 
-.if ${PORT_OPTIONS:MFW_RTW89} || make(makesum) || make(fetch-url-list-int)
-_PACKAGES+=	rtw89-20230325-r0:wifibox
+.if ${PORT_OPTIONS:MFW_RTW88} && ${PORT_OPTIONS:MKERN_EDGE} \
+	|| make(makesum) || make(fetch-url-list-int)
+_PACKAGES+=	rtl8821ce-edge-${RTL8821CE_VERSION}-r${_KERN_EDGE_REL}00:wifibox \
+		rtw88-edge-${RTW88_VERSION}-r${_KERN_EDGE_REL}00:wifibox
 .endif
 
-.if ${PORT_OPTIONS:MXX_DRIVER_WL} || make(makesum) || make(fetch-url-list-int)
-_PACKAGES+=	broadcom-wl-6.30.223.271-r10:wifibox
+.if ${PORT_OPTIONS:MFW_RTW89} && ${PORT_OPTIONS:MKERN_LTS} \
+	|| make(makesum) || make(fetch-url-list-int)
+_PACKAGES+=	rtw89-${RTW89_VERSION}-r${_KERN_LTS_REL}00:wifibox
+.endif
+
+.if ${PORT_OPTIONS:MFW_RTW89} && ${PORT_OPTIONS:MKERN_EDGE} \
+	|| make(makesum) || make(fetch-url-list-int)
+_PACKAGES+=	rtw89-edge-${RTW89_VERSION}-r${_KERN_EDGE_REL}00:wifibox
+.endif
+
+.if ${PORT_OPTIONS:MXX_DRIVER_WL} && ${PORT_OPTIONS:MKERN_LTS} \
+	|| make(makesum) || make(fetch-url-list-int)
+_PACKAGES+=	broadcom-wl-${BROADCOM_WL_VERSION}-r${_KERN_LTS_REL}00:wifibox
+.endif
+
+.if ${PORT_OPTIONS:MXX_DRIVER_WL} && ${PORT_OPTIONS:MKERN_EDGE} \
+	|| make(makesum) || make(fetch-url-list-int)
+_PACKAGES+=	broadcom-wl-edge-${BROADCOM_WL_VERSION}-r${_KERN_EDGE_REL}00:wifibox
 .endif
 
 .if !empty(LINUX_FIRMWARE)
-_LINUXFWFILE=	${_LINUXFW}.tar.gz
+_LINUXFWFILE=	${_LINUXFW}.tar.xz
 _LINUXFWDIR=	${WRKDIR}/${_LINUXFW}
 .endif
 
@@ -283,10 +375,8 @@ DISTFILES+=	${_LINUXFWFILE}:linux_firmware
 .for package in ${_PACKAGES}
 .if ${package:M*\:wifibox}
 DISTFILES+=	${package:C@^([^:]*):wifibox$@\1@}.apk:custom_packages
-.elif ${package:M*\:community}
-DISTFILES+=	${package:C@^([^:]*):community$@\1@}.apk:community_packages
 .else
-DISTFILES+=	${package:C@^([^:]*):wifibox$@\1@}.apk:main_packages
+DISTFILES+=	${package:C@^([^:]*):wifibox$@\1@}.apk:upstream
 .endif
 _APK_FILES+=	${_DISTDIR}/${package:C@^([^:]*):.*$@\1@}.apk
 .endfor
@@ -360,11 +450,36 @@ pre-build:
 		-C ${_FIRMWAREDIR} --strip-components 1 \
 		*/${fw_files}
 .endfor
+.if ${PORT_OPTIONS:MFW_BRCM}
+	$(FIND) ${_FIRMWAREDIR}/brcm -name 'brcmfmac*-pcie.bin' -type f \
+		| ${SED} -E 's!(.*)-pcie.bin!ln -s $$(basename \1-pcie.bin) \1-pcie.FreeBSD-BHYVE.bin!' \
+		| ${SH}
+.endif
 .if ${PORT_OPTIONS:MFW_MEDIATEK}
 	${TAR} -xf ${_DISTDIR}/${_MT76_FIRMWARE}.zip \
 		-C ${_FIRMWAREDIR} --strip-components 2 \
 		*/firmware/mt76??_e?.bin
 .endif
+.if ${PORT_OPTIONS:MFW_BRCM} && defined(BRCM_FWCONF_FILES)
+	${CP} ${BRCM_FWCONF_FILES} ${_FIRMWAREDIR}/brcm
+.endif
+	${TAR} -xf ${_DISTDIR}/${_LINUXFWFILE} \
+		-C ${WRKDIR} --strip-components 1 \
+		*/WHENCE
+	@${GREP} -E "^Link:" ${WRKDIR}/WHENCE \
+		| ${SED} -e 's/^Link: *//g;s/-> //g' \
+		| while read _link _target; do \
+			_topdir=$$(${DIRNAME} "$$_link" | ${CUT} -d '/' -f 1) ; \
+			if [ -d "${_FIRMWAREDIR}/$$_topdir" ]; then \
+				_directory="${_FIRMWAREDIR}/$$(dirname $$_link)"; \
+				${MKDIR} "$$_directory"; \
+				_linktarget=$$(cd "$$_directory" && ${REALPATH} -q "$$_target" || ${TRUE}); \
+				if [ -n "$$_linktarget" ] && [ -e "$$_linktarget" ]; then \
+					${ECHO} "Creating link: $$_link -> $$_target"; \
+					${LN} -s "$$_target" "${_FIRMWAREDIR}/$$_link"; \
+				fi; \
+			fi; \
+		done
 
 post-install:
 .if empty(PORT_OPTIONS:MUDS_PASSTHRU)
@@ -388,16 +503,5 @@ MAKE_ARGS+=	VERSION=${PORTVERSION} \
 .if defined(FIRMWARE_FILES)
 MAKE_ARGS+=	FIRMWARE_FILES=${FIRMWARE_FILES}
 .endif
-
-.if make(check-alpine-packages)
-_APK_FETCH!=	${MAKE} fetch-urlall-list | ${GREP} apk | ${GREP} -v distcache
-.endif
-
-check-alpine-packages:
-.for apk in ${_APK_FETCH}
-	@${ECHO} -n "${apk:C@^.*/([0-9A-za-z\._-]*)@\1@} (${apk})..."
-	@${FETCH_CMD} -s ${apk} > /dev/null
-	@${ECHO} "OK"
-.endfor
 
 .include <bsd.port.mk>

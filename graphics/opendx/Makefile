@@ -1,38 +1,41 @@
 PORTNAME=	opendx
 PORTVERSION=	4.4.4
-PORTREVISION=	37
+PORTREVISION=	40
 CATEGORIES=	graphics math java
 MASTER_SITES=	http://www.sfr-fresh.com/unix/misc/
 DISTNAME=	dx-${PORTVERSION}
 
 MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	IBM's Open Visualization Data Explorer
-WWW=		http://www.opendx.org/
+WWW=		https://en.wikipedia.org/wiki/IBM_OpenDX
 
 LICENSE=	IBM-OVDX-v1
 LICENSE_NAME=	IBM PUBLIC LICENSE - Open Visualization Data Explorer VERSION 1.0
 LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-BROKEN_aarch64=	fails to link: undefined symbol: sbrk
-
 LIB_DEPENDS=	libtiff.so:graphics/tiff		\
 		libcdf.so:science/cdf
 
-MAKE_JOBS_UNSAFE=	yes
-USES=		bison compiler:c++17-lang gl gmake libtool magick:6 motif xorg
-USE_XORG=	x11 xt xinerama xext xpm xmu sm ice
+USES=		bison compiler:c++17-lang gl gmake libtool localbase:ldflags magick:6 motif sbrk xorg
 USE_GL=		gl glu
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-shared
 USE_LDCONFIG=	yes
+USE_XORG=	x11 xt xinerama xext xpm xmu sm ice
+
+GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
+CONFIGURE_ARGS=	--enable-shared
 CONFIGURE_ENV=	ARCH=freebsd
-CPPFLAGS+=	${CXXFLAGS} -I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+
+MAKE_JOBS_UNSAFE=	yes
+
+CPPFLAGS+=	${CXXFLAGS}
+
 NO_MTREE=	yes
-PLIST_SUB=	ARCH=freebsd
+
 PKGMESSAGE=	${WRKDIR}/pkg-message
 
+PLIST_SUB=	ARCH=freebsd
 .if defined(WITH_HDF) && !defined(WITHOUT_NETCDF)
 IGNORE=	HDF and NETCDF are conflicting
 .endif
@@ -51,7 +54,7 @@ CONFIGURE_ARGS+=	--without-netcdf
 
 .if defined(WITH_JAVA)
 ONLY_FOR_ARCHS=	i386
-USE_JAVA=	yes
+USES+=		java
 BUILD_DEPENDS+=	${JAVALIBDIR}/npcosmop211.jar:graphics/cosmoplayer
 RUN_DEPENDS+=	${JAVALIBDIR}/npcosmop211.jar:graphics/cosmoplayer
 CONFIGURE_ARGS+=	--with-cosmojar-path=${JAVALIBDIR}/npcosmop211.jar \
@@ -65,6 +68,14 @@ PLIST_SUB+=	JAVA="@comment "
 .endif
 
 PLIST_SUB+=	UNAMEP=${ARCH}
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD
+USES+=	llvm:max=15
+CONFIGURE_ENV+=	ac_cv_requires_lstdcxx=yes
+CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.endif
 
 .include <bsd.port.pre.mk>
 

@@ -1,3 +1,5 @@
-TIMESTAMP = 1684323254
-SHA256 (crowdsecurity-crowdsec-v1.5.1-freebsd_GH0.tar.gz) = b00ba881d4691ac122d03d1b23ebc2ef2513e42392d628f0c5381b00f07d0996
-SIZE (crowdsecurity-crowdsec-v1.5.1-freebsd_GH0.tar.gz) = 23803699
+TIMESTAMP = 1754034506
+SHA256 (go/security_crowdsec/crowdsec-v1.6.11/v1.6.11.mod) = c4dcc18622d60438579ba803257295e8118772dd383825b72ee758800e282bb7
+SIZE (go/security_crowdsec/crowdsec-v1.6.11/v1.6.11.mod) = 10729
+SHA256 (go/security_crowdsec/crowdsec-v1.6.11/v1.6.11.zip) = ca01f1e1321075a0690b5a2378dbd4cc02eee104594fe71ab64c010df5b77591
+SIZE (go/security_crowdsec/crowdsec-v1.6.11/v1.6.11.zip) = 1780687

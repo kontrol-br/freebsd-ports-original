@@ -1,12 +1,12 @@
 PORTNAME=	glade
 PORTVERSION=	3.40.0
-PORTREVISION=	1
+PORTREVISION=	6
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	User interface builder for GTK+ 3
+COMMENT=	User interface builder for GTK 3
 WWW=		https://glade.gnome.org/
 
 LICENSE=	GPLv2+ LGPL21+
@@ -42,6 +42,6 @@ PYTHON_USE=		GNOME=pygobject3
 WEBKIT_DESC=		Webkit glade support
 WEBKIT_MESON_ENABLED=	webkit2gtk
 WEBKIT_LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup \
-			libwebkit2gtk-4.0.so:www/webkit2-gtk3
+			libwebkit2gtk-4.0.so:www/webkit2-gtk@40
 
 .include <bsd.port.mk>

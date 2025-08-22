@@ -1,5 +1,5 @@
 PORTNAME=	rocksdb
-PORTVERSION=	8.3.2
+PORTVERSION=	10.4.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 
@@ -13,11 +13,9 @@ LICENSE_COMB=	dual
 LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE.Apache
 LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING
 
-#BROKEN=		fails to build
 BROKEN_DragonFly=	does not build on DragonFly BSD using GCC with -Werror
 BROKEN_armv6=	does not build: db/c.cc:2281:44: implicit conversion loses integer precision: 'uint64_t' (aka 'unsigned long long') to 'size_t' (aka 'unsigned int')
 BROKEN_armv7=	does not build: /nxb-bin/usr/bin/ld: undefined reference to symbol `__gnu_Unwind_Find_exidx@@FBSD_1.4' (try adding -lc) #'`
-BROKEN_FreeBSD_12_powerpc64=	does not build: util/crc32c.cc:435:22: 'arch_ppc_probe' was not declared in this scope
 
 BUILD_DEPENDS=	bash:shells/bash
 LIB_DEPENDS=	libgflags.so:devel/gflags \
@@ -61,7 +59,10 @@ ZSTD_MAKE_ENV_OFF=	ROCKSDB_DISABLE_ZSTD=yes
 .include <bsd.port.pre.mk>
 
 .if ${CHOSEN_COMPILER_TYPE} == clang
-CXXFLAGS+=	-Wno-inconsistent-missing-override -Wno-unused-parameter -Wno-unused-variable -Wno-unused-private-field
+CXXFLAGS+=	-Wno-unused-parameter -Wno-unused-variable
+.if ${COMPILER_VERSION} >= 170
+CXXFLAGS+=	-Wno-sync-alignment
+.endif
 .endif
 
 post-patch:
@@ -74,10 +75,8 @@ post-patch:
 post-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/
 	cd ${WRKSRC}/ && ${INSTALL_PROGRAM} ${BENCHMARKS} ${TOOLS} ${STAGEDIR}${PREFIX}/bin/
-	# Locate all shared libraries. The STRIP_CMD below failed on our package building clusters.
-	${FIND} ${WRKSRC} ${STAGEDIR}${PREFIX} -name '*.so*'
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/librocksdb.so
-	${INSTALL_LIB} ${WRKSRC}/librocksdb_tools.so ${STAGEDIR}${PREFIX}/lib/
+	${INSTALL_LIB} ${WRKSRC}/librocksdb_test.so ${WRKSRC}/librocksdb_tools.so ${STAGEDIR}${PREFIX}/lib/
 	${INSTALL_DATA} ${WRKSRC}/make_config.mk ${STAGEDIR}${DATADIR}/
 
 .include <bsd.port.post.mk>

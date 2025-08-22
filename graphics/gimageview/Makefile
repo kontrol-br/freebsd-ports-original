@@ -5,8 +5,8 @@ CATEGORIES=	graphics
 MASTER_SITES=	SF/gtkmmviewer/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
-COMMENT=	Yet another GTK+ based image viewer
-WWW=		http://gtkmmviewer.sourceforge.net/
+COMMENT=	Yet another GTK based image viewer
+WWW=		https://gtkmmviewer.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

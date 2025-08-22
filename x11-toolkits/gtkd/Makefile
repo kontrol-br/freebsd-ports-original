@@ -1,12 +1,12 @@
 PORTNAME=	gtkd
 PORTVERSION=	3.10.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	https://gtkd.org/Downloads/sources/
 DISTNAME=	GtkD-${PORTVERSION}
 
 MAINTAINER=	romain@FreeBSD.org
-COMMENT=	D binding and OO wrapper of GTK+
+COMMENT=	D binding and OO wrapper of GTK
 WWW=		https://gtkd.org/index.html
 
 LICENSE=	LGPL3
@@ -17,6 +17,8 @@ BUILD_DEPENDS=	ldc2:lang/ldc
 USES=		gmake zip
 WRKSRC=		${WRKDIR}
 MAKEFILE=	GNUmakefile
+# avoid building demos
+ALL_TARGET=	libs shared-libs
 
 SSP_UNSAFE=	ldc2 does not support -fstack-protector-strong
 

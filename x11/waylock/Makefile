@@ -1,18 +1,17 @@
 PORTNAME=	waylock
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.6.2
-PORTREVISION=	1
+DISTVERSION=	1.4.0
 CATEGORIES=	x11 wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Small screenlocker for Wayland compositors
-WWW=		https://github.com/ifreund/waylock
+WWW=		https://codeberg.org/ifreund/waylock
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	wayland-protocols>0:graphics/wayland-protocols \
-		zig>=0.10.0:lang/zig
+		zig>=0.14.0:lang/zig
 LIB_DEPENDS=	libwayland-client.so:graphics/wayland \
 		libxkbcommon.so:x11/libxkbcommon
 RUN_DEPENDS=	unix-selfauth-helper>0:security/unix-selfauth-helper
@@ -20,11 +19,11 @@ RUN_DEPENDS=	unix-selfauth-helper>0:security/unix-selfauth-helper
 USES=		pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	ifreund
-GH_TUPLE=	ifreund:zig-wayland:ace6aee:zig_wayland/deps/zig-wayland \
-		ifreund:zig-xkbcommon:bfd1f97:zig_xkbcommon/deps/zig-xkbcommon
+GH_TUPLE=	ifreund:zig-wayland:v0.3.0:zig_wayland/../.cache/zig/p/wayland-0.3.0-lQa1kjPIAQDmhGYpY-zxiRzQJFHQ2VqhJkQLbKKdt5wl \
+		ifreund:zig-xkbcommon:v0.3.0:zig_xkbcommon/../.cache/zig/p/xkbcommon-0.3.0-VDqIe3K9AQB2fG5ZeRcMC9i7kfrp5m2rWgLrmdNn9azr
 MAKE_ENV=	DESTDIR="${STAGEDIR}"
 CONFIGURE_ARGS=	--prefix "${PREFIX}" \
-		${WITH_DEBUG:D:U-Drelease-fast} \
+		${WITH_DEBUG:D:U-Doptimize=ReleaseFast} \
 		${WITH_PIE:D-Dpie} \
 		${STRIP:C/.+/-Dstrip/} \
 		-Dcpu=${CPUTYPE:Ubaseline} \

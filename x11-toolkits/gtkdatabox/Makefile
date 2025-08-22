@@ -1,9 +1,10 @@
 PORTNAME=	gtkdatabox
 DISTVERSION=	1.0.0
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-1
 MAINTAINER=	eduardo@FreeBSD.org
-COMMENT=	GTK+3 widget to display large amounts of numerical data
+COMMENT=	GTK 3 widget to display large amounts of numerical data
 WWW=		https://sourceforge.net/projects/gtkdatabox/
 
 LICENSE=	LGPL21+
@@ -14,7 +15,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libharfbuzz.so:print/harfbuzz
 
 USES=		gnome libtool pathfix pkgconfig
-USE_GNOME=	cairo gdkpixbuf2 gtk30
+USE_GNOME=	cairo gdkpixbuf gtk30
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes

@@ -1,6 +1,5 @@
 PORTNAME=	gdal-grass
-PORTVERSION=	1.0.2
-PORTREVISION=	2
+PORTVERSION=	1.0.4
 PORTEPOCH=	1
 CATEGORIES=	graphics
 
@@ -10,7 +9,7 @@ WWW=		https://github.com/OSGeo/gdal-grass
 
 LICENSE=	MIT
 
-BUILD_DEPENDS=	grass8>=8.2<8.3:databases/grass8
+BUILD_DEPENDS=	grass8>=8.4<8.5:databases/grass8
 LIB_DEPENDS=	libgdal.so:graphics/gdal \
 		libgrass_gis.so:databases/grass8
 
@@ -20,7 +19,7 @@ ALL_TARGET=	default
 CFLAGS+=	-fPIC
 CONFIGURE_ARGS=	--with-autoload=${PREFIX}/lib/gdalplugins \
 		--with-gdal=${LOCALBASE}/bin/gdal-config \
-		--with-grass=${LOCALBASE}/grass82
+		--with-grass=${LOCALBASE}/grass84
 GNU_CONFIGURE=	yes
 
 PLIST_FILES=	lib/gdalplugins/gdal_GRASS.so \
@@ -28,5 +27,8 @@ PLIST_FILES=	lib/gdalplugins/gdal_GRASS.so \
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	OSGeo
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/gdalplugins/*.so
 
 .include <bsd.port.mk>

@@ -1,8 +1,7 @@
 PORTNAME=	hevea
-PORTVERSION=	2.34
+PORTVERSION=	2.36
 CATEGORIES=	textproc
-MASTER_SITES=	http://para.inria.fr/~maranget/hevea/distri/ \
-		ftp://ftp.inria.fr/INRIA/moscova/hevea/
+MASTER_SITES=	http://moscova.inria.fr/~maranget/${PORTNAME}/distri/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
@@ -12,13 +11,20 @@ WWW=		http://para.inria.fr/~maranget/hevea/
 
 BUILD_DEPENDS=	ocamlbuild:devel/ocaml-ocamlbuild
 
-OPTIONS_DEFINE=	DOCS
-
 PLIST_SUB=	HEVEAVERSION=${PORTVERSION}
 
 PORTDOCS=	*
+
+OPTIONS_DEFINE=	DOCS
+
 DOCS_DISTFILES+=	${PORTNAME}-${PORTVERSION}-manual.pdf \
 			${PORTNAME}-${PORTVERSION}-manual.tar.gz
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+USE_BINUTILS=	yes
+.endif
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/esponja

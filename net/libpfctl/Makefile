@@ -1,7 +1,5 @@
-.include <bsd.port.pre.mk>
-
 PORTNAME=	libpfctl
-PORTVERSION=	0.2
+PORTVERSION=	0.16
 CATEGORIES=	net
 MASTER_SITES=	LOCAL/kp/
 
@@ -15,7 +13,8 @@ USE_LDCONFIG=	yes
 
 WRKSRC=		${WRKDIR}/libpfctl
 
-_LIBPFCTL_HASH=	134ced89c4ca
+_LIBPFCTL_HASH=	28f618fcc2b4
+_LIBPFCTL_REV=	4
 
 PLIST_FILES=	\
 		lib/libpfctl.so \
@@ -24,10 +23,10 @@ PLIST_FILES=	\
 
 .include <bsd.port.pre.mk>
 
-.if ${OSREL} == "14.0"
+.if ${OSREL} == "15.0"
 DISTFILES=	libpfctl-${_LIBPFCTL_HASH}.tar.gz
 .else
-DISTFILES=	libpfctl-${OSREL}.tar.gz
+DISTFILES=	libpfctl-${OSREL}_${_LIBPFCTL_REV}.tar.gz
 .endif
 
 do-install:
@@ -37,21 +36,27 @@ do-install:
 	${LN} -s libpfctl.so.0 ${STAGEDIR}${PREFIX}/lib/libpfctl.so
 	${INSTALL_DATA} ${WRKSRC}/*.h ${STAGEDIR}${PREFIX}/include
 
+_ALL_VERSIONS=	13.3 13.4 13.5 14.0 14.1 14.2 14.3
+.if make(makesum)
+DISTFILES=
+.for version in ${_ALL_VERSIONS}
+DISTFILES+=	libpfctl-${version}_${_LIBPFCTL_REV}.tar.gz
+.endfor
+.endif
+
 .if defined(MAINTAINER_MODE)
 upload:
-	for version in 12.4 13.2; \
+	for version in ${_ALL_VERSIONS}; \
 	do \
 		cd /usr/src/lib && \
 		git archive --format=tar.gz \
-		    --output=libpfctl-$${version}.tar.gz \
-		    origin/releng/$${version} libpfctl ; \
+		    --output=libpfctl-$${version}_${_LIBPFCTL_REV}.tar.gz \
+		    libpfctl/$${version} libpfctl ; \
 	done
 	cd /usr/src/lib && \
 	git archive --format=tar.gz \
 	    --output=libpfctl-${_LIBPFCTL_HASH}.tar.gz \
-	    ${_LIBPFCTL_HASH} libpfctl ; \
-	scp libpfctl-*.tar.gz \
-	    kp@freefall.freebsd.org:public_distfiles/
+	    ${_LIBPFCTL_HASH} libpfctl ;
 .endif
 
 .include <bsd.port.post.mk>

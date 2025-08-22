@@ -1,6 +1,7 @@
 PORTNAME=	uacme
 DISTVERSIONPREFIX=	upstream/
-DISTVERSION=	1.7.4
+DISTVERSION=	1.7.6
+PORTREVISION=	1
 CATEGORIES=	security www
 
 MAINTAINER=	eduardo@FreeBSD.org
@@ -36,13 +37,15 @@ GNUTLS_LIB_DEPENDS=		libgnutls.so:security/gnutls
 GNUTLS_CONFIGURE_WITH=		gnutls
 MANPAGES_BUILD_DEPENDS=		asciidoc:textproc/asciidoc
 MANPAGES_CONFIGURE_ENABLE=	docs
-MBEDTLS_BUILD_DEPENDS=		mbedtls>=2.28.0:security/mbedtls
-MBEDTLS_LIB_DEPENDS=		libmbedtls.so:security/mbedtls
+MBEDTLS_BUILD_DEPENDS=		mbedtls2>=2.28.0:security/mbedtls2
+MBEDTLS_LIB_DEPENDS=		libmbedtls.so:security/mbedtls2
 MBEDTLS_CONFIGURE_WITH=		mbedtls=${LOCALBASE}
 OPENSSL_USES=			ssl
 OPENSSL_CONFIGURE_WITH=		openssl=${OPENSSLBASE}
 UALPN_LIB_DEPENDS=		libev.so:devel/libev
 UALPN_CONFIGURE_WITH=		ualpn
+UALPN_CONFIGURE_ENV=		CFLAGS="`pkgconf --cflags libev`" \
+				LDFLAGS="`pkgconf --libs libev`"
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

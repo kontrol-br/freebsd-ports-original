@@ -1,6 +1,6 @@
 PORTNAME=	erlang
 DISTVERSIONPREFIX=	OTP-
-DISTVERSION=	22.3.4.26
+DISTVERSION=	22.3.4.27
 PORTREVISION=	2
 # NB when bumping OTP versions also bump PORTREVISION in databases/couchdb3
 CATEGORIES=	lang parallel java
@@ -12,8 +12,6 @@ COMMENT=	Functional programming language from Ericsson
 WWW=		https://www.erlang.org/
 
 LICENSE=	APACHE20
-
-BROKEN_sparc64=	Fails to build: error: fp_except undeclared
 
 USES=		autoreconf:build compiler cpe gmake ncurses perl5
 USE_GITHUB=	nodefault
@@ -73,18 +71,15 @@ DTRACE_VARS=			STRIP=""
 HIPE_CONFIGURE_ENABLE=		hipe
 JAVA_CONFIGURE_WITH=		javac
 JAVA_CONFIGURE_ENV=		ac_cv_prog_JAVAC="${JAVAC}"
-JAVA_VARS=			USE_JAVA=yes
+JAVA_USES=			java
 KQUEUE_CONFIGURE_ENABLE=	kernel-poll
 NATIVE_IMPLIES=			HIPE
 NATIVE_CONFIGURE_ENABLE=	native-libs
 ODBC_LIB_DEPENDS=		libodbc.so:databases/unixODBC
+ODBC_USES=			localbase:ldflags
 ODBC_CONFIGURE_WITH=		odbc
-ODBC_CFLAGS=			-I/usr/local/include
-ODBC_LDFLAGS=			-L/usr/local/lib
 OPENSSL_USES=			ssl
 OPENSSL_CONFIGURE_WITH=		ssl=${OPENSSLBASE}
-OPENSSL_VARS=	BROKEN_SSL="openssl30 openssl31" \
-				BROKEN_SSL_REASON="Cannot find function FIPS_mode"
 SCTP_CONFIGURE_ENABLE=		sctp
 THREADS_CONFIGURE_ENABLE=	threads
 WX_USES=			gl
@@ -95,7 +90,7 @@ WX_VARS=			USE_GL="gl glu" \
 
 .include <bsd.port.pre.mk>
 
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 130
+.if ${COMPILER_TYPE} == clang
 # PR 258494
 CONFIGURE_ARGS+=	--disable-pgo
 .endif
@@ -110,6 +105,11 @@ MAKE_ARGS+=	ARCH=x86
 
 .if ${ARCH} == armv6 || ${ARCH} == armv7
 MAKE_ARGS+=	ARCH=arm
+.endif
+
+.if ( ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400092 && ${SSL_DEFAULT} == base ) || ${SSL_DEFAULT:Mopenssl3*}
+CFLAGS+=	-Wno-error=implicit-function-declaration
+OPTIONS_EXCLUDE=	OPENSSL
 .endif
 
 pre-configure:

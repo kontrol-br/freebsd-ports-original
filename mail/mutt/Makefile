@@ -1,6 +1,6 @@
 PORTNAME=	mutt
-DISTVERSION=	2.2.10
-PORTREVISION=	3
+DISTVERSION=	2.2.14
+PORTREVISION=	1
 CATEGORIES+=	mail
 MASTER_SITES=	ftp://ftp.mutt.org/pub/mutt/ \
 		https://bitbucket.org/mutt/mutt/downloads/
@@ -164,12 +164,7 @@ SMTP_CONFIGURE_ENABLE=	smtp
 
 URLVIEW_RUN_DEPENDS=	urlview:textproc/urlview
 
-.include <bsd.port.options.mk>
-
-post-install:
-	${INSTALL_MAN} ${FILESDIR}/mailcap.5 ${STAGEDIR}${MANPREFIX}/man/man5
-
-pre-configure::
+pre-configure:
 # Stop make from setgid mutt_dotlock
 	@${REINPLACE_CMD} \
 		-e '/if test.*mutt_dotlock.*DOTLOCK_GROUP/s/if/if ${FALSE} \&\&/' \
@@ -181,10 +176,13 @@ pre-configure::
 	@${REINPLACE_CMD} -e 's,$$(docdir)/samples,${EXAMPLESDIR},g' \
 		${WRKSRC}/contrib/Makefile.in
 
+post-install:
+	${INSTALL_MAN} ${FILESDIR}/mailcap.5 ${STAGEDIR}${PREFIX}/share/man/man5
+
 # Undo some dist. installed files
-post-stage::
+post-stage:
 	@${MV} ${STAGEDIR}/${LOCALBASE}/etc/Muttrc.dist \
-	    	${STAGEDIR}/${LOCALBASE}/etc/Muttrc.sample
+		${STAGEDIR}/${LOCALBASE}/etc/Muttrc.sample
 	@${RM} ${STAGEDIR}/${LOCALBASE}/etc/mime.types*
 
 .include <bsd.port.mk>

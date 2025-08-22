@@ -1,11 +1,11 @@
 PORTNAME=		mt_gtk_client
 PORTVERSION=		0.1.98
-PORTREVISION=		15
+PORTREVISION=		16
 CATEGORIES=		games
 MASTER_SITES=		SAVANNAH/maitretarot
 
 MAINTAINER=		thierry@FreeBSD.org
-COMMENT=		GTK+ client for MaitreTarot, a Tarot card game
+COMMENT=		GTK client for MaitreTarot, a Tarot card game
 WWW=		https://www.nongnu.org/maitretarot/
 
 LICENSE=		GPLv2

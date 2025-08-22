@@ -1,20 +1,29 @@
---- chrome/browser/ui/chrome_pages.cc.orig	2023-07-24 14:27:53 UTC
+--- chrome/browser/ui/chrome_pages.cc.orig	2025-05-07 06:48:23 UTC
 +++ chrome/browser/ui/chrome_pages.cc
-@@ -69,7 +69,7 @@
+@@ -84,7 +84,7 @@
+ #include "components/signin/public/identity_manager/identity_manager.h"
  #endif
  
- #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
--    BUILDFLAG(IS_FUCHSIA)
-+    BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  #include "chrome/browser/web_applications/web_app_utils.h"
  #endif
  
-@@ -662,7 +662,7 @@ void ShowBrowserSigninOrSettings(Browser* browser,
- #endif
+@@ -381,7 +381,7 @@ void ShowChromeTips(Browser* browser) {
+   ShowSingletonTab(browser, GURL(kChromeTipsURL));
+ }
  
- #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
--    BUILDFLAG(IS_FUCHSIA)
-+    BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
- void ShowWebAppSettings(Browser* browser,
-                         const std::string& app_id,
-                         web_app::AppSettingsPageEntryPoint entry_point) {
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ void ShowChromeWhatsNew(Browser* browser) {
+   ShowSingletonTab(browser, GURL(kChromeUIWhatsNewURL));
+ }
+@@ -699,7 +699,7 @@ void ShowShortcutCustomizationApp(Profile* profile,
+ }
+ #endif  // BUILDFLAG(IS_CHROMEOS)
+ 
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ void ShowWebAppSettingsImpl(Browser* browser,
+                             Profile* profile,
+                             const std::string& app_id,

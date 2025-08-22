@@ -7,12 +7,12 @@ include/zathura/plugin-api.h
 include/zathura/types.h
 include/zathura/zathura-version.h
 libdata/pkgconfig/zathura.pc
-man/man1/zathura.1.gz
-man/man5/zathurarc.5.gz
+%%MANPAGES%%share/man/man1/zathura.1.gz
+%%MANPAGES%%share/man/man5/zathurarc.5.gz
 share/applications/org.pwmt.zathura.desktop
 share/bash-completion/completions/zathura
 share/dbus-1/interfaces/org.pwmt.zathura.xml
-share/fish/vendor_completions.d/zathura.fish
+share/fish/completions/zathura.fish
 share/icons/hicolor/128x128/apps/org.pwmt.zathura.png
 share/icons/hicolor/16x16/apps/org.pwmt.zathura.png
 share/icons/hicolor/256x256/apps/org.pwmt.zathura.png

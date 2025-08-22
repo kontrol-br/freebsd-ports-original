@@ -1,6 +1,6 @@
 PORTNAME=	denemo
 PORTVERSION=	2.0.6
-PORTREVISION=	18
+PORTREVISION=	20
 CATEGORIES=	audio
 MASTER_SITES=	GNU
 
@@ -54,7 +54,7 @@ GTK3_USE=		gnome=gtk30,gtksourceview3
 LILYPOND_DESC=		Install LilyPond (Printing)
 LILYPOND_RUN_DEPENDS=	lilypond:print/lilypond
 PDF_CONFIGURE_OFF=	--disable-evince
-TOOLKIT_DESC=		GTK+ toolkit
+TOOLKIT_DESC=		GTK toolkit
 
 .include <bsd.port.options.mk>
 
@@ -68,7 +68,7 @@ LIB_DEPENDS+=	libatrilview.so:graphics/atril
 
 .include <bsd.port.pre.mk>
 
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+.if ${COMPILER_TYPE} == clang
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

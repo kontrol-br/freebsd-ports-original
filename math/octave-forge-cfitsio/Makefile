@@ -1,6 +1,6 @@
 PORTNAME=	octave-forge-cfitsio
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.0.5
+DISTVERSION=	0.0.7
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -20,5 +20,6 @@ GH_PROJECT=	octave-cfitsio
 OCTAVE_SRC=	${GH_PROJECT}-${DISTVERSION}
 
 GNU_CONFIGURE=	yes
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

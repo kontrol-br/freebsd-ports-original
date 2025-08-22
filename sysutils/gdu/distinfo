@@ -1,5 +1,5 @@
-TIMESTAMP = 1686236306
-SHA256 (go/sysutils_gdu/gdu-v5.25.0/v5.25.0.mod) = cb4f73d81c144d90284a6f473df936163884cad62c286b921af6faad453a6ea7
-SIZE (go/sysutils_gdu/gdu-v5.25.0/v5.25.0.mod) = 1104
-SHA256 (go/sysutils_gdu/gdu-v5.25.0/v5.25.0.zip) = 650137ee1da0370de63661c14a4c4e9a2140b6c5b408163db1580a8531b41cd7
-SIZE (go/sysutils_gdu/gdu-v5.25.0/v5.25.0.zip) = 101165
+TIMESTAMP = 1749873055
+SHA256 (go/sysutils_gdu/gdu-v5.31.0/v5.31.0.mod) = d27542d3955f1dfd7737a2fd8b833be52a94119a935fbc2950a0653cd3e50f93
+SIZE (go/sysutils_gdu/gdu-v5.31.0/v5.31.0.mod) = 1892
+SHA256 (go/sysutils_gdu/gdu-v5.31.0/v5.31.0.zip) = 6487b8a2bb6ca4ecedcf6e2e2fa6a0615d8563e1fa82bc6026a2ac6190675abc
+SIZE (go/sysutils_gdu/gdu-v5.31.0/v5.31.0.zip) = 336248

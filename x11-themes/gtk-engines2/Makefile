@@ -2,12 +2,12 @@ PORTNAME=	gtk-engines2
 PORTVERSION=	2.20.2
 PORTREVISION=	4
 CATEGORIES=	x11-themes
-MASTER_SITES=	GNOME/sources/${PORTNAME:S/2$//}/${PORTVERSION:C/^([0-9]+\.[0-9]+).*/\1/}
+MASTER_SITES=	GNOME
 DISTNAME=	${PORTNAME:S/2$//}-${PORTVERSION}
 DIST_SUBDIR=	gnome2
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	Theme engine for the GTK+-2.0 toolkit
+COMMENT=	Theme engine for the GTK-2.0 toolkit
 WWW=		https://www.gtk.org/
 
 CONFLICTS=	gtk-smooth-engine clearlooks

@@ -1,6 +1,6 @@
 PORTNAME=	signald
 DISTVERSION=	0.15.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net-im java
 MASTER_SITES=	https://plugins.gradle.org/m2/gradle/plugin/de/fuerstenau/BuildConfigPlugin/1.1.8/:buildconfig \
 		https://repo.maven.apache.org/maven2/com/fasterxml/jackson/core/jackson-annotations/2.9.0/:jackann \
@@ -78,18 +78,16 @@ LIB_DEPENDS=	libsignal_jni.so:net-im/libsignal-client \
 		libsqlitejdbc.so:java/sqlitejdbc \
 		libzkgroup.so:net-im/zkgroup
 
-USES=		gmake shebangfix
+USES=		gmake java shebangfix
 USE_GITLAB=	yes
 GL_ACCOUNT=	signald
 GL_TAGNAME=	65cf5e8a1cf2b81fd1f5c3936e0164d53c5a9b29
-
-USE_JAVA=	yes
 JAVA_VERSION=	11+
-JAVA_RUN=	jre
+USE_RC_SUBR=	signald
+
 SUB_FILES=	signald.7
 SUB_LIST=	JAVA_HOME="${JAVA_HOME}" \
 		PKGBASE="${PKGBASE}"
-USE_RC_SUBR=	signald
 
 NO_ARCH=	yes
 
@@ -132,6 +130,6 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}/lib
 	${INSTALL_DATA} ${WRKSRC}/build/install/${PORTNAME}/lib/*.jar \
 		${STAGEDIR}${DATADIR}/lib/
-	${INSTALL_MAN} ${WRKDIR}/signald.7 ${STAGEDIR}${MANPREFIX}/man/man7
+	${INSTALL_MAN} ${WRKDIR}/signald.7 ${STAGEDIR}${PREFIX}/share/man/man7
 
 .include <bsd.port.mk>

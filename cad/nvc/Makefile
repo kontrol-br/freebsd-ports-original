@@ -1,7 +1,6 @@
 PORTNAME=	nvc
 DISTVERSIONPREFIX=	r
-DISTVERSION=	1.10.1
-PORTREVISION=	1
+DISTVERSION=	1.17.1
 CATEGORIES=	cad
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,20 +10,17 @@ WWW=		https://github.com/nickg/nvc
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_armv6=	compilation fails: no member named '_gregs' in 'mcontext_t'; did you mean '__gregs', see https://github.com/nickg/nvc/issues/534
 BROKEN_armv7=	compilation fails: no member named '_gregs' in 'mcontext_t'; did you mean '__gregs', see https://github.com/nickg/nvc/issues/534
+BROKEN_i386=	compilation fails: static assertion failed due to requirement 'sizeof(jit_ir_t) == 40': Static assertion failed, see https://github.com/nickg/nvc/issues/1133
 BROKEN_FreeBSD_14_i386=	clang creashes, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=265826
 
 BUILD_DEPENDS=	llvm-config${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
-LIB_DEPENDS=	libelf.so:devel/elfutils \
+LIB_DEPENDS=	libelf.so:devel/libelf \
 		libffi.so:devel/libffi \
 		libzstd.so:archivers/zstd
 RUN_DEPENDS=	llvm${LLVM_VERSION}>0:devel/llvm${LLVM_VERSION} \
 		bash:shells/bash
 TEST_DEPENDS=	check>0:devel/check
-.if !exists(/usr/include/unwind.h)
-LIB_DEPENDS+=	libunwind.so:devel/libunwind
-.endif
 
 USES=		autoreconf compiler:c++14-lang localbase pkgconfig shebangfix
 
@@ -34,6 +30,7 @@ GH_ACCOUNT=	nickg
 SHEBANG_FILES=	contrib/functions.sh
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 LDFLAGS+=	-lexecinfo
 

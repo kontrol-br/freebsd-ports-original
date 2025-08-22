@@ -1,8 +1,9 @@
 PORTNAME=	fontconfig
-DISTVERSION=	2.14.2
+DISTVERSION=	2.15.0
+PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	x11-fonts
-MASTER_SITES=	https://www.freedesktop.org/software/fontconfig/release/
+MASTER_SITES=	https://www.freedesktop.org/software/${PORTNAME}/release/
 
 MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	XML-based font configuration API for X Windows
@@ -26,12 +27,14 @@ SHEBANG_FILES=	conf.d/link_confs.py \
 
 TEST_TARGET=	test
 
+SUB_FILES=	pkg-message
+SUB_LIST=	LOCALBASE=${LOCALBASE}
+
 # To avoid circular dependency rebuild of docs (including manpages) needs to be
 # disabled as they depend on textproc/docbook-utils which requires fontconfig
 MESON_ARGS=	-Ddefault_library=both -Ddoc=disabled -Dcache-build=disabled \
 		-Ddefault-fonts-dirs=${PREFIX}/share/fonts \
 		-Dadditional-fonts-dirs=${LOCALBASE}/lib/X11/fonts \
-		-Dlocalstatedir=/var \
 		-Dcache-dir=/var/db/fontconfig \
 		-Dtemplate-dir=${LOCALBASE}/etc/fonts/conf.avail \
 		-Dxml-dir=${LOCALBASE}/etc/fonts
@@ -60,9 +63,9 @@ NLS_MESON_ENABLED=	nls
 TEST_MESON_ENABLED=	tests
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/fc-*/*.1 ${STAGEDIR}${PREFIX}/man/man1
-	${INSTALL_MAN} ${WRKSRC}/doc/*.3 ${STAGEDIR}${PREFIX}/man/man3
-	${INSTALL_MAN} ${WRKSRC}/doc/*.5 ${STAGEDIR}${PREFIX}/man/man5
+	${INSTALL_MAN} ${WRKSRC}/fc-*/*.1 ${STAGEDIR}${PREFIX}/share/man/man1
+	${INSTALL_MAN} ${WRKSRC}/doc/*.3 ${STAGEDIR}${PREFIX}/share/man/man3
+	${INSTALL_MAN} ${WRKSRC}/doc/*.5 ${STAGEDIR}${PREFIX}/share/man/man5
 	${MV} ${STAGEDIR}${PREFIX}/etc/fonts/fonts.conf ${STAGEDIR}${PREFIX}/etc/fonts/fonts.conf.sample
 	@${MKDIR} ${STAGEDIR}/var/db/fontconfig
 

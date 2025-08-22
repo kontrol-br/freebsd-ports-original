@@ -1,6 +1,6 @@
 PORTNAME=	ImageMagick
-DISTVERSION=	7.1.0-62
-PORTREVISION=	6
+DISTVERSION=	7.1.1-45
+PORTREVISION=	2
 CATEGORIES=	graphics perl5
 MASTER_SITES=	https://ftp.acc.umu.se/mirror/imagemagick.org/ftp/releases/ \
 		https://mirror.dogado.de/imagemagick/releases/ \
@@ -17,7 +17,9 @@ LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libltdl.so:devel/libltdl	\
+		libzstd.so:archivers/zstd	\
 		libzip.so:archivers/libzip
+TEST_DEPENDS=	gsfonts>=0:print/gsfonts
 
 FLAVORS=		x11 nox11
 FLAVOR?=		${FLAVORS:[1]}
@@ -35,26 +37,28 @@ CPE_PRODUCT=	imagemagick
 CPE_VENDOR=	imagemagick
 SHEBANG_FILES=	www/source/examples.pl
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ENV=	MAKE=${MAKE_CMD}
 CONFIGURE_ARGS=	--without-dps \
-		--without-flif \
-		--without-zstd
+		--with-zstd
 USE_LDCONFIG=	yes
 USE_GNOME=	libxml2
 
 SAMPLE_FILES=	colors.xml delegates.xml log.xml mime.xml policy.xml \
 		quantization-table.xml thresholds.xml type-apple.xml \
 		type-dejavu.xml type-ghostscript.xml type-urw-base35.xml \
-		type-windows.xml type.xml
+		type-urw-base35-type1.xml type-windows.xml type.xml
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION:R}
 
+TEST_TARGET=	check
+
 OPTIONS_SUB=	yes
-OPTIONS_DEFINE=	BZIP2 DOCS DJVU FFMPEG FFTW FONTCONFIG FPX FREETYPE \
+OPTIONS_DEFINE=	BZIP2 DOCS DJVU FFMPEG FFTW FLIF FONTCONFIG FPX FREETYPE \
 		GRAPHVIZ GSLIB JPEG2000 JBIG JPEG JXL LCMS2 LZMA LQR MODULES \
-		OPENEXR OPENMP PDF PERL PNG TESTS TIFF WEBP WMF THREADS \
+		OPENEXR OPENMP PDF PERL PNG TIFF WEBP WMF THREADS \
 		16BIT_PIXEL HDRI HEIF RAW
-OPTIONS_DEFAULT=	16BIT_PIXEL BZIP2 FFTW FONTCONFIG FREETYPE HEIF \
+OPTIONS_DEFAULT=16BIT_PIXEL BZIP2 FFTW FONTCONFIG FREETYPE HEIF \
 		JPEG2000 JBIG JPEG JXL LCMS2 LZMA LQR MODULES OPENEXR PDF PERL PNG \
 		TIFF WEBP WMF THREADS HDRI RAW
 
@@ -66,13 +70,14 @@ CONFIGURE_ARGS+=	--with-x
 USES+=			xorg
 USE_XORG=		ice sm x11 xext xt
 .else
+OPTIONS_EXCLUDE=	PANGO RAQM SVG
 CONFIGURE_ARGS+=	--without-x
 .endif
 
 DJVU_DESC=		DJVU format support (needs THREADS)
 GSLIB_DESC=		libgs (Postscript SHLIB) support
 FFMPEG_DESC=		VIDEO codec support as FFmpeg
-TESTS_DESC=		Run bundled self-tests after build
+FLIF_DESC=		Free Lossless Image Format support
 #SIMD_CONFIGURE_WITH=	gcc-arch
 CONFIGURE_ARGS+=	--without-gcc-arch
 
@@ -94,6 +99,9 @@ FONTCONFIG_LIB_DEPENDS=		libfontconfig.so:x11-fonts/fontconfig
 
 FREETYPE_CONFIGURE_WITH=	freetype
 FREETYPE_LIB_DEPENDS=		libfreetype.so:print/freetype2
+
+FLIF_CONFIGURE_WITH=	flif
+FLIF_LIB_DEPENDS=	libflif.so:graphics/flif
 
 # FPX (FlashPIX) images
 FPX_CONFIGURE_WITH=	fpx
@@ -161,15 +169,16 @@ RAW_IMPLIES=		LCMS2
 
 SVG_DESC=		SVG vector image format support (via librsvg, implies the x11 option)
 SVG_CONFIGURE_WITH=	rsvg
-SVG_USE=		gnome=cairo,gdkpixbuf2,librsvg2
-
-TESTS_TEST_DEPENDS=	gsfonts>=0:print/gsfonts
+SVG_USE=		gnome=cairo,gdkpixbuf,librsvg2
 
 TIFF_CONFIGURE_WITH=	tiff
 TIFF_LIB_DEPENDS=	libtiff.so:graphics/tiff
 
 WEBP_CONFIGURE_WITH=	webp
 WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
+
+WMF_CONFIGURE_WITH=	wmf
+WMF_LIB_DEPENDS=	libwmf.so:graphics/libwmf@${FLAVOR}
 
 .include <bsd.port.options.mk>
 
@@ -267,20 +276,6 @@ USES+=		ghostscript
 CONFIGURE_ARGS+=	--without-gslib
 .endif
 
-# WMF (Windows Meta File) images
-.if ${PORT_OPTIONS:MWMF}
-. if ${FLAVOR:U} == x11
-LIB_DEPENDS+=		libwmf.so:graphics/libwmf
-. else
-LIB_DEPENDS+=		libwmf.so:graphics/libwmf-nox11
-. endif
-CONFIGURE_ARGS+=	--with-wmf=yes
-PLIST_SUB+=		WMF=""
-.else
-CONFIGURE_ARGS+=	--without-wmf
-PLIST_SUB+=		WMF="@comment "
-.endif
-
 # PDF (Adobe Portable Document Format) support
 .if ${PORT_OPTIONS:MPDF}
 . if ${FLAVOR:U} == x11
@@ -329,6 +324,7 @@ post-patch:
 		${WRKSRC}/MagickCore/ImageMagick.pc.in \
 		${WRKSRC}/MagickWand/MagickWand-config.in \
 		${WRKSRC}/MagickWand/MagickWand.pc.in
+	@${REINPLACE_CMD} -e '/^export PKG_CONFIG_LIBDIR/d' ${WRKSRC}/MagickWand/MagickWand-config.in
 
 pre-configure:
 .if defined(_IMAGEMAGICK_THREADS_PERL_MSG)
@@ -342,10 +338,5 @@ post-install:
 	@${MV} ${STAGEDIR}${PREFIX}/etc/ImageMagick-7/${i} \
 		${STAGEDIR}${PREFIX}/etc/ImageMagick-7/${i}.sample
 .endfor
-
-post-install-TESTS-on: test
-
-do-test:
-	-cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} limits -m 20m ${MAKE} ${_MAKE_JOBS} check
 
 .include <bsd.port.mk>

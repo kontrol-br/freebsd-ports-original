@@ -1,9 +1,9 @@
 PORTNAME=	pantomime
-PORTVERSION=	1.3.0
-PORTREVISION=	2
+DISTVERSION=	1.4.0
+PORTREVISION=	1
 CATEGORIES=	mail gnustep
 MASTER_SITES=	SAVANNAH/gnustep-nonfsf/
-DISTNAME=	Pantomime-${PORTVERSION}
+DISTNAME=	Pantomime-${DISTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Mail/MIME handling library for GNUstep
@@ -20,11 +20,11 @@ USE_LDCONFIG=	${GNUSTEP_LOCAL_LIBRARIES}
 
 MAKE_ARGS+=	LIBRARIES_DEPEND_UPON='${ICONV_LIB} -lssl'
 
-DEFAULT_LIBVERSION=	1.3
+DEFAULT_LIBVERSION=	${DISTVERSION:R}
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=       -Wno-error=int-conversion
 .endif
 

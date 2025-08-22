@@ -1,16 +1,14 @@
 PORTNAME=	octopus
-DISTVERSION=	11.4
-PORTREVISION=	4
+DISTVERSION=	15.1
+PORTREVISION=	2
 CATEGORIES=	science # chemistry
 MASTER_SITES=	https://octopus-code.org/download/${DISTVERSION}/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Scientific program aimed at the ab initio virtual experimentation
-WWW=		https://octopus-code.org/wiki/Main_Page
+WWW=		https://octopus-code.org/documentation/15/
 
 LICENSE=	GPLv2
-
-BROKEN_aarch64=	undefined reference to `__aarch64_cas8_acq_rel' #'`
 
 BUILD_DEPENDS=	bash:shells/bash
 LIB_DEPENDS=	libarpack.so:math/arpack-ng \
@@ -35,19 +33,20 @@ LIB_DEPENDS=	libarpack.so:math/arpack-ng \
 USES=		compiler:c++14-lang fortran gmake jpeg libtool localbase:ldflags perl5 python shebangfix
 USE_CXXSTD=	c++14
 USE_LDCONFIG=	yes
-USE_GCC=	11 # pending resolution of https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=266196 (see also https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=266196)
 
 SHEBANG_FILES=	src/fdep/fortran_dependencies.pl testsuite/performance/create_combinations.py
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_SHELL=	${PREFIX}/bin/bash
 CONFIGURE_ARGS=	--enable-shared --disable-static
 
 LDFLAGS+=	-lsymspg
 FCFLAGS+=	-I${LOCALBASE}/include -ffree-line-length-none
+FCFLAGS+=	-fallow-argument-mismatch # fix build on i386: Error: Type mismatch in argument 'dims' at (1); passed INTEGER(8) to INTEGER(4)
 
 INSTALL_TARGET=	install-strip
-TEST_TARGET=	check-short # some tests fail, see https://gitlab.com/octopus-code/octopus/-/issues/558
+TEST_TARGET=	check-short # some tests fail, see https://gitlab.com/octopus-code/octopus/-/issues/805
 
 OPTIONS_DEFINE=			OPENMP
 OPTIONS_DEFAULT=		OPENMP

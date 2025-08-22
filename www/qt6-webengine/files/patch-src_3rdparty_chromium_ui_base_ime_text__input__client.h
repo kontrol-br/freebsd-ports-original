@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/ui/base/ime/text_input_client.h.orig	2023-03-28 19:45:02 UTC
+--- src/3rdparty/chromium/ui/base/ime/text_input_client.h.orig	2024-09-30 07:45:04 UTC
 +++ src/3rdparty/chromium/ui/base/ime/text_input_client.h
-@@ -242,7 +242,7 @@ class COMPONENT_EXPORT(UI_BASE_IME) TextInputClient
+@@ -268,7 +268,7 @@ class COMPONENT_EXPORT(UI_BASE_IME) TextInputClient {
    // fields that are considered 'private' (e.g. in incognito tabs).
    virtual bool ShouldDoLearning() = 0;
  

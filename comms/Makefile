@@ -18,8 +18,6 @@
     SUBDIR += bpl+
     SUBDIR += chirp
     SUBDIR += chu
-    SUBDIR += comserv
-    SUBDIR += concordance
     SUBDIR += conserver-com
     SUBDIR += cqrlog
     SUBDIR += cubicsdr
@@ -28,6 +26,7 @@
     SUBDIR += cwstudio
     SUBDIR += cyclonedds
     SUBDIR += dcf77pi
+    SUBDIR += deforaos-phone
     SUBDIR += dfu-programmer
     SUBDIR += dfu-util
     SUBDIR += digiham
@@ -48,6 +47,7 @@
     SUBDIR += flwrap
     SUBDIR += freedv
     SUBDIR += gammu
+    SUBDIR += gensio
     SUBDIR += gkermit
     SUBDIR += gnocky
     SUBDIR += gnokii
@@ -59,10 +59,10 @@
     SUBDIR += gstreamer1-plugins-spandsp
     SUBDIR += gtkmmorse
     SUBDIR += hackrf
-    SUBDIR += hackrf-devel
     SUBDIR += hamlib
     SUBDIR += hcidump
     SUBDIR += hidapi
+    SUBDIR += hydrasdr
     SUBDIR += ibp
     SUBDIR += iceoryx
     SUBDIR += inspectrum
@@ -70,11 +70,12 @@
     SUBDIR += java-simple-serial-connector
     SUBDIR += kermit
     SUBDIR += klog
-    SUBDIR += libconcord
     SUBDIR += libdc
     SUBDIR += libfap
     SUBDIR += libfec
+    SUBDIR += libfobos
     SUBDIR += libimobiledevice
+    SUBDIR += libimobiledevice-glue
     SUBDIR += libirman
     SUBDIR += libmodbus
     SUBDIR += librs232
@@ -83,8 +84,13 @@
     SUBDIR += libticables2
     SUBDIR += libticalcs2
     SUBDIR += libusbmuxd
+    SUBDIR += libusbsio
     SUBDIR += limesuite
     SUBDIR += linrad
+    SUBDIR += linux-rl9-qt5-qtconnectivity
+    SUBDIR += linux-rl9-qt5-qtsensors
+    SUBDIR += linux-rl9-qt5-qtserialbus
+    SUBDIR += linux-rl9-qt5-qtserialport
     SUBDIR += liquid-dsp
     SUBDIR += lirc
     SUBDIR += locator
@@ -93,12 +99,10 @@
     SUBDIR += mbelib
     SUBDIR += mgetty+sendfax
     SUBDIR += minicom
-    SUBDIR += mlan3
     SUBDIR += morse
     SUBDIR += multimon-ng
     SUBDIR += nanovna-saver
     SUBDIR += nasawash
-    SUBDIR += ncid
     SUBDIR += nec2c
     SUBDIR += nmealib
     SUBDIR += obexapp
@@ -107,7 +111,6 @@
     SUBDIR += opencbm-plugin-xa1541
     SUBDIR += openobex
     SUBDIR += openzwave
-    SUBDIR += openzwave-devel
     SUBDIR += owfs
     SUBDIR += p5-Cisco-UCS
     SUBDIR += p5-Device-Gsm
@@ -129,6 +132,7 @@
     SUBDIR += picocom
     SUBDIR += pr
     SUBDIR += predict
+    SUBDIR += py-ModbusTCP
     SUBDIR += py-adafruit-ampy
     SUBDIR += py-elelabs-zigbee-ezsp-utility
     SUBDIR += py-esptool
@@ -137,9 +141,17 @@
     SUBDIR += py-hidapi
     SUBDIR += py-libimobiledevice
     SUBDIR += py-libscrc
+    SUBDIR += py-libusbsio
+    SUBDIR += py-nkdfu
+    SUBDIR += py-pylink-square
     SUBDIR += py-pymodbus
+    SUBDIR += py-pyocd
+    SUBDIR += py-pyocd-pemicro
     SUBDIR += py-pyserial
     SUBDIR += py-pyserial-asyncio
+    SUBDIR += py-sdm_modbus
+    SUBDIR += py-spsdk
+    SUBDIR += py-streamdeck
     SUBDIR += py-xmodem
     SUBDIR += pyla
     SUBDIR += qico
@@ -150,6 +162,7 @@
     SUBDIR += qt5-sensors
     SUBDIR += qt5-serialbus
     SUBDIR += qt5-serialport
+    SUBDIR += qt6-connectivity
     SUBDIR += qt6-sensors
     SUBDIR += qt6-serialbus
     SUBDIR += qt6-serialport
@@ -159,6 +172,7 @@
     SUBDIR += remserial
     SUBDIR += rtl-433
     SUBDIR += rtl-sdr
+    SUBDIR += rtlbt-firmware
     SUBDIR += rubygem-callsign
     SUBDIR += rubygem-ruby-termios
     SUBDIR += rubygem-serialport
@@ -166,12 +180,10 @@
     SUBDIR += scmxx
     SUBDIR += scrcpy
     SUBDIR += sdr++
-    SUBDIR += sdr-wspr
     SUBDIR += ser2net
     SUBDIR += serialoverip
     SUBDIR += sigdigger
     SUBDIR += sigutils
-    SUBDIR += sms_client
     SUBDIR += smstools3
     SUBDIR += snap7
     SUBDIR += soapyairspy
@@ -191,7 +203,6 @@
     SUBDIR += svxlink
     SUBDIR += syncterm
     SUBDIR += tcpser
-    SUBDIR += telldus-core
     SUBDIR += thebridge
     SUBDIR += tilp2
     SUBDIR += tio
@@ -201,7 +212,6 @@
     SUBDIR += trustedqsl
     SUBDIR += twpsk
     SUBDIR += uarduno
-    SUBDIR += uartlirc
     SUBDIR += uhd
     SUBDIR += uird
     SUBDIR += ujprog
@@ -223,5 +233,6 @@
     SUBDIR += xnecview
     SUBDIR += yagiuda
     SUBDIR += yfklog
+    SUBDIR += zigbee2mqtt
 
 .include <bsd.port.subdir.mk>

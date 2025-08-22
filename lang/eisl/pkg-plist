@@ -12,6 +12,7 @@ bin/eisl
 %%DATADIR%%/library/cxr.lsp
 %%DATADIR%%/library/datetime.lsp
 %%DATADIR%%/library/datetime.o
+%%DATADIR%%/library/distributed.lsp
 %%DATADIR%%/library/elixir.lsp
 %%DATADIR%%/library/escape.lsp
 %%DATADIR%%/library/escape.o
@@ -35,6 +36,7 @@ bin/eisl
 %%DATADIR%%/library/ndbm.lsp
 %%DATADIR%%/library/ndbm.o
 %%DATADIR%%/library/opengl.lsp
+%%DATADIR%%/library/opengl.o
 %%DATADIR%%/library/persist.lsp
 %%DATADIR%%/library/plot.lsp
 %%DATADIR%%/library/plot.o
@@ -43,16 +45,16 @@ bin/eisl
 %%DATADIR%%/library/prolog.o
 %%DATADIR%%/library/quaternion.lsp
 %%DATADIR%%/library/queue.lsp
+%%DATADIR%%/library/rational.lsp
 %%DATADIR%%/library/regex.lsp
 %%DATADIR%%/library/regex.o
+%%DATADIR%%/library/roman.lsp
 %%DATADIR%%/library/sedit.lsp
 %%DATADIR%%/library/seq.lsp
 %%DATADIR%%/library/sort.lsp
 %%DATADIR%%/library/stat.lsp
 %%DATADIR%%/library/string.lsp
 %%DATADIR%%/library/tcltk.lsp
-%%DATADIR%%/library/tcpip.lsp
-%%DATADIR%%/library/tcpip.o
 %%DATADIR%%/library/test.lsp
 %%DATADIR%%/library/unistd.lsp
 %%DATADIR%%/library/unistd.o

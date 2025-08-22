@@ -1,11 +1,11 @@
---- gpu/command_buffer/service/shared_image/external_vk_image_backing_factory.cc.orig	2023-07-16 15:47:57 UTC
+--- gpu/command_buffer/service/shared_image/external_vk_image_backing_factory.cc.orig	2025-07-02 06:08:04 UTC
 +++ gpu/command_buffer/service/shared_image/external_vk_image_backing_factory.cc
-@@ -209,7 +209,7 @@ bool ExternalVkImageBackingFactory::IsSupported(
-     return false;
-   }
+@@ -140,7 +140,7 @@ bool IsFormatSupported(viz::SharedImageFormat format,
  
--#if BUILDFLAG(IS_LINUX)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
-   if (format.IsLegacyMultiplanar()) {
-     // ExternalVkImageBacking doesn't work properly with external sampler
-     // multi-planar formats on Linux, see https://crbug.com/1394888.
+ SharedImageUsageSet SupportedUsage() {
+   SharedImageUsageSet supported_usage =
+-#if BUILDFLAG(IS_LINUX) && BUILDFLAG(USE_DAWN)
++#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)) && BUILDFLAG(USE_DAWN)
+       SHARED_IMAGE_USAGE_WEBGPU_READ | SHARED_IMAGE_USAGE_WEBGPU_WRITE |
+       SHARED_IMAGE_USAGE_WEBGPU_SWAP_CHAIN_TEXTURE |
+       SHARED_IMAGE_USAGE_WEBGPU_STORAGE_TEXTURE |

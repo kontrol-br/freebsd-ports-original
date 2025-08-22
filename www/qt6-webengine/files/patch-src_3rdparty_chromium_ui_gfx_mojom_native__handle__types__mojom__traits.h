@@ -1,24 +1,24 @@
---- src/3rdparty/chromium/ui/gfx/mojom/native_handle_types_mojom_traits.h.orig	2023-03-28 19:45:02 UTC
+--- src/3rdparty/chromium/ui/gfx/mojom/native_handle_types_mojom_traits.h.orig	2024-03-22 08:19:40 UTC
 +++ src/3rdparty/chromium/ui/gfx/mojom/native_handle_types_mojom_traits.h
-@@ -15,7 +15,7 @@
- #include "third_party/abseil-cpp/absl/types/optional.h"
+@@ -16,7 +16,7 @@
+ #include "mojo/public/cpp/system/platform_handle.h"
  #include "ui/gfx/mojom/native_handle_types.mojom-shared.h"
  
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || defined(USE_OZONE)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || defined(USE_OZONE) || BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_OZONE)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_OZONE) || BUILDFLAG(IS_BSD)
  #include "ui/gfx/native_pixmap_handle.h"
  #endif
  
-@@ -25,7 +25,7 @@ namespace mojo {
+@@ -26,7 +26,7 @@
  
  namespace mojo {
  
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || defined(USE_OZONE)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || defined(USE_OZONE) || BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_OZONE)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_OZONE) || BUILDFLAG(IS_BSD)
  template <>
  struct COMPONENT_EXPORT(GFX_NATIVE_HANDLE_TYPES_SHARED_MOJOM_TRAITS)
      StructTraits<gfx::mojom::NativePixmapPlaneDataView,
-@@ -53,13 +53,13 @@ struct COMPONENT_EXPORT(GFX_NATIVE_HANDLE_TYPES_SHARED
+@@ -54,13 +54,13 @@ struct COMPONENT_EXPORT(GFX_NATIVE_HANDLE_TYPES_SHARED
      return pixmap_handle.planes;
    }
  

@@ -1,7 +1,7 @@
 PORTNAME=	biostar-tools
-PORTVERSION=	1.10.1
-PORTREVISION=	2
+PORTVERSION=	2.0
 CATEGORIES=	biology python
+MASTER_SITES=	# empty
 
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Meta-port for Biostar Handbook tools
@@ -59,24 +59,24 @@ RUN_DEPENDS=	wget>0:ftp/wget \
 		Jellyfish>0:biology/jellyfish \
 		mafft>0:biology/mafft \
 		clustal-omega>0:biology/clustal-omega \
-		${PYTHON_PKGNAMEPREFIX}pywgsim>0:biology/py-pywgsim@${PY_FLAVOR} \
 		sam2pairwise>0:biology/sam2pairwise \
 		kallisto>0:biology/kallisto \
 		bamutil>0:biology/bamutil \
 		${PYTHON_PKGNAMEPREFIX}deepTools>0:biology/py-deeptools@${PY_FLAVOR} \
 		igv>0:biology/igv \
-		gffread>0:biology/gffread
+		gffread>0:biology/gffread \
+		ucsc-userapps>0:biology/ucsc-userapps
 
 USES=		metaport python
 
 .include <bsd.port.pre.mk>
 
-# Allow pkg build on non-amd64 systems until sra-tools supports them
-.if ${ARCH} == amd64
+# sra-tools is only supported on specific architectures
+.if ${ARCH} == amd64 || ${ARCH} == aarch64
 RUN_DEPENDS+=	sra-tools>0:biology/sra-tools
 .endif
 
-SUB_FILES=	biostar-shell
+SUB_FILES=	biostar-shell pkg-message
 PLIST_FILES=	bin/biostar-shell
 
 do-install:

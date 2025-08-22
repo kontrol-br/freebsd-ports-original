@@ -2,10 +2,10 @@ PORTNAME=	admiral
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.0.0-7
 DISTVERSIONSUFFIX=	-g5a9f33b
-PORTREVISION=	51
+PORTREVISION=	68
 CATEGORIES=	x11
 
-MAINTAINER=	rigoletto@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Merge concurrent outputs for a status bar
 WWW=		https://github.com/sector-f/admiral
 
@@ -47,9 +47,6 @@ OPTIONS_DEFINE=	EXAMPLES
 PORTEXAMPLES=	*
 
 PLIST_FILES=	bin/admiral
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/admiral
 
 post-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

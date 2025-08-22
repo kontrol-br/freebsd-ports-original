@@ -1,12 +1,13 @@
 PORTNAME=	golly
-DISTVERSION=	4.2
+DISTVERSION=	4.3
+PORTREVISION=	2
 DISTVERSIONSUFFIX=	-src
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Conway's Game of Life and other cellular automata
-WWW=		http://golly.sourceforge.net/
+WWW=		https://golly.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/../docs/License.html
@@ -37,6 +38,7 @@ PORTDATA=	Help Patterns Rules Scripts
 pre-build:
 	@${REINPLACE_CMD} -e 's|%%DATADIR%%|${DATADIR}|g' \
 		${WRKSRC}/wxmain.cpp ${WRKSRC}/wxhelp.cpp
+	@${RMDIR} ${WRKSRC}/../Scripts/Python/glife/__pycache__
 
 # There is no install target at makefile-gtk
 do-install:

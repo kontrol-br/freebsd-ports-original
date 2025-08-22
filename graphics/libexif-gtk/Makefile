@@ -5,7 +5,7 @@ CATEGORIES=	graphics
 MASTER_SITES=	https://github.com/libexif/${PORTNAME}/releases/download/v${PORTVERSION}/
 
 MAINTAINER=	fluffy@FreeBSD.org
-COMMENT=	GTK+ widgets to display/edit EXIF tags
+COMMENT=	GTK widgets to display/edit EXIF tags
 WWW=		https://sourceforge.net/projects/libexif/
 
 LICENSE=	LGPL21
@@ -14,7 +14,7 @@ LIB_DEPENDS=	libexif.so:graphics/libexif
 
 GNU_CONFIGURE=	yes
 USES=		gnome libtool pkgconfig
-USE_GNOME=	cairo gdkpixbuf2 gtk20
+USE_GNOME=	cairo gdkpixbuf gtk20
 USE_LDCONFIG=	yes
 
 INSTALL_TARGET=	install-strip

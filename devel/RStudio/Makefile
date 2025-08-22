@@ -4,7 +4,7 @@
 PORTNAME=	RStudio
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2022.12.0+353
-PORTREVISION=	3
+PORTREVISION=	10
 CATEGORIES=	devel math java
 MASTER_SITES=	https://s3.amazonaws.com/rstudio-buildtools/dictionaries/:dictionaries \
 		https://s3.amazonaws.com/rstudio-buildtools/:buildtools
@@ -15,11 +15,13 @@ DISTFILES=	core-dictionaries.zip:dictionaries \
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Integrated development environment (IDE) for R
-WWW=		https://rstudio.com/
+WWW=		https://www.rstudio.com/ \
+		https://github.com/rstudio/rstudio
 
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN=		fails to build with Boost>=1.87, see https://github.com/rstudio/rstudio/issues/15862
 BROKEN_i386=	[ERROR] Line 101: Failed to resolve 'org.rstudio.studio.client.workbench.views.vcs.common.diff.LineActionButtonRenderer.GrayResources' via deferred binding
 
 BUILD_DEPENDS=	ant:devel/apache-ant \
@@ -31,18 +33,15 @@ LIB_DEPENDS=	libR.so:math/R \
 		libboost_thread.so:devel/boost-libs \
 		libinotify.so:devel/libinotify \
 		libsoci_core.so:databases/soci \
-		libuuid.so:misc/e2fsprogs-libuuid \
+		libuuid.so:misc/libuuid \
 		libyaml-cpp.so:devel/yaml-cpp
 
 FLAVORS=	desktop server
 FLAVOR?=	${FLAVORS:[1]}
 server_PKGNAMESUFFIX=	-server
 
-USES=		cmake fortran localbase:ldflags pgsql pkgconfig sqlite ssl
-USE_JAVA=	yes
+USES=		cmake fortran java:build localbase:ldflags pgsql pkgconfig sqlite ssl
 JAVA_VERSION=	11 # Java 8 fails on aarch64: Internal Error (assembler_aarch64.hpp:237), pid=1644, tid=0x00000000000c62b6 guarantee(val < (1U << nbits)) failed: Field too big for insn
-JAVA_BUILD=	yes
-
 USE_GITHUB=	yes
 GH_PROJECT=	${PORTNAME:tl}
 GH_TUPLE=	rstudio:r2d3:v0.2.0:r2d3/dependencies/common/r2d3 \
@@ -71,7 +70,7 @@ GIN_VERSION=	2.1.2
 COMMENT+=	(desktop UI version)
 USES+=		desktop-file-utils qt:5 shared-mime-info
 USE_QT=		core dbus declarative gui location network opengl printsupport quickcontrols sensors \
-		sql svg webchannel webengine webkit widgets xml xmlpatterns buildtools:build qmake:build
+		sql svg webchannel webengine widgets xml xmlpatterns buildtools:build qmake:build
 CMAKE_ARGS+=	-DRSTUDIO_TARGET=Desktop
 INSTALL_SUBDIR=	${PORTNAME:tl}
 EXECUTABLE=	${PORTNAME:tl}
@@ -117,6 +116,10 @@ post-patch:
 	@${REINPLACE_CMD} -e ' \
 		s|<condition property="node.bin" value="../../../$${node.dir}/bin/node">|<condition property="node.bin" value="${LOCALBASE}/bin/node">|' \
 		${WRKSRC}/src/gwt/build.xml
+	# add $PREFIX/bin to PATH for the server daemon
+.if ${FLAVOR:U} == server
+	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|' ${WRKSRC}/src/cpp/session/modules/SessionGit.cpp
+.endif
 
 pre-build:
 	@${CP} ${FILESDIR}/global-setenv.h ${WRKSRC}/src/cpp/desktop/
@@ -143,12 +146,6 @@ post-install:
 	# Some functions expect the pandoc symlink.
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/${INSTALL_SUBDIR}/bin/pandoc
 	@cd ${STAGEDIR}${PREFIX}/lib/${INSTALL_SUBDIR}/bin/pandoc && ${LN} -s ../../../../bin/pandoc
-	# Add $LOCALBASE/bin to PATH to allow RStudio-server to run gmake (R_HOME/etc/Renviron.site is installed, see https://stat.ethz.ch/R-manual/R-devel/library/base/html/Startup.html)
-.if ${FLAVOR:U} == server
-	#@${MKDIR} ${STAGEDIR}${LOCALBASE}/lib/R/etc
-	#@${ECHO} "PATH=\"${LOCALBASE}/bin:\$$PATH\"" > ${STAGEDIR}${LOCALBASE}/lib/R/etc/Renviron.site # it should be this way, but this fails: https://github.com/rstudio/rstudio/issues/9815
-	@${LN} -s ${LOCALBASE}/bin/${GMAKE} ${STAGEDIR}${PREFIX}/lib/rstudio-server/bin/postback/${GMAKE} # hack, should be as above, but at least gmake is in the path now
-.endif
 	# There is a variability in .js file names due to use of random numbers, so we use the automatic plist.
 	@${SETENV} ${CO_ENV} ${SH} ${SCRIPTSDIR}/check-stagedir.sh makeplist | ${GREP} -v ^\/ | ${SED} -e 's|%%WWWDIR%%|www/rstudio| ; s|%%CMAKE_BUILD_TYPE%%|${CMAKE_BUILD_TYPE:tl}|' > ${TMPPLIST}
 

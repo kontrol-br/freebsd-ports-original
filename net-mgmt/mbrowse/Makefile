@@ -4,7 +4,7 @@ PORTREVISION=	3
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
 
-MAINTAINER=	eg@fbsd.lt
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SNMP MIB Browser for X
 WWW=		https://sourceforge.net/projects/mbrowse/
 
@@ -15,7 +15,7 @@ LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp \
 		libfreetype.so:print/freetype2
 
 USES=		gnome pkgconfig ssl
-USE_GNOME=	cairo gdkpixbuf2 gtk20
+USE_GNOME=	cairo gdkpixbuf gtk20
 GNU_CONFIGURE=	yes
 
 CONFIGURE_ARGS=	--with-snmp-prefix=${PREFIX} --with-snmp-type=net

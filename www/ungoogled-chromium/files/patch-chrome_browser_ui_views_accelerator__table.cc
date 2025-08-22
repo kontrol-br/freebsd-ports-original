@@ -1,4 +1,4 @@
---- chrome/browser/ui/views/accelerator_table.cc.orig	2023-07-21 09:49:17 UTC
+--- chrome/browser/ui/views/accelerator_table.cc.orig	2025-05-31 17:16:41 UTC
 +++ chrome/browser/ui/views/accelerator_table.cc
 @@ -69,11 +69,11 @@ const AcceleratorMapping kAcceleratorMap[] = {
      {ui::VKEY_S, ui::EF_PLATFORM_ACCELERATOR, IDC_SAVE_PAGE},
@@ -23,21 +23,12 @@
      {ui::VKEY_1, ui::EF_ALT_DOWN, IDC_SELECT_TAB_0},
      {ui::VKEY_NUMPAD1, ui::EF_ALT_DOWN, IDC_SELECT_TAB_0},
      {ui::VKEY_2, ui::EF_ALT_DOWN, IDC_SELECT_TAB_1},
-@@ -146,7 +146,7 @@ const AcceleratorMapping kAcceleratorMap[] = {
+@@ -153,7 +153,7 @@ const AcceleratorMapping kAcceleratorMap[] = {
       IDC_SHOW_AVATAR_MENU},
  
  // Platform-specific key maps.
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
      {ui::VKEY_BROWSER_BACK, ui::EF_NONE, IDC_BACK},
      {ui::VKEY_BROWSER_FORWARD, ui::EF_NONE, IDC_FORWARD},
      {ui::VKEY_BROWSER_HOME, ui::EF_NONE, IDC_HOME},
-@@ -247,7 +247,7 @@ const AcceleratorMapping kAcceleratorMap[] = {
- #endif  // !BUILDFLAG(IS_CHROMEOS)
- #endif  // !BUILDFLAG(IS_MAC)
- #if BUILDFLAG(ENABLE_SCREEN_AI_SERVICE) && \
--    (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS))
-+    (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD))
-     {ui::VKEY_S, ui::EF_CONTROL_DOWN | ui::EF_SHIFT_DOWN,
-      IDC_RUN_SCREEN_AI_VISUAL_ANNOTATIONS},
- #endif

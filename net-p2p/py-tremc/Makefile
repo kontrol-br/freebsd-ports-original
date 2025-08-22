@@ -1,9 +1,9 @@
 PORTNAME=	tremc
-DISTVERSION=	0.9.3
+DISTVERSION=	0.9.4
 CATEGORIES=	net-p2p python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	rigoletto@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Console client for the BitTorrent client Transmission
 WWW=		https://github.com/tremc/tremc
 

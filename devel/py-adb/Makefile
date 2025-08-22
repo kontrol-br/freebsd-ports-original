@@ -1,5 +1,6 @@
 PORTNAME=	adb
 DISTVERSION=	1.3.0-9
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-gd0be33c
 CATEGORIES=	devel comms python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,8 +18,8 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	google
 GH_PROJECT=	python-${PORTNAME}
 
-USES=		python pycryptography:run
-USE_PYTHON=	autoplist distutils pytest
+USES=		python
+USE_PYTHON=	autoplist cryptography distutils pytest
 
 NO_ARCH=	yes
 

@@ -159,7 +159,10 @@ share/locale/fi/LC_MESSAGES/kdevpython.mo
 share/locale/fr/LC_MESSAGES/kdevpython.mo
 share/locale/ga/LC_MESSAGES/kdevpython.mo
 share/locale/gl/LC_MESSAGES/kdevpython.mo
+share/locale/he/LC_MESSAGES/kdevpython.mo
+share/locale/hi/LC_MESSAGES/kdevpython.mo
 share/locale/hu/LC_MESSAGES/kdevpython.mo
+share/locale/ia/LC_MESSAGES/kdevpython.mo
 share/locale/it/LC_MESSAGES/kdevpython.mo
 share/locale/ja/LC_MESSAGES/kdevpython.mo
 share/locale/ka/LC_MESSAGES/kdevpython.mo
@@ -176,6 +179,7 @@ share/locale/pt/LC_MESSAGES/kdevpython.mo
 share/locale/pt_BR/LC_MESSAGES/kdevpython.mo
 share/locale/ro/LC_MESSAGES/kdevpython.mo
 share/locale/ru/LC_MESSAGES/kdevpython.mo
+share/locale/sa/LC_MESSAGES/kdevpython.mo
 share/locale/sk/LC_MESSAGES/kdevpython.mo
 share/locale/sl/LC_MESSAGES/kdevpython.mo
 share/locale/sv/LC_MESSAGES/kdevpython.mo
@@ -186,4 +190,4 @@ share/locale/uk/LC_MESSAGES/kdevpython.mo
 share/locale/zh_CN/LC_MESSAGES/kdevpython.mo
 share/locale/zh_TW/LC_MESSAGES/kdevpython.mo
 share/metainfo/org.kde.kdev-python.metainfo.xml
-share/qlogging-categories5/kdevpythonsupport.categories
+share/qlogging-categories6/kdevpythonsupport.categories

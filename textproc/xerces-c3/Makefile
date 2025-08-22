@@ -1,12 +1,13 @@
 PORTNAME=	xerces-c
-PORTVERSION=	3.2.4
+PORTVERSION=	3.3.0
 CATEGORIES=	textproc
 MASTER_SITES=	APACHE/xerces/c/3/sources
 PKGNAMESUFFIX=	3
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Validating XML parser from the Apache XML Project
-WWW=		https://xerces.apache.org/xerces-c/
+WWW=		https://xerces.apache.org/xerces-c/ \
+		https://github.com/apache/xerces-c
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -36,7 +37,7 @@ PLIST_SUB+=	MUTEXMGR="StdMutexMgr"
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} -e "s,@DEFS@,& -D__STDC_LIMIT_MACROS," ${WRKSRC}/src/Makefile.in
+	@${REINPLACE_CMD} -e 's|@DEFS@|& -D__STDC_LIMIT_MACROS|' ${WRKSRC}/src/Makefile.in
 
 post-install:
 	${LN} -s libxerces-c-${PORTVERSION:R}.so ${STAGEDIR}${PREFIX}/lib/libxerces-c.so.${PORTVERSION:R:R}

@@ -1,5 +1,5 @@
 PORTNAME=	nextcloud
-PORTVERSION=	27.0.2
+PORTVERSION=	31.0.8
 CATEGORIES=	www
 MASTER_SITES=	https://download.nextcloud.com/server/releases/
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
@@ -13,8 +13,8 @@ LICENSE=	AGPLv3
 
 USES=		cpe gettext-runtime php:flavors,web tar:bzip2
 USE_PHP=	bcmath bz2 ctype curl dom fileinfo filter gd gmp iconv \
-		mbstring pcntl pdo posix session simplexml xml xmlreader \
-		xmlwriter xsl zip zlib
+		mbstring pcntl pdo posix session simplexml sodium \
+		xml xmlreader xmlwriter xsl zip zlib
 
 NEXTCLOUD_USERNAME?=	${WWWOWN}
 NEXTCLOUD_GROUPNAME?=	${WWWGRP}
@@ -81,7 +81,7 @@ do-install:
 		${STAGEDIR}${WWWDIR}/config/config.sample.php
 	@${MKDIR} ${STAGEDIR}${WWWDIR}/data ${STAGEDIR}${WWWDIR}/apps \
 		${STAGEDIR}/var/log/${PORTNAME}
-	(cd ${WRKSRC}; ${FIND} . -type f) | ${SORT} | \
+	(cd ${WRKSRC}; ${FIND} . -type f -or -type l) | ${SORT} | \
 		${SED} -Ee '/^\.\/\.(htaccess\.dist|user\.ini)/d' \
 			-e '/^\.\/config\/config\.sample\.php/d' \
 			-e 's,^\.,${WWWDIR_REL},' >> ${TMPPLIST}

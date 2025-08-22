@@ -1,6 +1,6 @@
 PORTNAME=	xqf
 PORTVERSION=	1.0.6.2
-PORTREVISION=	2
+PORTREVISION=	3
 DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	games
 
@@ -11,9 +11,10 @@ WWW=		http://www.linuxgames.com/xqf/
 RUN_DEPENDS=	qstat:games/qstat
 
 USES=		autoreconf gettext gmake gnome pkgconfig xorg
-USE_GNOME=	intlhack gdkpixbuf2 gdkpixbuf2xlib
+USE_GNOME=	intlhack gdkpixbuf gdkpixbuf2xlib
 USE_XORG=	x11
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	XQF

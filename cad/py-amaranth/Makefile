@@ -1,21 +1,23 @@
 PORTNAME=	amaranth
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3-160
-DISTVERSIONSUFFIX=	-gb952005
+DISTVERSION=	0.5.7
 CATEGORIES=	cad python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Amaranth hardware definition language
-WWW=		https://amaranth-lang.org/docs/amaranth/latest/
+WWW=		https://amaranth-lang.org/docs/amaranth/latest/ \
+		https://github.com/amaranth-lang/amaranth
 
 LICENSE=	BSD3CLAUSE
 
-BUILD_DEPENDS=	${PY_SETUPTOOLS} \
-		${PYTHON_PKGNAMEPREFIX}setuptools_scm>0:devel/py-setuptools_scm@${PY_FLAVOR} \
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pdm-backend>0:devel/py-pdm-backend@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Jinja2>=3.0:devel/py-Jinja2@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pyvcd>0:cad/py-pyvcd@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}jschon>=0.11.1:devel/py-jschon@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pyvcd>=0.2.2:cad/py-pyvcd@${PY_FLAVOR}
+TEST_DEPENDS=	sby:cad/symbiyosys \
+		yosys:cad/yosys
 
 USES=		python
 USE_PYTHON=	pep517 autoplist pytest
@@ -25,16 +27,8 @@ GH_ACCOUNT=	amaranth-lang
 
 NO_ARCH=	yes
 
-# workaround for https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=272771
-PEP517_INSTALL_CMD=	${PYTHON_CMD} -m installer --destdir ${STAGEDIR} --prefix ${PREFIX} ${BUILD_WRKSRC}/dist/${PORTNAME:C|[-_]+|_|g}-${DISTVERSION:S/-/.post/}*.whl
-
-post-patch:
-	@${REINPLACE_CMD} \
-		-e 's|from setuptools_scm.git import parse as parse_git|return "v${DISTVERSION}"|' \
-		${WRKSRC}/setup.py
-	@${REINPLACE_CMD} \
-		-e 's|%%VERSION%%|${DISTVERSION}|' \
-		${WRKSRC}/pyproject.toml
+MAKE_ENV=	PDM_BUILD_SCM_VERSION=${DISTVERSION} # this allows to build from a tarball (otherwise PDM wouldn't be able to determine the version)
+TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 
 do-install: # workaround for https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=272771
 	@${MKDIR} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
@@ -55,5 +49,7 @@ do-install: # workaround for https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=2
 		-e 's|^${PYTHONPREFIX_SITELIBDIR}/../../../share/|share/|' \
 			${_PYTHONPKGLIST}
 	@cd ${STAGEDIR}${PREFIX} && ${FIND} lib -name '*.pyc' >> ${_PYTHONPKGLIST}
+
+# tests as of 0.5.6: 1187 passed, 4 warnings in 46.66s
 
 .include <bsd.port.mk>

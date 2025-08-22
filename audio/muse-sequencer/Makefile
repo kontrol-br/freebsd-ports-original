@@ -1,7 +1,6 @@
 PORTNAME=	muse-sequencer
-DISTVERSION=	4.1.0-20230803
-PORTREVISION=	1
-DISTVERSIONSUFFIX=	-g53bc9e4
+DISTVERSION=	4.2.1
+PORTREVISION=	2
 CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -28,14 +27,13 @@ LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libsamplerate.so:audio/libsamplerate \
 		libserd-0.so:devel/serd \
 		libsndfile.so:audio/libsndfile \
-		libsord-0.so:devel/sord \
-		libsratom-0.so:audio/sratom
+		libsord-0.so:devel/sord
 
 USES=		cmake compiler:c++11-lib desktop-file-utils gl gnome kde:5 localbase:ldflags qt:5 pkgconfig python shared-mime-info shebangfix
 USE_GL=		gl
 USE_QT=		core gui svg xml widgets buildtools:build linguisttools:build qmake:build uitools:build
 USE_KDE=	ecm:build
-USE_GNOME=	atk atkmm cairo cairomm gdkpixbuf2 glib20 glibmm gtk20 gtkmm24 libsigc++20 pango pangomm
+USE_GNOME=	atk atkmm cairo cairomm gdkpixbuf glib20 glibmm gtk20 gtkmm24 libsigc++20 pango pangomm
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
@@ -49,6 +47,8 @@ WRKSRC_SUBDIR=	src
 
 DATADIR=	${PREFIX}/share/muse-${DISTVERSION:R}
 DOCSDIR=	${PREFIX}/share/doc/muse-${DISTVERSION:R}
+
+PLIST_SUB+=	VER=${DISTVERSION:R}
 
 BINARY_ALIAS=	git=false
 

@@ -1,5 +1,5 @@
 PORTNAME=	biopython
-DISTVERSION=	1.81
+DISTVERSION=	1.85
 PORTREVISION=	1
 CATEGORIES=	biology python
 MASTER_SITES=	http://www.biopython.org/DIST/
@@ -27,7 +27,6 @@ REPORTLAB_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}reportlab>0:print/py-reportlab@${P
 post-install:
 	@${STRIP_CMD} \
 		${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/Bio/*.so \
-		${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/Bio/*/*.so \
-		${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/Bio/*/*/*.so \
+		${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/Bio/*/*.so
 
 .include <bsd.port.mk>

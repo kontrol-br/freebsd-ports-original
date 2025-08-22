@@ -1,6 +1,7 @@
 PORTNAME=	cstore_fdw
 PORTVERSION=	1.7.0
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	databases
 PKGNAMEPREFIX=	postgresql${PGSQL_VER:S/.//}-
 
@@ -16,7 +17,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libprotobuf-c.so:devel/protobuf-c
 
-USES=		gmake pgsql:11+
+USES=		gmake pgsql:11-13
 
 SUB_FILES=	pkg-message
 

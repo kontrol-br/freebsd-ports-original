@@ -1,7 +1,7 @@
---- src/3rdparty/chromium/sandbox/policy/features.cc.orig	2023-03-28 19:45:02 UTC
+--- src/3rdparty/chromium/sandbox/policy/features.cc.orig	2024-10-22 08:31:56 UTC
 +++ src/3rdparty/chromium/sandbox/policy/features.cc
-@@ -15,7 +15,11 @@ BASE_FEATURE(kNetworkServiceSandbox,
- // (Only causes an effect when feature kNetworkService is enabled.)
+@@ -20,7 +20,11 @@ namespace sandbox::policy::features {
+ // (Only causes an effect when feature kNetworkServiceInProcess is disabled.)
  BASE_FEATURE(kNetworkServiceSandbox,
               "NetworkServiceSandbox",
 +#if BUILDFLAG(IS_BSD)
@@ -9,6 +9,15 @@
 +#else
               base::FEATURE_DISABLED_BY_DEFAULT);
 +#endif
- #endif  // !BUILDFLAG(IS_MAC) && !BUILDFLAG(IS_FUCHSIA)
  
- #if BUILDFLAG(IS_WIN)
+ #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
+ // Enables a fine-grained seccomp-BPF syscall filter for the network service.
+@@ -134,7 +138,7 @@ BASE_FEATURE(kSpectreVariant2Mitigation,
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ #endif  // BUILDFLAG(IS_CHROMEOS_ASH)
+ 
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+ // Enabling the kNetworkServiceSandbox feature automatically enables Spectre
+ // variant 2 mitigations in the network service. This can lead to performance
+ // regressions, so enabling this feature will turn off the Spectre Variant 2

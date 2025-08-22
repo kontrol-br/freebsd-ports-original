@@ -1,7 +1,6 @@
 PORTNAME=	ocl-icd
-PORTVERSION=	2.3.1
-PORTREVISION=	1
 DISTVERSIONPREFIX=	v
+DISTVERSION=	2.3.3
 CATEGORIES=	devel
 
 MAINTAINER=	ohartmann@walstatt.org
@@ -19,8 +18,9 @@ USE_GITHUB=		yes
 GH_ACCOUNT=		OCL-dev
 USE_LDCONFIG=		yes
 GNU_CONFIGURE=		yes
-CONFIGURE_ARGS+=	--enable-official-khronos-headers \
-			--enable-custom-vendordir \
+CONFIGURE_ARGS+=	--disable-debug \
+			--enable-custom-layerdir=${LOCALBASE}/etc/OpenCL/layers \
+			--enable-custom-vendordir=${LOCALBASE}/etc/OpenCL/vendors \
 			--enable-pthread-once
 
 INSTALL_TARGET=	install-strip
@@ -33,6 +33,8 @@ OPTIONS_SUB=		yes
 
 MANPAGES_BUILD_DEPENDS=	asciidoc:textproc/asciidoc \
 			xmlto:textproc/xmlto
+
+.include <bsd.port.options.mk>
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/etc/|${LOCALBASE}/etc/|g' \

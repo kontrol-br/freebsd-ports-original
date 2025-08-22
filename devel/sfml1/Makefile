@@ -2,13 +2,17 @@ PORTNAME=	sfml
 PORTVERSION=	1.6
 PORTREVISION=	8
 CATEGORIES=	devel
-MASTER_SITES=	SF
+MASTER_SITES=	https://www.sfml-dev.org/files/
 PKGNAMESUFFIX=	1
 DISTNAME=	SFML-${PORTVERSION}-sdk-linux-32
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Simple and Fast Multimedia Library
 WWW=		https://www.sfml-dev.org/
+
+BROKEN=		Does not build
+DEPRECATED=	Broken obsolete version
+EXPIRATION_DATE=2025-09-10
 
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/license.txt

@@ -1,4 +1,4 @@
---- src/3rdparty/chromium/third_party/crashpad/crashpad/util/posix/signals.cc.orig	2023-03-28 19:45:02 UTC
+--- src/3rdparty/chromium/third_party/crashpad/crashpad/util/posix/signals.cc.orig	2022-08-31 12:19:35 UTC
 +++ src/3rdparty/chromium/third_party/crashpad/crashpad/util/posix/signals.cc
 @@ -51,7 +51,7 @@ constexpr int kCrashSignals[] = {
  #if defined(SIGEMT)

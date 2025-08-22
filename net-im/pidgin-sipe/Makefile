@@ -1,6 +1,6 @@
 PORTNAME=	pidgin-sipe
 PORTVERSION=	1.24.0
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	net-im
 MASTER_SITES=	SF/sipe/sipe/${DISTNAME}
 
@@ -47,6 +47,12 @@ INSTALL_TARGET=	install-strip
 PORTDOCS=	AUTHORS ChangeLog HACKING NEWS README TODO
 
 CFLAGS+=	-Wno-error
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD
+USES+=	llvm:max=15
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} 's/LDLAGS/LDFLAGS/' ${WRKSRC}/configure

@@ -1,13 +1,11 @@
---- chrome/browser/media/webrtc/webrtc_log_uploader.cc.orig	2023-05-05 12:12:41 UTC
+--- chrome/browser/media/webrtc/webrtc_log_uploader.cc.orig	2025-04-15 08:30:07 UTC
 +++ chrome/browser/media/webrtc/webrtc_log_uploader.cc
-@@ -290,6 +290,10 @@ void WebRtcLogUploader::SetupMultipart(
-   const char product[] = "Chrome_ChromeOS";
- #elif BUILDFLAG(IS_FUCHSIA)
-   const char product[] = "Chrome_Fuchsia";
-+#elif defined(OS_OPENBSD)
-+  const char product[] = "Chrome_OpenBSD";
-+#elif defined(OS_FREEBSD)
-+  const char product[] = "Chrome_FreeBSD";
+@@ -105,7 +105,7 @@ std::string GetLogUploadProduct() {
+   const char product[] = "Chrome";
+ #elif BUILDFLAG(IS_MAC)
+   const char product[] = "Chrome_Mac";
+-#elif BUILDFLAG(IS_LINUX)
++#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ #if !defined(ADDRESS_SANITIZER)
+   const char product[] = "Chrome_Linux";
  #else
- #error Platform not supported.
- #endif

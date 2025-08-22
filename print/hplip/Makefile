@@ -1,6 +1,6 @@
 PORTNAME=	hplip
-PORTVERSION=	3.23.5
-PORTREVISION=	1
+PORTVERSION=	3.24.4
+PORTREVISION=	2
 CATEGORIES=	print
 MASTER_SITES=	SF
 
@@ -16,14 +16,15 @@ LIB_DEPENDS=	libcupsimage.so:print/cups \
 		libdbus-1.so:devel/dbus
 RUN_DEPENDS=	cups-filters>=0:print/cups-filters \
 		${PYTHON_PKGNAMEPREFIX}dbus>=0:devel/py-dbus@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}distro>=1.0.1:sysutils/py-distro@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}gobject3>=0:devel/py-gobject3@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}distro>=1.0.1:sysutils/py-distro@${PY_FLAVOR}
 
-USES=		dos2unix jpeg libtool localbase pkgconfig python \
+USES=		dos2unix gnome jpeg libtool localbase pkgconfig python \
 		shebangfix
+USE_GNOME=	pygobject3:run
 USE_LDCONFIG=	yes
 
-DOS2UNIX_FILES=	scan/sane/OrbliteScan/LinuxCommon.h scan/sane/orblite.c
+DOS2UNIX_FILES=	fax/filters/cdmfax/jetlib.cpp \
+		scan/sane/OrbliteScan/LinuxCommon.h scan/sane/orblite.c
 SHEBANG_GLOB=	*.py hpps pstotiff
 
 GNU_CONFIGURE=	yes

@@ -1,3 +1,5 @@
-TIMESTAMP = 1689946315
-SHA256 (KDE/Qt/6.5.2/qtsvg-everywhere-src-6.5.2.tar.xz) = 48b4cc1093af2e0ab3bea30f60651bddd877a2335d16e7207879a2e9e81963a3
-SIZE (KDE/Qt/6.5.2/qtsvg-everywhere-src-6.5.2.tar.xz) = 1727648
+TIMESTAMP = 1750609163
+SHA256 (KDE/Qt/6.9.1/qtsvg-everywhere-src-6.9.1.tar.xz) = 2dfc5de5fd891ff2afd9861e519bf1a26e6deb729b3133f68a28ba763c9abbd5
+SIZE (KDE/Qt/6.9.1/qtsvg-everywhere-src-6.9.1.tar.xz) = 2017876
+SHA256 (KDE/Qt/6.9.1/07b3434f91c95d196f687c51e1a58a95a0b1ef2e.patch) = 924277fa003f477372446f7ca6fc9e6139f47216a0eebd27e9c129f5d36a5855
+SIZE (KDE/Qt/6.9.1/07b3434f91c95d196f687c51e1a58a95a0b1ef2e.patch) = 1890

@@ -1,10 +1,10 @@
 PORTNAME=	texstudio
-DISTVERSION=	4.6.0
+DISTVERSION=	4.8.7
 CATEGORIES=	editors
 
-MAINTAINER=	rigoletto@FreeBSD.org
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Integrated writing environment for LaTeX documents
-WWW=		http://texstudio.sourceforge.net/
+WWW=		https://texstudio.sourceforge.net/
 
 LICENSE=	GPLv2
 

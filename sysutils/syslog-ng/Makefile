@@ -1,5 +1,6 @@
 PORTNAME=	syslog-ng
-DISTVERSION=	4.3.1
+DISTVERSION=	4.8.2
+PORTREVISION=	4
 CATEGORIES=	sysutils
 # official master site:
 MASTER_SITES=	https://github.com/balabit/syslog-ng/releases/download/syslog-ng-${DISTVERSION}/
@@ -14,14 +15,12 @@ LICENSE=	GPLv2+ LGPL21+
 LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_sparc64=		fails to link: Internal error: Segmentation fault (program ld)
-
 LIB_DEPENDS=	libpcre2-8.so:devel/pcre2 \
-		libuuid.so:misc/e2fsprogs-libuuid \
+		libuuid.so:misc/libuuid \
 		libivykis.so:devel/ivykis
 
 USES=		autoreconf:build compiler:c11 cpe gettext-runtime gmake gnome \
-		libtool pathfix pkgconfig python:3.5+,build shebangfix ssl
+		libtool pathfix pkgconfig python:build shebangfix ssl
 
 CPE_VENDOR=	oneidentity
 
@@ -31,7 +30,7 @@ CONFLICTS?=	syslog-ng syslog-ng[0-9] \
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 
 MAKE_JOBS_UNSAFE=	yes
-OPTIONS_DEFINE=	TCP_WRAPPERS SQL SPOOF IPV6 SMTP JSON GEOIP2 DOCS REDIS JAVA PYTHON PYTHON_MOD MONGO CURL JAVA_MOD AMQP RIEMANN KAFKA SNMPDEST
+OPTIONS_DEFINE=	TCP_WRAPPERS SQL SPOOF IPV6 SMTP JSON GEOIP2 DOCS REDIS JAVA PYTHON PYTHON_MOD MONGO CURL JAVA_MOD AMQP RIEMANN KAFKA SNMPDEST GRPC MQTT
 OPTIONS_DEFAULT=	CURL JSON
 TCP_WRAPPERS_DESC=	Build with TCP Wrappers
 SQL_DESC=		Build with database (libdbi) support
@@ -49,8 +48,8 @@ AMQP_DESC=		Build with AMQP support
 RIEMANN_DESC=		Build with Riemann support
 KAFKA_DESC=		Build with Kafka (librdkafka) support
 SNMPDEST_DESC=		Build with SNMP destination (net-snmp) support
-
-# USE_GCC=	yes
+GRPC_DESC=		Build with experimental GRPC-based modules (OpenTelemetry, Loki, etc.)
+MQTT_DESC=		Build with MQTT support
 
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	syslog-ng
@@ -62,8 +61,8 @@ SUB_FILES=	pkg-message
 INSTALL_TARGET=	install-strip
 
 CONFIGURE_ARGS=	--sysconfdir=${LOCALBASE}/etc --localstatedir=/var/db \
-		--enable-dynamic-linking --enable-manpages \
-		--disable-linux-caps --disable-cpp \
+		--enable-dynamic-linking --disable-manpages-install \
+		--disable-linux-caps \
 		--datadir=${PREFIX}/share/ --with-ivykis=system \
 		--with-python=${PYTHON_VER} --with-python-packages=none
 
@@ -119,7 +118,7 @@ JSON_PLIST_FILES=		lib/syslog-ng/libjson-plugin.so \
 				share/syslog-ng/include/scl/cim/template.conf
 
 JAVA_CONFIGURE_ENABLE=		java
-JAVA_USE=			JAVA=yes
+JAVA_USES=			java
 JAVA_PLIST_FILES=		lib/syslog-ng/libmod-java.so \
 				lib/syslog-ng/java-modules/syslog-ng-core.jar
 
@@ -158,19 +157,20 @@ PYTHON_CONFIGURE_OFF=		--disable-python
 PYTHON_PLIST_FILES=		lib/syslog-ng/libmod-python.so \
 		etc/python/README.md \
 		lib/syslog-ng/python/requirements.txt \
-		lib/syslog-ng/python/syslogng/__pycache__/confgen%%PYTHON_EXT_SUFFIX%%.pyc \
+		lib/syslog-ng/python/syslogng/__pycache__/confgen%%PYTHON_TAG%%.pyc \
 		lib/syslog-ng/python/syslogng/confgen.py \
 		lib/syslog-ng/python/syslogng-1.0-py%%PYTHON_VER%%.egg-info/PKG-INFO \
 		lib/syslog-ng/python/syslogng-1.0-py%%PYTHON_VER%%.egg-info/SOURCES.txt \
 		lib/syslog-ng/python/syslogng-1.0-py%%PYTHON_VER%%.egg-info/dependency_links.txt \
 		lib/syslog-ng/python/syslogng-1.0-py%%PYTHON_VER%%.egg-info/top_level.txt \
-		lib/syslog-ng/python/syslogng/__pycache__/dest%%PYTHON_EXT_SUFFIX%%.pyc \
-		lib/syslog-ng/python/syslogng/__pycache__/logger%%PYTHON_EXT_SUFFIX%%.pyc \
-		lib/syslog-ng/python/syslogng/__pycache__/message%%PYTHON_EXT_SUFFIX%%.pyc \
-		lib/syslog-ng/python/syslogng/__pycache__/parser%%PYTHON_EXT_SUFFIX%%.pyc \
-		lib/syslog-ng/python/syslogng/__pycache__/persist%%PYTHON_EXT_SUFFIX%%.pyc \
-		lib/syslog-ng/python/syslogng/__pycache__/source%%PYTHON_EXT_SUFFIX%%.pyc \
-		lib/syslog-ng/python/syslogng/__pycache__/template%%PYTHON_EXT_SUFFIX%%.pyc \
+		lib/syslog-ng/python/syslogng/__pycache__/dest%%PYTHON_TAG%%.pyc \
+		lib/syslog-ng/python/syslogng/__pycache__/logger%%PYTHON_TAG%%.pyc \
+		lib/syslog-ng/python/syslogng/__pycache__/message%%PYTHON_TAG%%.pyc \
+		lib/syslog-ng/python/syslogng/__pycache__/parser%%PYTHON_TAG%%.pyc \
+		lib/syslog-ng/python/syslogng/__pycache__/persist%%PYTHON_TAG%%.pyc \
+		lib/syslog-ng/python/syslogng/__pycache__/source%%PYTHON_TAG%%.pyc \
+		lib/syslog-ng/python/syslogng/__pycache__/template%%PYTHON_TAG%%.pyc \
+                lib/syslog-ng/python/syslogng/__pycache__/reloc%%PYTHON_TAG%%.pyc \
 		lib/syslog-ng/python/syslogng/dest.py \
 		lib/syslog-ng/python/syslogng/logger.py \
 		lib/syslog-ng/python/syslogng/message.py \
@@ -178,6 +178,7 @@ PYTHON_PLIST_FILES=		lib/syslog-ng/libmod-python.so \
 		lib/syslog-ng/python/syslogng/persist.py \
 		lib/syslog-ng/python/syslogng/source.py \
 		lib/syslog-ng/python/syslogng/template.py \
+                lib/syslog-ng/python/syslogng/reloc.py \
 		lib/syslog-ng/python/syslogng/__init__.py \
 		lib/syslog-ng/python/syslogng/__pycache__/__init__.cpython-${PYTHON_SUFFIX}.pyc \
 		lib/syslog-ng/python/syslogng/debuggercli/__init__.py \
@@ -224,14 +225,25 @@ PYTHON_MOD_CONFIGURE_ON=	--enable-python-modules
 PYTHON_MOD_CONFIGURE_OFF=	--disable-python-modules
 PYTHON_MOD_PLIST_FILES=		lib/syslog-ng/python/syslogng-1.0-py%%PYTHON_VER%%.egg-info/requires.txt \
 		lib/syslog-ng/python/syslogng/modules/kubernetes/__init__.py \
-		lib/syslog-ng/python/syslogng/modules/kubernetes/__pycache__/__init__%%PYTHON_EXT_SUFFIX%%.pyc \
+		lib/syslog-ng/python/syslogng/modules/kubernetes/__pycache__/__init__%%PYTHON_TAG%%.pyc \
 		lib/syslog-ng/python/syslogng/modules/kubernetes/scl/kubernetes.conf \
 		lib/syslog-ng/python/syslogng/modules/example/__init__.py \
-		lib/syslog-ng/python/syslogng/modules/example/__pycache__/__init__%%PYTHON_EXT_SUFFIX%%.pyc \
+		lib/syslog-ng/python/syslogng/modules/example/__pycache__/__init__%%PYTHON_TAG%%.pyc \
 		lib/syslog-ng/python/syslogng/modules/example/scl/example.conf \
 		lib/syslog-ng/python/syslogng/modules/hypr/__init__.py \
-		lib/syslog-ng/python/syslogng/modules/hypr/__pycache__/__init__%%PYTHON_EXT_SUFFIX%%.pyc \
-		lib/syslog-ng/python/syslogng/modules/hypr/scl/hypr.conf
+		lib/syslog-ng/python/syslogng/modules/hypr/__pycache__/__init__%%PYTHON_TAG%%.pyc \
+		lib/syslog-ng/python/syslogng/modules/hypr/scl/hypr.conf \
+                lib/syslog-ng/python/syslogng/modules/s3/__init__.py \
+                lib/syslog-ng/python/syslogng/modules/s3/__pycache__/__init__%%PYTHON_TAG%%.pyc \
+                lib/syslog-ng/python/syslogng/modules/s3/__pycache__/compressable_file_buffer%%PYTHON_TAG%%.pyc \
+                lib/syslog-ng/python/syslogng/modules/s3/__pycache__/s3_destination%%PYTHON_TAG%%.pyc \
+                lib/syslog-ng/python/syslogng/modules/s3/__pycache__/s3_object_buffer%%PYTHON_TAG%%.pyc \
+                lib/syslog-ng/python/syslogng/modules/s3/__pycache__/s3_session_handler%%PYTHON_TAG%%.pyc \
+                lib/syslog-ng/python/syslogng/modules/s3/s3_object_buffer.py \
+                lib/syslog-ng/python/syslogng/modules/s3/s3_session_handler.py \
+                lib/syslog-ng/python/syslogng/modules/s3/compressable_file_buffer.py \
+                lib/syslog-ng/python/syslogng/modules/s3/s3_destination.py \
+                lib/syslog-ng/python/syslogng/modules/s3/scl/s3.conf
 
 
 CURL_CONFIGURE_OFF=		--with-libcurl=off
@@ -250,14 +262,28 @@ KAFKA_CONFIGURE_OFF=		--disable-kafka
 KAFKA_LIB_DEPENDS=		librdkafka.so:net/librdkafka
 KAFKA_PLIST_FILES=		lib/syslog-ng/libkafka.so
 
+GRPC_CONFIGURE_ON=		--enable-cpp
+GRPC_CONFIGURE_OFF=		--disable-cpp
+GRPC_LIB_DEPENDS=		libgrpc.so:devel/grpc
+GRPC_PLIST_FILES=		lib/libgrpc-protos.so \
+ 				lib/libgrpc-protos.so.0 \
+ 				lib/libgrpc-protos.so.0.0.0 \
+ 				lib/syslog-ng/libloki.so \
+ 				lib/syslog-ng/libotel.so \
+ 				lib/syslog-ng/libbigquery.so \
+				lib/syslog-ng/libcloud_auth.so
+
+MQTT_CONFIGURE_ON=		--enable-mqtt --with-libpaho-mqtt=${PREFIX}
+MQTT_CONFIGURE_OFF=		--disable-mqtt
+MQTT_LIB_DEPENDS=		libpaho-mqtt3cs.so:net/libpaho-mqtt3
+MQTT_PLIST_FILES=		lib/syslog-ng/libmqtt.so
+
+
+
 .include <bsd.port.pre.mk>
 
 .if !${PORT_OPTIONS:MJSON}
 BROKEN=		Default configuration does not currently support non-JSON builds
-.endif
-
-.if ${PORT_OPTIONS:MJAVA_MOD}
-BROKEN=		Java modules do not build currently
 .endif
 
 post-patch:
@@ -274,9 +300,10 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/COPYING ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/NEWS.md ${STAGEDIR}${DOCSDIR}
 .endif
-	${INSTALL_MAN} ${WRKSRC}/doc/man/*.1 ${STAGEDIR}${PREFIX}/man/man1/
-	${INSTALL_MAN} ${WRKSRC}/doc/man/*.5 ${STAGEDIR}${PREFIX}/man/man5/
-	${INSTALL_MAN} ${WRKSRC}/doc/man/*.8 ${STAGEDIR}${PREFIX}/man/man8/
+	${INSTALL_MAN} ${WRKSRC}/doc/man/*.1 ${STAGEDIR}${PREFIX}/share/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/doc/man/*.5 ${STAGEDIR}${PREFIX}/share/man/man5/
+	${INSTALL_MAN} ${WRKSRC}/doc/man/*.7 ${STAGEDIR}${PREFIX}/share/man/man7/
+	${INSTALL_MAN} ${WRKSRC}/doc/man/*.8 ${STAGEDIR}${PREFIX}/share/man/man8/
 	${INSTALL_DATA} ${FILESDIR}/syslog-ng.conf.sample \
 		${STAGEDIR}${PREFIX}/etc
 	${INSTALL_DATA} ${WRKSRC}/scl/syslog-ng.conf.dist \

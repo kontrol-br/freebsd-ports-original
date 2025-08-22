@@ -1,6 +1,7 @@
 PORTNAME=	stix
 PORTVERSION=	1.2.0.11
 DISTVERSIONPREFIX=	v
+PORTREVISION=	3
 CATEGORIES=	security python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -11,8 +12,8 @@ WWW=		https://github.com/STIXProject/python-stix
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dateutil>=0:devel/py-dateutil@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}lxml>=2.3:devel/py-lxml@${PY_FLAVOR} \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}python-dateutil>=0:devel/py-python-dateutil@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}lxml5>=2.3:devel/py-lxml5@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cybox>=2.1.0.13:security/py-cybox@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mixbox>=1.0.2:security/py-mixbox@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>=0:devel/py-nose@${PY_FLAVOR} \

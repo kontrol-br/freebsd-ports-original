@@ -1,13 +1,16 @@
 PORTNAME=	gdk-pixbuf
-PORTVERSION=	2.42.10
-PORTREVISION=	1
+PORTVERSION=	2.42.12
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	2
 DIST_SUBDIR=	gnome
 
+PATCH_SITES=	https://gitlab.gnome.org/GNOME/gdk-pixbuf/-/commit/
+PATCHFILES=	4af78023ce7d3b5e3cec422a59bb4f48fa4f5886.patch:-p1
+
 MAINTAINER=	desktop@FreeBSD.org
-COMMENT=	Graphic library for GTK+
+COMMENT=	Graphic library for GTK
 WWW=		https://developer.gnome.org/gdk-pixbuf/
 
 LICENSE=	LGPL20+
@@ -19,16 +22,23 @@ CPE_VENDOR=	gnome
 USE_GNOME=	glib20 introspection:build libxslt:build
 SHEBANG_FILES=	build-aux/*.py
 USE_LDCONFIG=	yes
-MESON_ARGS=	-Dbuiltin_loaders="none" -Dgtk_doc=false -Dinstalled_tests=false -Dtests=false
+MESON_ARGS=	-Dbuiltin_loaders="none" \
+		-Dtests=true \
+		-Dinstalled_tests=false
 TRIGGERS=	gdk-pixbuf-query-loaders
 SUB_LIST=	GTK2_VERSION=${GTK2_VERSION}
 
-LIBVERSION=	0.4200.10
+LIBVERSION=	0.4200.12
 PLIST_SUB+=	LIBVERSION=${LIBVERSION}
 
 OPTIONS_SUB=	yes
-OPTIONS_DEFINE=	JPEG MANPAGES PNG TIFF
-OPTIONS_DEFAULT=JPEG MANPAGES PNG TIFF
+OPTIONS_DEFINE=	DOCS GIF JPEG MANPAGES PNG TIFF
+OPTIONS_DEFAULT=GIF JPEG MANPAGES PNG TIFF
+
+DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gi-docgen>0:textproc/py-gi-docgen@${PY_FLAVOR}
+DOCS_MESON_TRUE=	gtk_doc
+
+GIF_MESON_ENABLED=	gif
 
 JPEG_USES=		jpeg
 JPEG_MESON_ENABLED=	jpeg

@@ -1,6 +1,6 @@
 PORTNAME=	budgie-desktop
-DISTVERSION=	10.7.2
-PORTREVISION=	1
+DISTVERSION=	10.8.2
+PORTREVISION=	6
 DISTVERSIONPREFIX=	v
 CATEGORIES=	x11 budgie
 MASTER_SITES=	BUDGIE
@@ -17,13 +17,12 @@ BUILD_DEPENDS=	gnome-settings-daemon>0:sysutils/gnome-settings-daemon \
 		sassc:textproc/sassc \
 		zenity>0:x11/zenity
 LIB_DEPENDS=	libpolkit-gobject-1.so:sysutils/polkit \
-		libpeas-1.0.so:devel/libpeas \
-		libuuid.so:misc/e2fsprogs-libuuid \
+		libpeas-1.0.so:devel/libpeas1 \
+		libuuid.so:misc/libuuid \
 		libnotify.so:devel/libnotify \
 		libaccountsservice.so:sysutils/accountsservice \
 		libpulse.so:audio/pulseaudio \
 		libasound.so:audio/alsa-lib \
-		libmutter-10.so:x11-wm/mutter \
 		libgraphene-1.0.so:graphics/graphene \
 		libupower-glib.so:sysutils/upower \
 		libibus-1.0.so:textproc/ibus \
@@ -38,8 +37,8 @@ RUN_DEPENDS=	gsettings-desktop-schemas>0:devel/gsettings-desktop-schemas \
 
 USES=		budgie gettext gnome gstreamer meson pkgconfig tar:xz \
 		vala:build xorg
-USE_BUDGIE=	screensaver:build
-USE_GNOME=	cairo gdkpixbuf2 glib20 gnomedesktop3 gnomemenus3 \
+USE_BUDGIE=	libmagpie screensaver:build
+USE_GNOME=	cairo gdkpixbuf glib20 gnomedesktop3 gnomemenus3 \
 		gtk30 intltool introspection libwnck3
 USE_GSTREAMER=	libgstreamer
 USE_XORG=	x11 xcomposite
@@ -63,9 +62,11 @@ GLIB_SCHEMAS=	20_buddiesofbudgie.budgie-desktop.notifications.gschema.override \
 		com.solus-project.places-indicator.gschema.xml \
 		com.solus-project.spacer.gschema.xml \
 		com.solus-project.status.gschema.xml \
+		com.solus-project.trash.gschema.xml \
 		com.solus-project.tray.gschema.xml \
 		com.solus-project.workspaces.gschema.xml \
 		org.buddiesofbudgie.budgie-desktop.raven.widget.Calendar.gschema.xml \
+		org.buddiesofbudgie.budgie-desktop.raven.widget.SoundInput.gschema.xml \
 		org.buddiesofbudgie.budgie-desktop.raven.widget.SoundOutput.gschema.xml \
 		org.buddiesofbudgie.budgie-desktop.raven.widget.UsageMonitor.gschema.xml \
 		org.buddiesofbudgie.budgie-desktop.screenshot.gschema.xml \
@@ -73,7 +74,7 @@ GLIB_SCHEMAS=	20_buddiesofbudgie.budgie-desktop.notifications.gschema.override \
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

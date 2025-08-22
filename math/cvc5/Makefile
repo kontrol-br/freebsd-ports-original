@@ -1,38 +1,33 @@
 PORTNAME=	cvc5
 DISTVERSIONPREFIX=	cvc5-
-DISTVERSION=	1.0.5
-PORTREVISION=	2
+DISTVERSION=	1.3.0
 CATEGORIES=	math java
-MASTER_SITES+=	http://www.antlr3.org/download/:antlr3
-DISTFILES+=	antlr-3.4-complete.jar:antlr3
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Automatic theorem prover for SMT (Satisfiability Modulo Theories)
-WWW=		https://cvc5.github.io/
+WWW=		https://cvc5.github.io/ \
+		https://github.com/cvc5/cvc5
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	bash:shells/bash \
-		${LOCALBASE}/lib/libcadical.a:math/cadical \
 		${LOCALBASE}/lib/symfpu.a:math/symfpu \
 		${PYTHON_PKGNAMEPREFIX}toml>0:textproc/py-toml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}tomli>0:textproc/py-tomli@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pexpect>0:misc/py-pexpect@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pybind11>0:devel/py-pybind11@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyparsing>0:devel/py-pyparsing@${PY_FLAVOR}
-LIB_DEPENDS=	libantlr3c.so:devel/libantlr3c \
-		libboost_system.so:devel/boost-libs
+LIB_DEPENDS=	libcadical.so:math/cadical
 
 USES=		cmake:testing ncurses compiler:c++17-lang \
 		localbase:ldflags pkgconfig python:build
 USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 
-USE_JAVA=	yes
-JAVA_BUILD=	yes
-
 CMAKE_BUILD_TYPE=	Production
-CMAKE_ARGS+=		-DANTLR_BINARY=${WRKDIR}/antlr3 \
-			-DFREEBSD_DISTDIR=${DISTDIR} \
+CMAKE_ARGS+=		-DFREEBSD_DISTDIR=${DISTDIR} \
 			-DPython_EXECUTABLE:STRING=${PYTHON_CMD}
 CMAKE_ON=		BUILD_SHARED_LIBS
 CMAKE_OFF=		BUILD_BINDINGS_PYTHON USE_PYTHON3 # Python binding should be a separate port
@@ -40,12 +35,14 @@ CMAKE_TESTING_ON=	ENABLE_UNIT_TESTING
 CMAKE_TESTING_TARGET=	check # check target runs only quick tests (based on https://github.com/cvc5/cvc5/issues/9569#issuecomment-1484943348)
 #CMAKE_TESTING_TARGET=	test # test target also runs longer tests, 2 of which fail, see https://github.com/cvc5/cvc5/issues/9569
 
+PLIST_SUB=		VERSION=${DISTVERSION}
+
 OPTIONS_DEFINE=			COCOALIB EDITLINE JAVA
 OPTIONS_GROUP=			SOLVERS
 OPTIONS_GROUP_SOLVERS=		CRYPTOMINISAT KISSAT
 OPTIONS_RADIO=			NUMLIB
 OPTIONS_RADIO_NUMLIB=		GMP CLN
-OPTIONS_DEFAULT=		CRYPTOMINISAT EDITLINE JAVA GMP # COCOALIB KISSAT
+OPTIONS_DEFAULT=		CRYPTOMINISAT EDITLINE GMP # COCOALIB KISSAT # JAVA is broken
 OPTIONS_SUB=			yes
 
 COCOALIB_DESC=			Use CoCoALib for further polynomial operations
@@ -57,6 +54,7 @@ JAVA_CMAKE_ON=			-DJAVA_INCLUDE_PATH:PATH=${JAVA_HOME}/include \
 				-DJAVA_AWT_LIBRARY:PATH=${JAVA_HOME}/jre/lib/${ARCH}/libjawt.so \
 				-DJAVA_JVM_LIBRARY:PATH=${JAVA_HOME}/jre/lib/${ATCH}/libjava.so
 JAVA_BUILD_DEPENDS=		swig:devel/swig
+JAVA_BROKEN=			compilation fails: error: unmappable character for encoding ASCII, see https://github.com/cvc5/cvc5/issues/11145
 
 EDITLINE_DESC=			Use Editline for better interactive support
 EDITLINE_CMAKE_BOOL=		USE_EDITLINE
@@ -90,16 +88,10 @@ LICENSE=		GPLv3
 CMAKE_ARGS+=		-DENABLE_GPL:BOOL=ON
 .endif
 
-PORTSCOUT=	limit:^cvc5-[1-9].* # prevent older generation versions like 1.8
+PORTSCOUT=	limit:^[1-9]\.[0-9]+\.[0-9]+ # prevent older generation versions like 1.8, 1.7, etc.
 
-post-extract:
-	@${CP} ${DISTDIR}/antlr-3.4-complete.jar ${WRKDIR}/antlr3.jar
-	@${ECHO_CMD} "#!/bin/sh" > ${WRKDIR}/antlr3
-	@${ECHO_CMD} "exec \"${LOCALBASE}/bin/java\" -classpath \"${WRKDIR}/antlr3.jar\" org.antlr.Tool \"\$$@\"" >> ${WRKDIR}/antlr3
-	@${CHMOD} +x ${WRKDIR}/antlr3
-
-xpost-patch:
-	@${REINPLACE_CMD} -e "s|sed -i'' -e 's|sed -i '' -e 's|g" \
-		${WRKSRC}/src/fix-install-headers.sh
+# some tests are skipped without any explanation, see https://github.com/cvc5/cvc5/issues/10456
+# test interactive_shell_define_fun_rec_multiline fails, see https://github.com/cvc5/cvc5/issues/11146
+# tests as of 1.3.0: 99% tests passed, 1 tests failed out of 4040, see https://github.com/cvc5/cvc5/issues/11996
 
 .include <bsd.port.mk>

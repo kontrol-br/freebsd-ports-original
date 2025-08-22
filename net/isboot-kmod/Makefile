@@ -1,6 +1,5 @@
 PORTNAME=	isboot-kmod
-DISTVERSION=	0.2.14
-PORTREVISION=	1
+DISTVERSION=	0.2.15
 CATEGORIES=	net
 
 MAINTAINER=	john@jnielsen.net
@@ -34,7 +33,7 @@ VIMAGE_CFLAGS=	-DVIMAGE
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=unused-but-set-variable
 .endif
 

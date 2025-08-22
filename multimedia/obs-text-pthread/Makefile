@@ -1,6 +1,5 @@
 PORTNAME=	obs-text-pthread
-DISTVERSION=	2.0.2
-PORTREVISION=	2
+DISTVERSION=	2.0.5
 CATEGORIES=	multimedia
 
 MAINTAINER=	yuri@FreeBSD.org

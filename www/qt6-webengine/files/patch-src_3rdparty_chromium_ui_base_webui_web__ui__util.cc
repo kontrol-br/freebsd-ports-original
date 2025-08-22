@@ -1,8 +1,17 @@
---- src/3rdparty/chromium/ui/base/webui/web_ui_util.cc.orig	2023-03-28 19:45:02 UTC
+--- src/3rdparty/chromium/ui/base/webui/web_ui_util.cc.orig	2025-02-21 12:29:33 UTC
 +++ src/3rdparty/chromium/ui/base/webui/web_ui_util.cc
-@@ -220,7 +220,7 @@ std::string GetFontFamily() {
+@@ -46,7 +46,7 @@ std::string GetFontFamilyMd() {
+ constexpr float kMaxScaleFactor = 1000.0f;
  
- // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
+ std::string GetFontFamilyMd() {
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+   return "Roboto, " + GetFontFamily();
+ #else
+   return GetFontFamily();
+@@ -223,7 +223,7 @@ std::string GetFontFamily() {
+ 
+ // TODO(crbug.com/40118868): Revisit the macro expression once build flag switch
  // of lacros-chrome is complete.
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)

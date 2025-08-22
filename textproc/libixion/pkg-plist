@@ -20,10 +20,8 @@ include/libixion-%%VERSION%%/ixion/formula_tokens.hpp
 include/libixion-%%VERSION%%/ixion/formula_tokens_fwd.hpp
 include/libixion-%%VERSION%%/ixion/global.hpp
 include/libixion-%%VERSION%%/ixion/info.hpp
-include/libixion-%%VERSION%%/ixion/interface/formula_model_access.hpp
 include/libixion-%%VERSION%%/ixion/interface/session_handler.hpp
 include/libixion-%%VERSION%%/ixion/interface/table_handler.hpp
-include/libixion-%%VERSION%%/ixion/macros.hpp
 include/libixion-%%VERSION%%/ixion/matrix.hpp
 include/libixion-%%VERSION%%/ixion/model_context.hpp
 include/libixion-%%VERSION%%/ixion/model_iterator.hpp

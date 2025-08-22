@@ -1,7 +1,7 @@
 PORTNAME=	eprover
 DISTVERSIONPREFIX=	E-
 DISTVERSION=	2.6
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -26,7 +26,7 @@ SHEBANG_FILES=	etc/bjob_classify \
 HAS_CONFIGURE=	yes
 
 CONFIGURE_ARGS=	--bindir=${STAGEDIR}${PREFIX}/bin/ \
-		--man-prefix=${STAGEDIR}${PREFIX}/man/man1/
+		--man-prefix=${STAGEDIR}${PREFIX}/share/man/man1/
 MAKE_ARGS=	CC=${CC}
 
 ALL_TARGET=	all man
@@ -34,7 +34,7 @@ ALL_TARGET=	all man
 BINARY_ALIAS=	make=${GMAKE} \
 		gcc=${CC}
 
-PORTSCOUT=	limit:^.*[0-9]\.[0-9].* # prevent versions like git-export-2012-06-29
+PORTSCOUT=	limit:^.*[0-9]\.[0-9].*$$ # prevent versions like git-export-2012-06-29
 
 post-install:
 	# strip binaries

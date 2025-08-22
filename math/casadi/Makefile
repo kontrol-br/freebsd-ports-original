@@ -1,11 +1,11 @@
 PORTNAME=	casadi
-DISTVERSION=	3.6.0
-PORTREVISION=	2
+DISTVERSION=	3.7.0
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Symbolic framework for numeric optimization
-WWW=		https://web.casadi.org/
+WWW=		https://web.casadi.org/ \
+		https://github.com/casadi/casadi
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -25,9 +25,13 @@ CMAKE_OFF=	WITH_DEEPBIND WITH_BUILD_BLASFEO
 # and fail due to not setting up the linker environment properly:
 CMAKE_OFF+=	WITH_EXAMPLES
 
-OPTIONS_DEFINE=		BLASFEO BONMIN CLANG IPOPT LAPACK QPOASES
-OPTIONS_DEFAULT=	BLASFEO BONMIN IPOPT LAPACK QPOASES
+OPTIONS_DEFINE=		BLASFEO BONMIN CLANG IPOPT LAPACK OPENMP QPOASES THREADS
+OPTIONS_DEFAULT=	BLASFEO BONMIN IPOPT LAPACK QPOASES THREADS
 OPTIONS_SUB=		yes
+
+.if exists(/usr/include/omp.h)
+OPTIONS_DEFAULT+=	OPENMP
+.endif
 
 BLASFEO_DESC=		Build with BLASFEO
 BLASFEO_CMAKE_BOOL=	WITH_BLASFEO
@@ -48,7 +52,7 @@ BONMIN_LIB_DEPENDS=	libbonmin.so:math/bonmin \
 			libOsi.so:math/osi
 
 CLANG_DESC=		Build with clang for JIT
-CLANG_USES=		llvm:16
+CLANG_USES=		llvm:16,build,run
 CLANG_CMAKE_BOOL=	WITH_CLANG
 CLANG_CMAKE_ON=		-DLLVM_INSTALL_PREFIX=${LLVM_PREFIX} -DOLD_LLVM=ON
 CLANG_BROKEN=		fails to find clang, see https://github.com/casadi/casadi/issues/3089
@@ -62,21 +66,14 @@ LAPACK_DESC=		Build with LAPACK
 LAPACK_CMAKE_BOOL=	WITH_LAPACK
 LAPACK_USES=		blaslapack:openblas
 
+OPENMP_CMAKE_BOOL=	WITH_OPENMP
+
 QPOASES_DESC=		Build with qpOASES
 QPOASES_CMAKE_BOOL=	WITH_QPOASES
 QPOASES_LIB_DEPENDS=	libopenblas.so:math/openblas
 QPOASES_IMPLIES=	LAPACK
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MCLANG}
-# use clang from ports because cmake can't find base llvm for JIT
-BUILD_DEPENDS+=	clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
-RUN_DEPENDS+=	clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
-CPP=		clang-cpp${LLVM_DEFAULT}
-CC=		clang${LLVM_DEFAULT}
-CXX=		clang++${LLVM_DEFAULT}
-.endif
+THREADS_CMAKE_BOOL=	WITH_THREAD
 
 PORTSCOUT=	limit:^.*[1-9]\..* # prevent tags like ge2
 

@@ -1,25 +1,20 @@
 PORTNAME=	re
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.12.0
+DISTVERSION=	4.0.0
 CATEGORIES=	audio devel
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	herbert@gojira.at
 COMMENT=	Library for real-time comms with async IO support
-WWW=		https://github.com/baresip
+WWW=		https://github.com/baresip/re
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake ssl
+USES=		cmake:testing ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	baresip
+USE_LDCONFIG=	yes
 
-# FIXME values of the next 3 variables taken from source code Makefile
-ABI_MAJOR=	14
-ABI_AGE=	12
-ABI_REV=	0
-PLIST_SUB=	ABI_MAJOR=${ABI_MAJOR}
-PLIST_SUB+=	ABI_AGE=${ABI_AGE}
-PLIST_SUB+=	ABI_REV=${ABI_REV}
+CMAKE_TESTING_TARGET=	retest
 
 .include <bsd.port.mk>

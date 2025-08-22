@@ -1,11 +1,13 @@
 PORTNAME=	miniupnpc
-PORTVERSION=	2.2.4
+PORTVERSION=	2.3.2
+PORTREVISION=	0
 CATEGORIES?=	net
-MASTER_SITES=	http://miniupnp.free.fr/files/
+MASTER_SITES=	http://miniupnp.free.fr/files/ \
+		https://miniupnp.tuxfamily.org/files/
 
 MAINTAINER?=	dinoex@FreeBSD.org
 COMMENT?=	UPnP IGD client lightweight library
-WWW=		http://miniupnp.free.fr/
+WWW=		https://miniupnp.tuxfamily.org/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -18,6 +20,7 @@ CPE_VENDOR=	miniupnp_project
 
 CONFIGURE_SCRIPT=	updateminiupnpcstrings.sh
 MAKE_ENV+=	INSTALLPREFIX=${PREFIX} LIBDIR=lib
+MAKE_ARGS+=	MANPATH="${PREFIX}/share/man"
 
 .include <bsd.port.pre.mk>
 
@@ -30,7 +33,8 @@ USE_RC_SUBR=	miniupnpc
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/upnpc \
-		${STAGEDIR}${PREFIX}/lib/libminiupnpc.so.17
+		${STAGEDIR}${PREFIX}/bin/upnp-listdevices \
+		${STAGEDIR}${PREFIX}/lib/libminiupnpc.so.20
 .endif
 
 .include <bsd.port.post.mk>

@@ -1,11 +1,11 @@
 PORTNAME=	gomacro
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.7-601
-PORTREVISION=	6
 DISTVERSIONSUFFIX=	-g9aafa23
+PORTREVISION=	21
 CATEGORIES=	lang
 
-MAINTAINER=	dmgk@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Interactive Go interpreter and debugger with REPL, generics and macros
 WWW=		https://github.com/cosmos72/gomacro
 

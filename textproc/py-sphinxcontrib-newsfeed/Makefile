@@ -1,10 +1,11 @@
 PORTNAME=	sphinxcontrib-newsfeed
 PORTVERSION=	0.1.4
+PORTREVISION=	1
 CATEGORIES=	textproc
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	rigoletto@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	News Feed extension for Sphinx
 WWW=		https://pypi.org/project/sphinxcontrib-newsfeed/
 

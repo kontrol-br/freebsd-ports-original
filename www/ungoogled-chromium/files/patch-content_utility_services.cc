@@ -1,6 +1,6 @@
---- content/utility/services.cc.orig	2023-07-21 09:49:17 UTC
+--- content/utility/services.cc.orig	2025-05-06 12:23:00 UTC
 +++ content/utility/services.cc
-@@ -65,7 +65,7 @@
+@@ -73,7 +73,7 @@
  extern sandbox::TargetServices* g_utility_target_services;
  #endif  // BUILDFLAG(IS_WIN)
  
@@ -9,25 +9,16 @@
  #include "media/mojo/services/mojo_video_encode_accelerator_provider_factory.h"
  #include "sandbox/linux/services/libc_interceptor.h"
  #include "sandbox/policy/mojom/sandbox.mojom.h"
-@@ -88,7 +88,7 @@ extern sandbox::TargetServices* g_utility_target_servi
- #endif  // BUILDFLAG(IS_CHROMEOS_ASH) && (BUILDFLAG(USE_VAAPI) ||
+@@ -101,7 +101,7 @@ extern sandbox::TargetServices* g_utility_target_servi
+ #endif  // BUILDFLAG(IS_CHROMEOS) && (BUILDFLAG(USE_VAAPI) ||
          // BUILDFLAG(USE_V4L2_CODEC))
  
--#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_ASH)) && \
-+#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_ASH) || BUILDFLAG(IS_BSD)) && \
+-#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)) && \
++#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD) || BUILDFLAG(IS_CHROMEOS)) && \
      (BUILDFLAG(USE_VAAPI) || BUILDFLAG(USE_V4L2_CODEC))
- #include "media/mojo/services/stable_video_decoder_factory_process_service.h"  // nogncheck
- #endif  // (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_ASH)) &&
-@@ -110,7 +110,7 @@ extern sandbox::TargetServices* g_utility_target_servi
- #include "ui/accessibility/accessibility_features.h"
- #endif  // BUILDFLAG(ENABLE_ACCESSIBILITY_SERVICE)
- 
--#if BUILDFLAG(IS_LINUX)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
- #include "media/capture/capture_switches.h"
- #include "services/viz/public/cpp/gpu/gpu.h"
- #endif  // BUILDFLAG(IS_LINUX)
-@@ -227,7 +227,7 @@ auto RunAudio(mojo::PendingReceiver<audio::mojom::Audi
+ #include "content/common/features.h"
+ #include "media/mojo/services/oop_video_decoder_factory_process_service.h"  // nogncheck
+@@ -237,7 +237,7 @@ auto RunAudio(mojo::PendingReceiver<audio::mojom::Audi
        << "task_policy_set TASK_QOS_POLICY";
  #endif
  
@@ -36,26 +27,17 @@
    auto* command_line = base::CommandLine::ForCurrentProcess();
    if (sandbox::policy::SandboxTypeFromCommandLine(*command_line) ==
        sandbox::mojom::Sandbox::kNoSandbox) {
-@@ -311,7 +311,7 @@ auto RunVideoCapture(
-     mojo::PendingReceiver<video_capture::mojom::VideoCaptureService> receiver) {
-   auto service = std::make_unique<UtilityThreadVideoCaptureServiceImpl>(
-       std::move(receiver), base::SingleThreadTaskRunner::GetCurrentDefault());
--#if BUILDFLAG(IS_LINUX)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
-   if (switches::IsVideoCaptureUseGpuMemoryBufferEnabled()) {
-     mojo::PendingRemote<viz::mojom::Gpu> remote_gpu;
-     content::UtilityThread::Get()->BindHostReceiver(
-@@ -343,7 +343,7 @@ auto RunOOPArcVideoAcceleratorFactoryService(
- #endif  // BUILDFLAG(IS_CHROMEOS_ASH) && (BUILDFLAG(USE_VAAPI) ||
-         // BUILDFLAG(USE_V4L2_CODEC))
+@@ -381,7 +381,7 @@ auto RunOOPArcVideoAcceleratorFactoryService(
+ #endif  // BUILDFLAG(IS_CHROMEOS) && \
+         // (BUILDFLAG(USE_VAAPI) || BUILDFLAG(USE_V4L2_CODEC))
  
--#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_ASH)) && \
-+#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_ASH) || BUILDFLAG(IS_BSD)) && \
+-#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)) && \
++#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD) || BUILDFLAG(IS_CHROMEOS)) && \
      (BUILDFLAG(USE_VAAPI) || BUILDFLAG(USE_V4L2_CODEC))
- auto RunStableVideoDecoderFactoryProcessService(
-     mojo::PendingReceiver<
-@@ -354,7 +354,7 @@ auto RunStableVideoDecoderFactoryProcessService(
- #endif  // (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_ASH)) &&
+ auto RunOOPVideoDecoderFactoryProcessService(
+     mojo::PendingReceiver<media::mojom::VideoDecoderFactoryProcess> receiver) {
+@@ -391,7 +391,7 @@ auto RunOOPVideoDecoderFactoryProcessService(
+ #endif  // (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)) &&
          // (BUILDFLAG(USE_VAAPI) || BUILDFLAG(USE_V4L2_CODEC))
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
@@ -63,15 +45,17 @@
  auto RunVideoEncodeAcceleratorProviderFactory(
      mojo::PendingReceiver<media::mojom::VideoEncodeAcceleratorProviderFactory>
          receiver) {
-@@ -419,13 +419,13 @@ void RegisterMainThreadServices(mojo::ServiceFactory& 
- #endif  // BUILDFLAG(IS_CHROMEOS_ASH) && (BUILDFLAG(USE_VAAPI) ||
-         // BUILDFLAG(USE_V4L2_CODEC))
+@@ -414,7 +414,7 @@ void RegisterIOThreadServices(mojo::ServiceFactory& se
+   // loop of type IO that can get notified when pipes have data.
+   services.Add(RunNetworkService);
  
--#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_ASH)) && \
-+#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_ASH) || BUILDFLAG(IS_BSD)) && \
+-#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)) && \
++#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD) || BUILDFLAG(IS_CHROMEOS)) && \
      (BUILDFLAG(USE_VAAPI) || BUILDFLAG(USE_V4L2_CODEC))
-   services.Add(RunStableVideoDecoderFactoryProcessService);
- #endif  // (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_ASH)) &&
+   services.Add(RunOOPVideoDecoderFactoryProcessService);
+ #endif  // (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)) &&
+@@ -467,7 +467,7 @@ void RegisterMainThreadServices(mojo::ServiceFactory& 
+ #endif  // BUILDFLAG(IS_CHROMEOS) && \
          // (BUILDFLAG(USE_VAAPI) || BUILDFLAG(USE_V4L2_CODEC))
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)

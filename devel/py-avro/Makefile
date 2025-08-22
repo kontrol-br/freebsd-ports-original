@@ -1,17 +1,18 @@
 PORTNAME=	avro
-PORTVERSION=	1.11.2
+PORTVERSION=	1.12.0
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Data serialization system for python
-WWW=		https://avro.apache.org/
+WWW=		https://avro.apache.org/ \
+		https://github.com/apache/avro
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/avro/LICENSE
 
-BUILD_DEPENDS=	${PY_SETUPTOOLS} \
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=40.8.0:devel/py-setuptools@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 
 USES=		cpe python

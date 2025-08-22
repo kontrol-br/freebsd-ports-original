@@ -1,6 +1,6 @@
 PORTNAME=	libosmium
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.19.0
+DISTVERSION=	2.22.0
 PORTREVISION=	1
 CATEGORIES=	astro geography devel
 
@@ -12,13 +12,11 @@ LICENSE=	BSL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	boost-libs>=0:devel/boost-libs \
-		protozero>=0:devel/protozero \
 		gdal>=0:graphics/gdal \
 		protozero>=0:devel/protozero \
 		expat>=0:textproc/expat2 \
 		liblz4>=0:archivers/liblz4 \
 		geos>=0:graphics/geos
-#		proj>=0:graphics/proj
 
 USES=		cmake compiler:c++11-lib
 USE_GITHUB=	yes
@@ -26,7 +24,6 @@ GH_ACCOUNT=	osmcode
 CMAKE_ON=	INSTALL_GDALCPP  # until it appears as a port
 CMAKE_ON+=	BUILD_HEADERS
 CMAKE_OFF=	BUILD_EXAMPLES
-CMAKE_OFF+=	WITH_PROJ  # the ports version is not supported
 
 # although it builds tests the library itself is header-only
 NO_ARCH=	yes
